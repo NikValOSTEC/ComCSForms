@@ -87,6 +87,7 @@ namespace ComCSForms
                 case System.IO.Ports.StopBits.OnePointFive:
                     StopbitcomboBox.SelectedItem = 1.5;
                     break;
+
             }
 
         }
