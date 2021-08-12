@@ -202,6 +202,7 @@ namespace ComCSForms
             {
                 button1_Click(button1, new EventArgs());
             }
+            this.timer1.Start();
         }
 
         private void FileSend_Click(object sender, EventArgs e)
@@ -263,7 +264,10 @@ namespace ComCSForms
             flowLayoutPanel1.Controls.Clear();
         }
 
-   
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            this.TimeLable.Text = DateTime.Now.ToString();
+        }
 
         private void button3_Click(object sender, EventArgs e)
         {

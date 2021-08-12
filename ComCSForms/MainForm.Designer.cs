@@ -29,6 +29,7 @@ namespace ComCSForms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.PortOpenButton = new System.Windows.Forms.Button();
             this.PortCombobox = new System.Windows.Forms.ComboBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -44,6 +45,8 @@ namespace ComCSForms
             this.button4 = new System.Windows.Forms.Button();
             this.Setbt = new System.Windows.Forms.Button();
             this.IOLayout = new System.Windows.Forms.FlowLayoutPanel();
+            this.TimeLable = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.SuspendLayout();
@@ -167,7 +170,7 @@ namespace ComCSForms
             // 
             // Setbt
             // 
-            this.Setbt.Location = new System.Drawing.Point(930, 12);
+            this.Setbt.Location = new System.Drawing.Point(942, 5);
             this.Setbt.Name = "Setbt";
             this.Setbt.Size = new System.Drawing.Size(32, 23);
             this.Setbt.TabIndex = 37;
@@ -177,16 +180,31 @@ namespace ComCSForms
             // 
             // IOLayout
             // 
-            this.IOLayout.Location = new System.Drawing.Point(12, 12);
+            this.IOLayout.Location = new System.Drawing.Point(12, 39);
             this.IOLayout.Name = "IOLayout";
-            this.IOLayout.Size = new System.Drawing.Size(550, 360);
+            this.IOLayout.Size = new System.Drawing.Size(550, 333);
             this.IOLayout.TabIndex = 38;
+            // 
+            // TimeLable
+            // 
+            this.TimeLable.AutoSize = true;
+            this.TimeLable.Location = new System.Drawing.Point(437, 10);
+            this.TimeLable.Name = "TimeLable";
+            this.TimeLable.Size = new System.Drawing.Size(35, 13);
+            this.TimeLable.TabIndex = 39;
+            this.TimeLable.Text = "label1";
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // PortForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(974, 450);
+            this.ClientSize = new System.Drawing.Size(984, 450);
+            this.Controls.Add(this.TimeLable);
             this.Controls.Add(this.IOLayout);
             this.Controls.Add(this.Setbt);
             this.Controls.Add(this.button4);
@@ -231,6 +249,8 @@ namespace ComCSForms
         private System.Windows.Forms.FlowLayoutPanel IOLayout;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.Label TimeLable;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
