@@ -63,26 +63,29 @@ namespace ComCSForms
             // 
             this.BaudCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.BaudCombobox.FormattingEnabled = true;
-            this.BaudCombobox.Location = new System.Drawing.Point(13, 30);
+            this.BaudCombobox.Location = new System.Drawing.Point(17, 37);
+            this.BaudCombobox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BaudCombobox.Name = "BaudCombobox";
-            this.BaudCombobox.Size = new System.Drawing.Size(84, 21);
+            this.BaudCombobox.Size = new System.Drawing.Size(111, 24);
             this.BaudCombobox.TabIndex = 0;
             // 
             // Baudlable
             // 
             this.Baudlable.AutoSize = true;
-            this.Baudlable.Location = new System.Drawing.Point(12, 9);
+            this.Baudlable.Location = new System.Drawing.Point(16, 11);
+            this.Baudlable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Baudlable.Name = "Baudlable";
-            this.Baudlable.Size = new System.Drawing.Size(49, 13);
+            this.Baudlable.Size = new System.Drawing.Size(61, 16);
             this.Baudlable.TabIndex = 1;
             this.Baudlable.Text = "Сорость";
             // 
             // DataLable
             // 
             this.DataLable.AutoSize = true;
-            this.DataLable.Location = new System.Drawing.Point(102, 9);
+            this.DataLable.Location = new System.Drawing.Point(136, 11);
+            this.DataLable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.DataLable.Name = "DataLable";
-            this.DataLable.Size = new System.Drawing.Size(48, 13);
+            this.DataLable.Size = new System.Drawing.Size(57, 16);
             this.DataLable.TabIndex = 3;
             this.DataLable.Text = "Данные";
             // 
@@ -90,17 +93,19 @@ namespace ComCSForms
             // 
             this.DatacomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DatacomboBox.FormattingEnabled = true;
-            this.DatacomboBox.Location = new System.Drawing.Point(103, 30);
+            this.DatacomboBox.Location = new System.Drawing.Point(137, 37);
+            this.DatacomboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DatacomboBox.Name = "DatacomboBox";
-            this.DatacomboBox.Size = new System.Drawing.Size(84, 21);
+            this.DatacomboBox.Size = new System.Drawing.Size(111, 24);
             this.DatacomboBox.TabIndex = 2;
             // 
             // Flowlabel
             // 
             this.Flowlabel.AutoSize = true;
-            this.Flowlabel.Location = new System.Drawing.Point(192, 9);
+            this.Flowlabel.Location = new System.Drawing.Point(256, 11);
+            this.Flowlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Flowlabel.Name = "Flowlabel";
-            this.Flowlabel.Size = new System.Drawing.Size(38, 13);
+            this.Flowlabel.Size = new System.Drawing.Size(47, 16);
             this.Flowlabel.TabIndex = 5;
             this.Flowlabel.Text = "Поток";
             // 
@@ -108,34 +113,38 @@ namespace ComCSForms
             // 
             this.FlowcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FlowcomboBox.FormattingEnabled = true;
-            this.FlowcomboBox.Location = new System.Drawing.Point(193, 30);
+            this.FlowcomboBox.Location = new System.Drawing.Point(257, 37);
+            this.FlowcomboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.FlowcomboBox.Name = "FlowcomboBox";
-            this.FlowcomboBox.Size = new System.Drawing.Size(84, 21);
+            this.FlowcomboBox.Size = new System.Drawing.Size(111, 24);
             this.FlowcomboBox.TabIndex = 4;
             // 
             // Stopstrlabel
             // 
             this.Stopstrlabel.AutoSize = true;
-            this.Stopstrlabel.Location = new System.Drawing.Point(194, 65);
+            this.Stopstrlabel.Location = new System.Drawing.Point(259, 80);
+            this.Stopstrlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Stopstrlabel.Name = "Stopstrlabel";
-            this.Stopstrlabel.Size = new System.Drawing.Size(66, 13);
+            this.Stopstrlabel.Size = new System.Drawing.Size(84, 16);
             this.Stopstrlabel.TabIndex = 11;
             this.Stopstrlabel.Text = "Стопстрока";
             // 
             // StopstrcomboBox
             // 
             this.StopstrcomboBox.FormattingEnabled = true;
-            this.StopstrcomboBox.Location = new System.Drawing.Point(195, 86);
+            this.StopstrcomboBox.Location = new System.Drawing.Point(260, 106);
+            this.StopstrcomboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.StopstrcomboBox.Name = "StopstrcomboBox";
-            this.StopstrcomboBox.Size = new System.Drawing.Size(84, 21);
+            this.StopstrcomboBox.Size = new System.Drawing.Size(111, 24);
             this.StopstrcomboBox.TabIndex = 10;
             // 
             // Paritylabel
             // 
             this.Paritylabel.AutoSize = true;
-            this.Paritylabel.Location = new System.Drawing.Point(104, 65);
+            this.Paritylabel.Location = new System.Drawing.Point(139, 80);
+            this.Paritylabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Paritylabel.Name = "Paritylabel";
-            this.Paritylabel.Size = new System.Drawing.Size(49, 13);
+            this.Paritylabel.Size = new System.Drawing.Size(63, 16);
             this.Paritylabel.TabIndex = 9;
             this.Paritylabel.Text = "Паритет";
             // 
@@ -143,17 +152,19 @@ namespace ComCSForms
             // 
             this.ParitycomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ParitycomboBox.FormattingEnabled = true;
-            this.ParitycomboBox.Location = new System.Drawing.Point(105, 86);
+            this.ParitycomboBox.Location = new System.Drawing.Point(140, 106);
+            this.ParitycomboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ParitycomboBox.Name = "ParitycomboBox";
-            this.ParitycomboBox.Size = new System.Drawing.Size(84, 21);
+            this.ParitycomboBox.Size = new System.Drawing.Size(111, 24);
             this.ParitycomboBox.TabIndex = 8;
             // 
             // Stopbitlabel
             // 
             this.Stopbitlabel.AutoSize = true;
-            this.Stopbitlabel.Location = new System.Drawing.Point(14, 65);
+            this.Stopbitlabel.Location = new System.Drawing.Point(19, 80);
+            this.Stopbitlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Stopbitlabel.Name = "Stopbitlabel";
-            this.Stopbitlabel.Size = new System.Drawing.Size(48, 13);
+            this.Stopbitlabel.Size = new System.Drawing.Size(62, 16);
             this.Stopbitlabel.TabIndex = 7;
             this.Stopbitlabel.Text = "Стопбит";
             // 
@@ -161,9 +172,10 @@ namespace ComCSForms
             // 
             this.StopbitcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.StopbitcomboBox.FormattingEnabled = true;
-            this.StopbitcomboBox.Location = new System.Drawing.Point(15, 86);
+            this.StopbitcomboBox.Location = new System.Drawing.Point(20, 106);
+            this.StopbitcomboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.StopbitcomboBox.Name = "StopbitcomboBox";
-            this.StopbitcomboBox.Size = new System.Drawing.Size(84, 21);
+            this.StopbitcomboBox.Size = new System.Drawing.Size(111, 24);
             this.StopbitcomboBox.TabIndex = 6;
             // 
             // decods
@@ -171,9 +183,11 @@ namespace ComCSForms
             this.decods.Controls.Add(this.BINcheck);
             this.decods.Controls.Add(this.HEXCheck);
             this.decods.Controls.Add(this.ASCIIcheck);
-            this.decods.Location = new System.Drawing.Point(0, 128);
+            this.decods.Location = new System.Drawing.Point(0, 158);
+            this.decods.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.decods.Name = "decods";
-            this.decods.Size = new System.Drawing.Size(200, 100);
+            this.decods.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.decods.Size = new System.Drawing.Size(267, 123);
             this.decods.TabIndex = 12;
             this.decods.TabStop = false;
             this.decods.Text = "Форматы";
@@ -181,9 +195,10 @@ namespace ComCSForms
             // BINcheck
             // 
             this.BINcheck.AutoSize = true;
-            this.BINcheck.Location = new System.Drawing.Point(7, 68);
+            this.BINcheck.Location = new System.Drawing.Point(9, 84);
+            this.BINcheck.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BINcheck.Name = "BINcheck";
-            this.BINcheck.Size = new System.Drawing.Size(44, 17);
+            this.BINcheck.Size = new System.Drawing.Size(51, 20);
             this.BINcheck.TabIndex = 2;
             this.BINcheck.Text = "BIN";
             this.BINcheck.UseVisualStyleBackColor = true;
@@ -191,9 +206,10 @@ namespace ComCSForms
             // HEXCheck
             // 
             this.HEXCheck.AutoSize = true;
-            this.HEXCheck.Location = new System.Drawing.Point(7, 44);
+            this.HEXCheck.Location = new System.Drawing.Point(9, 54);
+            this.HEXCheck.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.HEXCheck.Name = "HEXCheck";
-            this.HEXCheck.Size = new System.Drawing.Size(48, 17);
+            this.HEXCheck.Size = new System.Drawing.Size(56, 20);
             this.HEXCheck.TabIndex = 1;
             this.HEXCheck.Text = "HEX";
             this.HEXCheck.UseVisualStyleBackColor = true;
@@ -201,12 +217,14 @@ namespace ComCSForms
             // ASCIIcheck
             // 
             this.ASCIIcheck.AutoSize = true;
-            this.ASCIIcheck.Location = new System.Drawing.Point(7, 20);
+            this.ASCIIcheck.Location = new System.Drawing.Point(9, 25);
+            this.ASCIIcheck.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ASCIIcheck.Name = "ASCIIcheck";
-            this.ASCIIcheck.Size = new System.Drawing.Size(53, 17);
+            this.ASCIIcheck.Size = new System.Drawing.Size(62, 20);
             this.ASCIIcheck.TabIndex = 0;
             this.ASCIIcheck.Text = "ASCII";
             this.ASCIIcheck.UseVisualStyleBackColor = true;
+            this.ASCIIcheck.CheckedChanged += new System.EventHandler(this.ASCIIcheck_CheckedChanged);
             // 
             // Circle
             // 
@@ -217,43 +235,49 @@ namespace ComCSForms
             this.Circle.Controls.Add(this.numericUpDown1);
             this.Circle.Controls.Add(this.SendStopCheck);
             this.Circle.Controls.Add(this.Ciclecheck);
-            this.Circle.Location = new System.Drawing.Point(0, 274);
+            this.Circle.Location = new System.Drawing.Point(0, 337);
+            this.Circle.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Circle.Name = "Circle";
-            this.Circle.Size = new System.Drawing.Size(279, 165);
+            this.Circle.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Circle.Size = new System.Drawing.Size(372, 203);
             this.Circle.TabIndex = 13;
             this.Circle.TabStop = false;
             this.Circle.Text = "Циклическая отправка";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(118, 94);
+            this.textBox1.Location = new System.Drawing.Point(157, 116);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(141, 20);
+            this.textBox1.Size = new System.Drawing.Size(187, 22);
             this.textBox1.TabIndex = 6;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(233, 50);
+            this.label1.Location = new System.Drawing.Point(311, 62);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(26, 13);
+            this.label1.Size = new System.Drawing.Size(32, 16);
             this.label1.TabIndex = 5;
             this.label1.Text = "Раз";
             // 
             // Ntimeslabel
             // 
             this.Ntimeslabel.AutoSize = true;
-            this.Ntimeslabel.Location = new System.Drawing.Point(238, 21);
+            this.Ntimeslabel.Location = new System.Drawing.Point(317, 26);
+            this.Ntimeslabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Ntimeslabel.Name = "Ntimeslabel";
-            this.Ntimeslabel.Size = new System.Drawing.Size(21, 13);
+            this.Ntimeslabel.Size = new System.Drawing.Size(23, 16);
             this.Ntimeslabel.TabIndex = 4;
             this.Ntimeslabel.Text = "мс";
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(107, 43);
+            this.numericUpDown2.Location = new System.Drawing.Point(143, 53);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown2.Size = new System.Drawing.Size(160, 22);
             this.numericUpDown2.TabIndex = 3;
             // 
             // numericUpDown1
@@ -263,22 +287,24 @@ namespace ComCSForms
             0,
             0,
             0});
-            this.numericUpDown1.Location = new System.Drawing.Point(107, 17);
+            this.numericUpDown1.Location = new System.Drawing.Point(143, 21);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             60000,
             0,
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(160, 22);
             this.numericUpDown1.TabIndex = 2;
             // 
             // SendStopCheck
             // 
             this.SendStopCheck.AutoSize = true;
-            this.SendStopCheck.Location = new System.Drawing.Point(7, 96);
+            this.SendStopCheck.Location = new System.Drawing.Point(9, 118);
+            this.SendStopCheck.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.SendStopCheck.Name = "SendStopCheck";
-            this.SendStopCheck.Size = new System.Drawing.Size(105, 17);
+            this.SendStopCheck.Size = new System.Drawing.Size(130, 20);
             this.SendStopCheck.TabIndex = 1;
             this.SendStopCheck.Text = "Остановка при:";
             this.SendStopCheck.UseVisualStyleBackColor = true;
@@ -286,18 +312,19 @@ namespace ComCSForms
             // Ciclecheck
             // 
             this.Ciclecheck.AutoSize = true;
-            this.Ciclecheck.Location = new System.Drawing.Point(7, 20);
+            this.Ciclecheck.Location = new System.Drawing.Point(9, 25);
+            this.Ciclecheck.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Ciclecheck.Name = "Ciclecheck";
-            this.Ciclecheck.Size = new System.Drawing.Size(93, 17);
+            this.Ciclecheck.Size = new System.Drawing.Size(114, 20);
             this.Ciclecheck.TabIndex = 0;
             this.Ciclecheck.Text = "Циклическая";
             this.Ciclecheck.UseVisualStyleBackColor = true;
             // 
             // SetForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(290, 481);
+            this.ClientSize = new System.Drawing.Size(387, 592);
             this.Controls.Add(this.Circle);
             this.Controls.Add(this.decods);
             this.Controls.Add(this.Stopstrlabel);
@@ -313,6 +340,7 @@ namespace ComCSForms
             this.Controls.Add(this.Baudlable);
             this.Controls.Add(this.BaudCombobox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "SetForm";
             this.Text = "                                                                  ";
             this.Load += new System.EventHandler(this.SetForm_Load);

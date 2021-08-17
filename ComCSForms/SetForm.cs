@@ -91,5 +91,10 @@ namespace ComCSForms
             }
 
         }
+
+        private void ASCIIcheck_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

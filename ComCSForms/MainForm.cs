@@ -15,10 +15,9 @@ namespace ComCSForms
     {
         struct TxtClors
         {
-            public int first;
-            public int second;
             public Color cl;
-            public RichTextBox IO;
+            public DataGridView IO;
+            public int row;
         }
         public int BaudRatec;
         public  int Datac;
@@ -35,11 +34,23 @@ namespace ComCSForms
         static List<TxtClors> TxColors;
         static SerialPort _serialPort;
         static Thread th;
-        static RichTextBox inp,outp;
+        static DataGridView inp,outp;
+        bool showHEX, showASCII, showBYTE;
         bool blportopen;
         public PortForm()
         {
             InitializeComponent();
+        }
+
+        private string GetByte(string msg)
+        {
+            string message = "";
+            byte[] arr = Encoding.ASCII.GetBytes(msg);
+            foreach (var i in arr)
+            {
+                message += i+" ";
+            }
+            return message;
         }
 
 
@@ -47,17 +58,14 @@ namespace ComCSForms
         {
             if (_serialPort == null)
                 return;
-            string message;
             TxtClors clset;
-            if(inp.Name==outp.Name)
-                message = System.Environment.NewLine + "<YOU> " + msg;
+            if(inp==outp)
+                inp.Rows.Add((DateTime.Now.TimeOfDay.ToString()).Substring(0, 8), "YOU",msg,GetByte(msg));
             else
-                message = System.Environment.NewLine + msg;
-            outp.Text += message;
-            clset.first = outp.Text.Length - message.Length + 1;
-            clset.second = outp.Text.Length;
+                outp.Rows.Add((DateTime.Now.TimeOfDay.ToString()).Substring(0, 8), msg, GetByte(msg));
             clset.cl = SendCl;
             clset.IO = outp;
+            clset.row = outp.Rows.Count-2;
             TxColors.Add(clset);
             ChangeColors();
             _serialPort.WriteLine(
@@ -68,8 +76,7 @@ namespace ComCSForms
         {
             for(int i=0;i<TxColors.Count;i++)
             {
-                TxColors[i].IO.Select(TxColors[i].first, TxColors[i].second);
-                TxColors[i].IO.SelectionColor = TxColors[i].cl;
+                TxColors[i].IO.Rows[TxColors[i].row].DefaultCellStyle.ForeColor = TxColors[i].cl;
             }
         }
 
@@ -150,14 +157,13 @@ namespace ComCSForms
                             {
                                 // Running on the UI thread
                                 TxtClors clset;
-                                if (inp.Name == outp.Name)
-                                    inp.Text += System.Environment.NewLine + "<Port>  " + glmessage.Substring(0, glmessage.Length - stopstr.Length);
+                                if (inp == outp)
+                                    inp.Rows.Add((DateTime.Now.TimeOfDay.ToString()).Substring(0, 8),"PORT",glmessage,glmessage);
                                 else
-                                    inp.Text += System.Environment.NewLine + glmessage.Substring(0, glmessage.Length - stopstr.Length);
-                                clset.first = inp.Text.Length - glmessage.Length;
-                                clset.second = inp.Text.Length;
+                                    inp.Rows.Add((DateTime.Now.TimeOfDay.ToString()).Substring(0, 8), glmessage, glmessage);
                                 clset.cl = GetCl;
                                 clset.IO = inp;
+                                clset.row = inp.Rows.Count-2;
                                 TxColors.Add(clset);
                                 ChangeColors();
                                 glmessage = "";
@@ -179,10 +185,38 @@ namespace ComCSForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            RichTextBox Io = new RichTextBox();
+            DataGridView Io = new DataGridView();
+            Io.Name = "IODGV";
             Io.Size = IOLayout.Size;
             Io.ReadOnly = true;
             Io.BackColor = Color.White;
+            Io.RowHeadersVisible = false;
+            Io.GridColor = Color.White;
+            Io.BackgroundColor = Color.White;
+            DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "TIME";
+            colm.Name = "TIME";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.Width = IOLayout.Width * 2 / 12;
+            Io.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "From";
+            colm.Name = "From";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.Width = IOLayout.Width * 19 / 120;
+            Io.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "ASCII";
+            colm.Name = "ASCII";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.Width = IOLayout.Width * 4 / 12;
+            Io.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "HEX";
+            colm.Name = "HEX";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.Width = IOLayout.Width * 4 / 12;
+            Io.Columns.Add(colm);
             inp = Io;
             outp = Io;
             TxColors = new List<TxtClors>();
@@ -255,8 +289,11 @@ namespace ComCSForms
 
         private void button4_Click(object sender, EventArgs e)
         {
-            inp.Clear();
-            outp.Clear();
+            inp.Rows.Clear();
+            outp.Rows.Clear();
+            inp.Refresh();
+            outp.Refresh();
+            TxColors.Clear();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -266,8 +303,9 @@ namespace ComCSForms
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            this.TimeLable.Text = DateTime.Now.ToString();
+            this.TimeLable.Text = (DateTime.Now.TimeOfDay.ToString()).Substring(0,8);
         }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -277,16 +315,56 @@ namespace ComCSForms
                 SplitContainer sc = new SplitContainer();
                 sc.Size = this.IOLayout.Size;
                 sc.SplitterDistance = sc.Width / 2;
-                RichTextBox I = new RichTextBox();
+                DataGridView I = new DataGridView();
+                I.Name = "IDGV";
                 I.Size = sc.Panel1.Size;
                 I.ReadOnly = true;
                 I.BackColor = Color.White;
+                I.RowHeadersVisible = false;
+                DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "TIME";
+                colm.Name = "TIME";
+                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                colm.Width = sc.Panel1.Width * 29 / 130;
+                I.Columns.Add(colm);
+                colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "ASCII";
+                colm.Name = "ASCII";
+                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                colm.Width = sc.Panel1.Width * 5 / 13;
+                I.Columns.Add(colm);
+                colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "HEX";
+                colm.Name = "HEX";
+                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                colm.Width = sc.Panel1.Width * 5 / 13;
+                I.Columns.Add(colm);
                 sc.Panel1.Controls.Add(I);
                 inp = I;
-                RichTextBox O = new RichTextBox();
+                DataGridView O = new DataGridView();
+                O.Name = "ODGV";
                 O.Size = sc.Panel2.Size;
                 O.ReadOnly = true;
                 O.BackColor = Color.White;
+                O.RowHeadersVisible = false;
+                colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "TIME";
+                colm.Name = "TIME";
+                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                colm.Width = sc.Panel2.Width * 29 / 130;
+                O.Columns.Add(colm);
+                colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "ASCII";
+                colm.Name = "ASCII";
+                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                colm.Width = sc.Panel2.Width * 5 / 13;
+                O.Columns.Add(colm);
+                colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "HEX";
+                colm.Name = "HEX";
+                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                colm.Width = sc.Panel2.Width * 5 / 13;
+                O.Columns.Add(colm);
                 sc.Panel2.Controls.Add(O);
                 outp = O;
                 this.IOLayout.Controls.Add(sc);
@@ -296,10 +374,32 @@ namespace ComCSForms
             else
             {
                 this.IOLayout.Controls.Clear();
-                RichTextBox Io = new RichTextBox();
+                DataGridView Io = new DataGridView();
+                Io.Name = "IODGV";
                 Io.Size = IOLayout.Size;
                 Io.ReadOnly = true;
                 Io.BackColor = Color.White;
+                Io.RowHeadersVisible = false;
+                DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "TIME";
+                colm.Name = "TIME";
+                colm.Width = IOLayout.Width * 2 / 12;
+                Io.Columns.Add(colm);
+                colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "From";
+                colm.Name = "From";
+                colm.Width = IOLayout.Width * 19 / 120;
+                Io.Columns.Add(colm);
+                colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "ASCII";
+                colm.Name = "ASCII";
+                colm.Width = IOLayout.Width * 4 / 12;
+                Io.Columns.Add(colm);
+                colm = new DataGridViewTextBoxColumn();
+                colm.HeaderText = "HEX";
+                colm.Name = "HEX";
+                colm.Width = IOLayout.Width * 4 / 12;
+                Io.Columns.Add(colm);
                 inp = Io;
                 outp = Io;
                 this.IOLayout.Controls.Add(Io);
