@@ -47,6 +47,7 @@ namespace ComCSForms
             this.radioButtonAPH = new System.Windows.Forms.RadioButton();
             this.radioButtonASCII = new System.Windows.Forms.RadioButton();
             this.groupBoxShow = new System.Windows.Forms.GroupBox();
+            this.BINCheck = new System.Windows.Forms.CheckBox();
             this.HEXCheck = new System.Windows.Forms.CheckBox();
             this.ASCIIcheck = new System.Windows.Forms.CheckBox();
             this.Circle = new System.Windows.Forms.GroupBox();
@@ -58,7 +59,11 @@ namespace ComCSForms
             this.SendStopCheck = new System.Windows.Forms.CheckBox();
             this.Ciclecheck = new System.Windows.Forms.CheckBox();
             this.SetButt = new System.Windows.Forms.Button();
-            this.BINCheck = new System.Windows.Forms.CheckBox();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.textBoxGet = new System.Windows.Forms.TextBox();
+            this.textBoxSend = new System.Windows.Forms.TextBox();
+            this.ColorscheckBox = new System.Windows.Forms.CheckBox();
+            this.colorDialogSend = new System.Windows.Forms.ColorDialog();
             this.decods.SuspendLayout();
             this.groupBoxsendformat.SuspendLayout();
             this.groupBoxShow.SuspendLayout();
@@ -180,7 +185,7 @@ namespace ComCSForms
             this.decods.Controls.Add(this.groupBoxShow);
             this.decods.Location = new System.Drawing.Point(7, 128);
             this.decods.Name = "decods";
-            this.decods.Size = new System.Drawing.Size(272, 136);
+            this.decods.Size = new System.Drawing.Size(272, 123);
             this.decods.TabIndex = 12;
             this.decods.TabStop = false;
             this.decods.Text = "Форматы";
@@ -193,7 +198,7 @@ namespace ComCSForms
             this.groupBoxsendformat.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.groupBoxsendformat.Location = new System.Drawing.Point(145, 19);
             this.groupBoxsendformat.Name = "groupBoxsendformat";
-            this.groupBoxsendformat.Size = new System.Drawing.Size(134, 111);
+            this.groupBoxsendformat.Size = new System.Drawing.Size(121, 96);
             this.groupBoxsendformat.TabIndex = 1;
             this.groupBoxsendformat.TabStop = false;
             this.groupBoxsendformat.Text = "Отправка";
@@ -237,10 +242,20 @@ namespace ComCSForms
             this.groupBoxShow.Controls.Add(this.ASCIIcheck);
             this.groupBoxShow.Location = new System.Drawing.Point(5, 19);
             this.groupBoxShow.Name = "groupBoxShow";
-            this.groupBoxShow.Size = new System.Drawing.Size(134, 111);
+            this.groupBoxShow.Size = new System.Drawing.Size(134, 96);
             this.groupBoxShow.TabIndex = 0;
             this.groupBoxShow.TabStop = false;
             this.groupBoxShow.Text = "Вывод";
+            // 
+            // BINCheck
+            // 
+            this.BINCheck.AutoSize = true;
+            this.BINCheck.Location = new System.Drawing.Point(6, 66);
+            this.BINCheck.Name = "BINCheck";
+            this.BINCheck.Size = new System.Drawing.Size(44, 17);
+            this.BINCheck.TabIndex = 4;
+            this.BINCheck.Text = "BIN";
+            this.BINCheck.UseVisualStyleBackColor = true;
             // 
             // HEXCheck
             // 
@@ -271,9 +286,9 @@ namespace ComCSForms
             this.Circle.Controls.Add(this.CicleTimeUD);
             this.Circle.Controls.Add(this.SendStopCheck);
             this.Circle.Controls.Add(this.Ciclecheck);
-            this.Circle.Location = new System.Drawing.Point(7, 270);
+            this.Circle.Location = new System.Drawing.Point(7, 257);
             this.Circle.Name = "Circle";
-            this.Circle.Size = new System.Drawing.Size(279, 165);
+            this.Circle.Size = new System.Drawing.Size(272, 165);
             this.Circle.TabIndex = 13;
             this.Circle.TabStop = false;
             this.Circle.Text = "Циклическая отправка";
@@ -306,6 +321,11 @@ namespace ComCSForms
             // CiclNUD
             // 
             this.CiclNUD.Location = new System.Drawing.Point(107, 43);
+            this.CiclNUD.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
             this.CiclNUD.Name = "CiclNUD";
             this.CiclNUD.Size = new System.Drawing.Size(120, 20);
             this.CiclNUD.TabIndex = 3;
@@ -349,7 +369,7 @@ namespace ComCSForms
             // 
             // SetButt
             // 
-            this.SetButt.Location = new System.Drawing.Point(105, 441);
+            this.SetButt.Location = new System.Drawing.Point(105, 507);
             this.SetButt.Name = "SetButt";
             this.SetButt.Size = new System.Drawing.Size(75, 23);
             this.SetButt.TabIndex = 14;
@@ -357,21 +377,43 @@ namespace ComCSForms
             this.SetButt.UseVisualStyleBackColor = true;
             this.SetButt.Click += new System.EventHandler(this.SetButt_Click);
             // 
-            // BINCheck
+            // textBoxGet
             // 
-            this.BINCheck.AutoSize = true;
-            this.BINCheck.Location = new System.Drawing.Point(6, 66);
-            this.BINCheck.Name = "BINCheck";
-            this.BINCheck.Size = new System.Drawing.Size(44, 17);
-            this.BINCheck.TabIndex = 4;
-            this.BINCheck.Text = "BIN";
-            this.BINCheck.UseVisualStyleBackColor = true;
+            this.textBoxGet.Location = new System.Drawing.Point(7, 429);
+            this.textBoxGet.Name = "textBoxGet";
+            this.textBoxGet.Size = new System.Drawing.Size(139, 20);
+            this.textBoxGet.TabIndex = 15;
+            this.textBoxGet.Text = "Прием";
+            this.textBoxGet.Click += new System.EventHandler(this.textBoxCl_Click);
+            // 
+            // textBoxSend
+            // 
+            this.textBoxSend.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.textBoxSend.Location = new System.Drawing.Point(152, 429);
+            this.textBoxSend.Name = "textBoxSend";
+            this.textBoxSend.Size = new System.Drawing.Size(139, 20);
+            this.textBoxSend.TabIndex = 16;
+            this.textBoxSend.Text = "Отправка";
+            this.textBoxSend.Click += new System.EventHandler(this.textBoxCl_Click);
+            // 
+            // ColorscheckBox
+            // 
+            this.ColorscheckBox.AutoSize = true;
+            this.ColorscheckBox.Location = new System.Drawing.Point(109, 455);
+            this.ColorscheckBox.Name = "ColorscheckBox";
+            this.ColorscheckBox.Size = new System.Drawing.Size(97, 17);
+            this.ColorscheckBox.TabIndex = 17;
+            this.ColorscheckBox.Text = "Разные цвета";
+            this.ColorscheckBox.UseVisualStyleBackColor = true;
             // 
             // SetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(290, 481);
+            this.ClientSize = new System.Drawing.Size(296, 542);
+            this.Controls.Add(this.ColorscheckBox);
+            this.Controls.Add(this.textBoxSend);
+            this.Controls.Add(this.textBoxGet);
             this.Controls.Add(this.SetButt);
             this.Controls.Add(this.Circle);
             this.Controls.Add(this.decods);
@@ -437,5 +479,10 @@ namespace ComCSForms
         private System.Windows.Forms.CheckBox HEXCheck;
         private System.Windows.Forms.CheckBox ASCIIcheck;
         private System.Windows.Forms.CheckBox BINCheck;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.TextBox textBoxGet;
+        private System.Windows.Forms.TextBox textBoxSend;
+        private System.Windows.Forms.CheckBox ColorscheckBox;
+        private System.Windows.Forms.ColorDialog colorDialogSend;
     }
 }

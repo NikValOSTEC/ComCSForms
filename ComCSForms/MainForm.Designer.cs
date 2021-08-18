@@ -36,9 +36,6 @@ namespace ComCSForms
             this.SendButton = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.FileSend = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitter1 = new System.Windows.Forms.Splitter();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -48,9 +45,7 @@ namespace ComCSForms
             this.TimeLable = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.SuspendLayout();
+            this.flowLayoutPanel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -104,37 +99,11 @@ namespace ComCSForms
             this.FileSend.UseVisualStyleBackColor = true;
             this.FileSend.Click += new System.EventHandler(this.FileSend_Click);
             // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Controls.Add(this.splitContainer1);
-            this.flowLayoutPanel1.Controls.Add(this.splitter1);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(568, 39);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(395, 333);
-            this.flowLayoutPanel1.TabIndex = 8;
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Size = new System.Drawing.Size(150, 0);
-            this.splitContainer1.TabIndex = 0;
-            // 
-            // splitter1
-            // 
-            this.splitter1.Location = new System.Drawing.Point(159, 3);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 0);
-            this.splitter1.TabIndex = 1;
-            this.splitter1.TabStop = false;
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(899, 379);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(64, 23);
             this.button1.TabIndex = 9;
             this.button1.Text = "+";
             this.button1.UseVisualStyleBackColor = true;
@@ -154,7 +123,7 @@ namespace ComCSForms
             // 
             this.button3.Location = new System.Drawing.Point(818, 407);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(101, 24);
+            this.button3.Size = new System.Drawing.Size(145, 24);
             this.button3.TabIndex = 34;
             this.button3.Text = "Разделить I/O";
             this.button3.UseVisualStyleBackColor = true;
@@ -198,7 +167,7 @@ namespace ComCSForms
             // 
             // timer1
             // 
-            this.timer1.Interval = 1;
+            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // pictureBox1
@@ -209,11 +178,20 @@ namespace ComCSForms
             this.pictureBox1.TabIndex = 40;
             this.pictureBox1.TabStop = false;
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(573, 39);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(390, 334);
+            this.flowLayoutPanel1.TabIndex = 41;
+            // 
             // PortForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(984, 450);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.TimeLable);
             this.Controls.Add(this.IOLayout);
@@ -222,7 +200,6 @@ namespace ComCSForms
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.FileSend);
             this.Controls.Add(this.SendButton);
             this.Controls.Add(this.mainSend);
@@ -235,9 +212,6 @@ namespace ComCSForms
             this.Text = "ComPortToolkit";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -252,18 +226,16 @@ namespace ComCSForms
         private System.Windows.Forms.Button SendButton;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Button FileSend;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button Setbt;
         private System.Windows.Forms.FlowLayoutPanel IOLayout;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Label TimeLable;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Panel flowLayoutPanel1;
     }
 }
 

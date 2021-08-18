@@ -115,6 +115,7 @@ namespace ComCSForms
                     break;
             }
             ASCIIcheck.Checked = main.showASCII;
+            ColorscheckBox.Checked = main.colors;
             BINCheck.Checked = main.showBIN;
             HEXCheck.Checked = main.showHEX;
             StopstrcomboBox.Text = main.stopstr;
@@ -123,6 +124,8 @@ namespace ComCSForms
             CiclNUD.Value = main.cicle_times;
             Stopmsgtext.Text = main.circlestopmsg;
             SendStopCheck.Checked = main.stop_on;
+            textBoxSend.ForeColor = main.SendCl;
+            textBoxGet.ForeColor = main.GetCl;
             (groupBoxsendformat.Controls.Find("radiobutton" + main.sndformat.ToString(), false)[0] as RadioButton).Checked=true;
         }
 
@@ -188,6 +191,9 @@ namespace ComCSForms
             main.showASCII = ASCIIcheck.Checked;
             main.showBIN = BINCheck.Checked;
             main.showHEX=HEXCheck.Checked;
+            main.colors = ColorscheckBox.Checked;
+            main.SendCl = textBoxSend.ForeColor;
+            main.GetCl = textBoxGet.ForeColor;
             main.circlestopmsg=Stopmsgtext.Text.ToString();
             main.cicleCheck=Ciclecheck.Checked;
             main.cicle_time = Convert.ToInt32(CicleTimeUD.Value);
@@ -209,8 +215,21 @@ namespace ComCSForms
                     break;
             }
             main.RefreshIO();
+            if (main.blportopen)
+            {
+                main.ClosePort();
+                main.OpenPort();
+            }
             this.Close();
 
         }
+
+        private void textBoxCl_Click(object sender, EventArgs e)
+        {
+            colorDialogSend.Color = (sender as TextBox).ForeColor;
+            colorDialogSend.ShowDialog();
+            (sender as TextBox).ForeColor = colorDialogSend.Color;           
+        }
+
     }
 }

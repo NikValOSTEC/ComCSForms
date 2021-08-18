@@ -28,21 +28,22 @@ namespace ComCSForms
         public Handshake Flowc;
         public bool cicleCheck;
         public bool stop_on;
+        public bool colors;
         bool circle;
         public int cicle_time;
         public int cicle_times;
 
-        static Color SendCl;
-        static Color GetCl;
+        public Color SendCl;
+        public Color GetCl;
         static string glmessage;
         public string stopstr;
         public string circlestopmsg;
         static List<TxtClors> TxColors;
         static SerialPort _serialPort;
-        static Thread th;
+        static Thread thRead,thSend;
         static DataGridView inp, outp;
         public bool showHEX, showASCII, showBIN;
-        bool blportopen;
+        public bool blportopen;
         public PortForm()
         {
             InitializeComponent();
@@ -227,26 +228,117 @@ namespace ComCSForms
             return message;
         }
 
+        private string deHex(string str)
+        {
+            string res="";
+            int value;
+            char charValue;
+            List<string> strL = new List<string>();
+            string[] strH;
+
+            strH = str.Split(' ');
+            
+
+            foreach(var hex in strH)
+            {
+                value = Convert.ToInt32(hex, 16);
+                charValue = (char)value;
+                res += charValue;
+            }
+
+            return res;
+        }
+
+        private string deAPH(string str)
+        {
+            string res = "";
+            int value,i;
+            char charValue;
+            List<string> strHL = new List<string>();
+            List<string> strAL = new List<string>();
+            string[] strH,strA;
+            while((i=str.IndexOf("0x"))!=-1)
+            {
+                if (i == 0)
+                    strAL.Add("");
+                else
+                {
+                    strAL.Add(str.Substring(0, i));
+                }
+                strHL.Add(str.Substring(i + 2, 2));
+                str = str.Substring(i + 4);
+            }
+            if (str.Length > 0)
+                strAL.Add(str);
+            else
+                strAL.Add("");
+            strA = strAL.ToArray();
+            strH = strHL.ToArray();
+
+            for(i=0;i<strH.Length;i++)
+            {
+                value = Convert.ToInt32(strH[i], 16);
+                charValue = (char)value;
+                res +=strA[i]+ charValue;
+            }
+            res += strA[strA.Length-1];
+
+            return res;
+        }
+
 
         public void ClosePort()
         {
             blportopen = false;
-            if (th != null)
-                th.Join();
-            th = null;
+            if (thRead != null)
+                thRead.Join();
+            thRead = null;
             if (_serialPort != null)
                 _serialPort.Close();
             this.PortOpenButton.Text = "Открыть";
+            this.PortCombobox.Enabled = true;
             _serialPort = null;
+            circle = false;
         }
+        public void OpenPort()
+        {
+            try
+            {
+                _serialPort = new SerialPort();
+                _serialPort.PortName = this.PortCombobox.SelectedItem.ToString();
+                _serialPort.BaudRate = BaudRatec;
+                _serialPort.Parity = Parityc;
+                _serialPort.DataBits = Datac;
+                _serialPort.StopBits = Stopbtc;
+                _serialPort.Handshake = Flowc;
 
+                // Set the read/write timeouts
+                _serialPort.ReadTimeout = 500;
+                _serialPort.WriteTimeout = 500;
+                _serialPort.Open();
+                blportopen = true;
+                thRead = new Thread(readCOM);
+                thRead.Start();
+                this.PortOpenButton.Text = "Закрыть";
+                PortCombobox.Enabled=false;
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("Не могу открыть порт","Открыть",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _serialPort = null;
 
-
+            }
+        }
 
         private void SimpleSend(string msg)
         {
             if (_serialPort == null)
+            {
+                MessageBox.Show("Порт не открыт", "Порт", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+
             TxtClors clset;
             List<string> stlist = new List<string>();
             stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
@@ -269,24 +361,26 @@ namespace ComCSForms
         }
 
 
-       private void btstop(object sender,EventArgs e)
+        private void btstop(object sender,EventArgs e)
         {
             circle = false;
-            Button btsendr = sender as Button;
-            Button bt;
-            bt = btsendr.Parent.Controls.Find(btsendr.Name.Substring(0, btsendr.Name.Length - 3),false)[0] as Button;
-            bt.Enabled = true;
-            bt.Visible = true;
-            btsendr.Parent.Controls.Remove(btsendr);
-
         }
 
 
-        private void Send(string msg,object sender)
+
+
+        private void Send(string mmsg,object sender)
         {
-            if (cicleCheck)
+            string msg;
+            if (sndformat == SendFormat.HEX)
+                msg = deHex(mmsg);
+            else if (sndformat == SendFormat.APH)
+                msg = deAPH(mmsg);
+            else
+                msg = mmsg;
+            if (_serialPort != null)
             {
-                if (cicle_times == 0)
+                if (cicleCheck)
                 {
                     circle = true;
                     Button btsendr = sender as Button;
@@ -299,32 +393,24 @@ namespace ComCSForms
                     (btsendr.Parent).Controls.Add(bt);
                     btsendr.Visible = false;
                     btsendr.Enabled = false;
-                    while (circle)
-                    {
-                        SimpleSend(msg);
-                        Thread.Sleep(cicle_time);
-                    }
+                    Thread.Sleep(100);
+                    ThreadStart starter = delegate { CirSend(msg, btsendr, bt); };
+                    thSend = new Thread(starter);
+                    thSend.Start();
+
                 }
-                else
-                {
-                    int i = cicle_times;
-                    while (i > 0)
-                    {
-                        SimpleSend(msg);
-                        i--;
-                    }
-                }
+                else { SimpleSend(msg); }
             }
-            else
-                SimpleSend(msg);
+            
         }
 
         private void ChangeColors()
         {
-            for (int i = 0; i < TxColors.Count; i++)
-            {
-                TxColors[i].IO.Rows[TxColors[i].row].DefaultCellStyle.ForeColor = TxColors[i].cl;
-            }
+            if(colors)
+                for (int i = 0; i < TxColors.Count; i++)
+                {
+                    TxColors[i].IO.Rows[TxColors[i].row].DefaultCellStyle.ForeColor = TxColors[i].cl;
+                }
         }
 
         private void PortOpenButton_Click(object sender, EventArgs e)
@@ -333,24 +419,9 @@ namespace ComCSForms
             {
                 ClosePort();
             }
-            else if (this.PortCombobox.SelectedIndex != -1)
+            else
             {
-                _serialPort = new SerialPort();
-                _serialPort.PortName = this.PortCombobox.SelectedItem.ToString();
-                _serialPort.BaudRate = BaudRatec;
-                _serialPort.Parity = Parityc;
-                _serialPort.DataBits = Datac;
-                _serialPort.StopBits = Stopbtc;
-                _serialPort.Handshake = Flowc;
-
-                // Set the read/write timeouts
-                _serialPort.ReadTimeout = 500;
-                _serialPort.WriteTimeout = 500;
-                _serialPort.Open();
-                blportopen = true;
-                th = new Thread(readCOM);
-                th.Start();
-                this.PortOpenButton.Text = "Закрыть";
+                OpenPort();
             }
         }
 
@@ -393,45 +464,154 @@ namespace ComCSForms
                 {
                     glmessage += Convert.ToChar(_serialPort.ReadChar());
                     if (glmessage.Length > stopstr.Length)
-                        if (glmessage.Substring(glmessage.Length - stopstr.Length) == stopstr)
-                            inp.Invoke((MethodInvoker)delegate
+                    {
+                        if(glmessage.Substring(glmessage.Length - stopstr.Length) == stopstr)
+                            if (circle && stop_on && (glmessage.Substring(0, glmessage.Length - stopstr.Length) == circlestopmsg))
                             {
-                                if (stop_on&&(glmessage.Substring(0, glmessage.Length - stopstr.Length) == circlestopmsg))
-                                {
-                                    circle = false;
-                                    System.Windows.Forms.MessageBox.Show("Stop msg resived");
-                                }
-                                List<string> stlist=new List<string>();
-                                stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
-                                if (inp == outp)
-                                    stlist.Add("Port");
-                                if (showASCII)
-                                    stlist.Add(glmessage);
-                                if (showHEX)
-                                    stlist.Add(GetHex(glmessage));
-                                if (showBIN)
-                                    stlist.Add(GetBin(glmessage));
-                                inp.Rows.Add(stlist.ToArray());
-                                TxtClors clset;
-                                clset.cl = GetCl;
-                                clset.IO = inp;
-                                clset.row = inp.Rows.Count - 2;
-                                TxColors.Add(clset);
-                                ChangeColors();
-                                glmessage = "";
-                            });
+                                circle = false;
+                                var thread = new Thread(
+                                    () => { MessageBox.Show("Получен ответ остановки", "Стоп", MessageBoxButtons.OK, MessageBoxIcon.Warning); });
+                                thread.Start();
+                            }
+                        inp.Invoke((MethodInvoker)delegate
+                        {
+                            List<string> stlist = new List<string>();
+                            stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
+                            if (inp == outp)
+                                stlist.Add("Port");
+                            if (showASCII)
+                                stlist.Add(glmessage);
+                            if (showHEX)
+                                stlist.Add(GetHex(glmessage));
+                            if (showBIN)
+                                stlist.Add(GetBin(glmessage));
+                            inp.Rows.Add(stlist.ToArray());
+                            TxtClors clset;
+                            clset.cl = GetCl;
+                            clset.IO = inp;
+                            clset.row = inp.Rows.Count - 2;
+                            TxColors.Add(clset);
+                            ChangeColors();
+                            glmessage = "";
+                        });
+                    }
                 }
                 catch (TimeoutException) { }
             }
         }
 
+        private void CirSend(object mmsg,object ooldbt,object bbtnow)
+        {
+            string msg = mmsg as string;
+            Button btold = ooldbt as Button;
+            Button btnow = bbtnow as Button;
+
+            if (cicleCheck)
+            {
+                bool csleep = (cicle_time > 1500);
+                DateTime sendt;
+                if (cicle_times > 0)
+                    for (int i = 0; i < cicle_times; i++)
+                    {
+                        if (_serialPort != null&&circle)
+                        {
+                            _serialPort.Write(msg);
+                            sendt = DateTime.Now.AddMilliseconds(cicle_time);
+                            outp.Invoke((MethodInvoker)delegate
+                            {
+                                List<string> stlist = new List<string>();
+                                stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
+                                if (inp == outp)
+                                    stlist.Add("You");
+                                if (showASCII)
+                                    stlist.Add(msg);
+                                if (showHEX)
+                                    stlist.Add(GetHex(msg));
+                                if (showBIN)
+                                    stlist.Add(GetBin(msg));
+                                outp.Rows.Add(stlist.ToArray());
+                                TxtClors clset;
+                                clset.cl = GetCl;
+                                clset.IO = outp;
+                                clset.row = outp.Rows.Count - 2;
+                                TxColors.Add(clset);
+                                ChangeColors();
+                            });
+                            if(csleep)
+                            {
+                                while(sendt>DateTime.Now)
+                                {
+                                    if (!circle)
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                Thread.Sleep(cicle_time);
+                            }
+                        }
+                        if (!circle)
+                            break;
+                    }
+                else
+                    while (circle)
+                    {
+                        if ((_serialPort != null)&&circle)
+                        {
+                            _serialPort.Write(msg);
+                            sendt = DateTime.Now.AddMilliseconds(cicle_time);
+                            outp.Invoke((MethodInvoker)delegate
+                            {
+                                List<string> stlist = new List<string>();
+                                stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
+                                if (inp == outp)
+                                    stlist.Add("You");
+                                if (showASCII)
+                                    stlist.Add(msg);
+                                if (showHEX)
+                                    stlist.Add(GetHex(msg));
+                                if (showBIN)
+                                    stlist.Add(GetBin(msg));
+                                outp.Rows.Add(stlist.ToArray());
+                                TxtClors clset;
+                                clset.cl = GetCl;
+                                clset.IO = outp;
+                                clset.row = outp.Rows.Count - 2;
+                                TxColors.Add(clset);
+                                ChangeColors();
+                            });
+                            if (csleep)
+                            {
+                                while (sendt > DateTime.Now)
+                                {
+                                    if (!circle)
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                Thread.Sleep(cicle_time);
+                            }
+                        }
+                    }
+            }
+
+            btold.Invoke((MethodInvoker)delegate
+            {
+                btold.Enabled = true;
+                btold.Visible = true;
+            });
+            btnow.Invoke((MethodInvoker)delegate { btnow.Parent.Controls.Remove(btnow); });
+            
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             blportopen = false;
-            if (th != null)
+            if (thRead != null)
             {
-                th.Join();
-                th = null;
+                thRead.Join();
+                thRead = null;
             }
         }
 
@@ -443,10 +623,12 @@ namespace ComCSForms
             cicleCheck = false;
             cicle_time = 0;
             cicle_times = 0;
+            circle = false;
+            colors=true;
             sndformat = SendFormat.ASCII;
             TxColors = new List<TxtClors>();
             _serialPort = null;
-            th = null;
+            thRead = null;
             blportopen = false;
             BaudRatec = 19200;
             Datac = 8;
@@ -470,7 +652,7 @@ namespace ComCSForms
             FD.Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*";
             FD.ShowDialog();
             string path = FD.FileName;
-            Send(System.IO.File.ReadAllText(path),sender);
+            this.mainSend.Text=System.IO.File.ReadAllText(path);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -482,10 +664,13 @@ namespace ComCSForms
             bt.Text = "Отправить";
             bt.Click += Bt_Click;
             bt.Size = new Size(75, 25);
-            tb.Size = new Size(this.flowLayoutPanel1.Size.Width - 130, 25);
+            bt.Location = new Point(this.flowLayoutPanel1.Size.Width - 115, 10 * this.flowLayoutPanel1.Controls.Count);
+            tb.Size = new Size(this.flowLayoutPanel1.Size.Width - 120, 25);
+            tb.Location = new Point(0, 10 * this.flowLayoutPanel1.Controls.Count+5);
             btmin.Text = "-";
             btmin.Click += Btmin_Click;
             btmin.Size = new Size(25, 25);
+            btmin.Location = new Point(this.flowLayoutPanel1.Size.Width - 35, 10 * this.flowLayoutPanel1.Controls.Count);
             btmin.Name = "SLbm" + this.flowLayoutPanel1.Controls.Count / 3;
             tb.Name = "SLtb" + this.flowLayoutPanel1.Controls.Count / 3;
             this.flowLayoutPanel1.Controls.Add(tb);
