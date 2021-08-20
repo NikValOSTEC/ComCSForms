@@ -45,6 +45,18 @@ namespace ComCSForms
             }
             return SL.ToArray();
         }
+        private string[] GetAsciiH(string st)
+        {
+            string[] sta = st.Split(' ');
+            List<string> SL = new List<string>();
+            for (int i = 0; i < sta.Length; i++)
+            {
+                SL.Add(System.Convert.ToChar(System.Convert.ToUInt32(sta[i], 16)).ToString());
+                Console.WriteLine(SL.ToArray().ToString());
+            }
+            Console.WriteLine(SL.ToArray().ToString());
+            return SL.ToArray();
+        }
 
         DataGridViewCellCollection sc;
         string[] ascii;
@@ -61,22 +73,42 @@ namespace ComCSForms
             dataGrid.GridColor = Color.Gray;
             dataGrid.BackgroundColor = Color.White;
             DataGridViewTextBoxColumn clm;
-            if (sc.Contains(sc["ASCII"]))
+            try
             {
-                try
+                if (sc.Contains(sc["ASCII"]))
                 {
                     ascii = GetAscii(sc["ascii"].Value.ToString().ToCharArray());
+                    Console.WriteLine(sc["ascii"].Value.ToString());
                     hex = GetHex(sc["ascii"].Value.ToString());
                     bin = GetBin(sc["ascii"].Value.ToString());
                 }
-                catch(Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    this.Close();
-                    return;
-                }
-
             }
+            catch (Exception ex)
+            {
+                try
+                {
+                    if (sc.Contains(sc["HEX"]))
+                    {
+                        ascii = GetAsciiH(sc["HEX"].Value.ToString());
+                        hex = GetHex(ascii.ToString());
+                        bin = GetBin(ascii.ToString());
+                    }
+                }
+                catch (Exception exx) 
+                {
+                    try
+                    {
+                        if (sc.Contains(sc["ASCII"]))
+                        {
+                            ascii = GetAscii(sc["ascii"].Value.ToString().ToCharArray());
+                            hex = GetHex(sc["ascii"].Value.ToString());
+                            bin = GetBin(sc["ascii"].Value.ToString());
+                        }
+                    }
+                    catch (Exception exxx) { }
+                }
+            }
+
             for(int i=0;i<ascii.Length;i++)
             {
                 clm = new DataGridViewTextBoxColumn();

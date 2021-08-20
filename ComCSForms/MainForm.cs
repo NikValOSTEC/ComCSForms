@@ -484,7 +484,8 @@ namespace ComCSForms
                     glmessage += Convert.ToChar(_serialPort.ReadChar());
                     if (glmessage.Length > stopstr.Length)
                     {
-                        if(glmessage.Substring(glmessage.Length - stopstr.Length) == stopstr)
+                        if (glmessage.Substring(glmessage.Length - stopstr.Length) == stopstr)
+                        {
                             if (circle && stop_on && (glmessage.Substring(0, glmessage.Length - stopstr.Length) == circlestopmsg))
                             {
                                 circle = false;
@@ -492,29 +493,30 @@ namespace ComCSForms
                                     () => { MessageBox.Show("Получен ответ остановки", "Стоп", MessageBoxButtons.OK, MessageBoxIcon.Warning); });
                                 thread.Start();
                             }
-                        inp.Invoke((MethodInvoker)delegate
-                        {
-                            List<string> stlist = new List<string>();
-                            stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
-                            if (inp == outp)
-                                stlist.Add("Port");
-                            if (showASCII)
-                                stlist.Add(glmessage);
-                            if (showHEX)
-                                stlist.Add(GetHex(glmessage));
-                            if (showBIN)
-                                stlist.Add(GetBin(glmessage));
-                            inp.Rows.Add(stlist.ToArray());
-                            TxtClors clset;
-                            clset.cl = GetCl;
-                            clset.IO = inp;
-                            clset.row = inp.Rows.Count - 1;
-                            TxColors.Add(clset);
-                            ChangeColors();
-                            glmessage = "";
-                            if (outp.RowCount > 2)
-                                inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
-                        });
+                            inp.Invoke((MethodInvoker)delegate
+                            {
+                                List<string> stlist = new List<string>();
+                                stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
+                                if (inp == outp)
+                                    stlist.Add("Port");
+                                if (showASCII)
+                                    stlist.Add(glmessage);
+                                if (showHEX)
+                                    stlist.Add(GetHex(glmessage));
+                                if (showBIN)
+                                    stlist.Add(GetBin(glmessage));
+                                inp.Rows.Add(stlist.ToArray());
+                                TxtClors clset;
+                                clset.cl = GetCl;
+                                clset.IO = inp;
+                                clset.row = inp.Rows.Count - 1;
+                                TxColors.Add(clset);
+                                ChangeColors();
+                                glmessage = "";
+                                if (outp.RowCount > 2)
+                                    inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
+                            });
+                        }
                     }
                 }
                 catch (TimeoutException) { }
