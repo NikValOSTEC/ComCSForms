@@ -47,8 +47,8 @@ namespace ComCSForms
             this.radioButtonAPH = new System.Windows.Forms.RadioButton();
             this.radioButtonASCII = new System.Windows.Forms.RadioButton();
             this.groupBoxShow = new System.Windows.Forms.GroupBox();
-            this.BINCheck = new System.Windows.Forms.CheckBox();
-            this.HEXCheck = new System.Windows.Forms.CheckBox();
+            this.BINcheck = new System.Windows.Forms.CheckBox();
+            this.HEXcheck = new System.Windows.Forms.CheckBox();
             this.ASCIIcheck = new System.Windows.Forms.CheckBox();
             this.Circle = new System.Windows.Forms.GroupBox();
             this.Stopmsgtext = new System.Windows.Forms.TextBox();
@@ -64,6 +64,7 @@ namespace ComCSForms
             this.textBoxSend = new System.Windows.Forms.TextBox();
             this.ColorscheckBox = new System.Windows.Forms.CheckBox();
             this.colorDialogSend = new System.Windows.Forms.ColorDialog();
+            this.clearstoplist = new System.Windows.Forms.Button();
             this.decods.SuspendLayout();
             this.groupBoxsendformat.SuspendLayout();
             this.groupBoxShow.SuspendLayout();
@@ -137,11 +138,15 @@ namespace ComCSForms
             // 
             // StopstrcomboBox
             // 
+            this.StopstrcomboBox.DropDownHeight = 80;
+            this.StopstrcomboBox.DropDownWidth = 50;
             this.StopstrcomboBox.FormattingEnabled = true;
+            this.StopstrcomboBox.IntegralHeight = false;
             this.StopstrcomboBox.Location = new System.Drawing.Point(195, 86);
             this.StopstrcomboBox.Name = "StopstrcomboBox";
             this.StopstrcomboBox.Size = new System.Drawing.Size(84, 21);
             this.StopstrcomboBox.TabIndex = 10;
+            this.StopstrcomboBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.StopstrcomboBox_KeyUp);
             // 
             // Paritylabel
             // 
@@ -183,7 +188,7 @@ namespace ComCSForms
             // 
             this.decods.Controls.Add(this.groupBoxsendformat);
             this.decods.Controls.Add(this.groupBoxShow);
-            this.decods.Location = new System.Drawing.Point(7, 128);
+            this.decods.Location = new System.Drawing.Point(7, 155);
             this.decods.Name = "decods";
             this.decods.Size = new System.Drawing.Size(272, 123);
             this.decods.TabIndex = 12;
@@ -237,8 +242,8 @@ namespace ComCSForms
             // 
             // groupBoxShow
             // 
-            this.groupBoxShow.Controls.Add(this.BINCheck);
-            this.groupBoxShow.Controls.Add(this.HEXCheck);
+            this.groupBoxShow.Controls.Add(this.BINcheck);
+            this.groupBoxShow.Controls.Add(this.HEXcheck);
             this.groupBoxShow.Controls.Add(this.ASCIIcheck);
             this.groupBoxShow.Location = new System.Drawing.Point(5, 19);
             this.groupBoxShow.Name = "groupBoxShow";
@@ -247,25 +252,27 @@ namespace ComCSForms
             this.groupBoxShow.TabStop = false;
             this.groupBoxShow.Text = "Вывод";
             // 
-            // BINCheck
+            // BINcheck
             // 
-            this.BINCheck.AutoSize = true;
-            this.BINCheck.Location = new System.Drawing.Point(6, 66);
-            this.BINCheck.Name = "BINCheck";
-            this.BINCheck.Size = new System.Drawing.Size(44, 17);
-            this.BINCheck.TabIndex = 4;
-            this.BINCheck.Text = "BIN";
-            this.BINCheck.UseVisualStyleBackColor = true;
+            this.BINcheck.AutoSize = true;
+            this.BINcheck.Location = new System.Drawing.Point(6, 66);
+            this.BINcheck.Name = "BINcheck";
+            this.BINcheck.Size = new System.Drawing.Size(44, 17);
+            this.BINcheck.TabIndex = 4;
+            this.BINcheck.Text = "BIN";
+            this.BINcheck.UseVisualStyleBackColor = true;
+            this.BINcheck.CheckedChanged += new System.EventHandler(this.formatcheck_CheckedChanged);
             // 
-            // HEXCheck
+            // HEXcheck
             // 
-            this.HEXCheck.AutoSize = true;
-            this.HEXCheck.Location = new System.Drawing.Point(6, 42);
-            this.HEXCheck.Name = "HEXCheck";
-            this.HEXCheck.Size = new System.Drawing.Size(48, 17);
-            this.HEXCheck.TabIndex = 3;
-            this.HEXCheck.Text = "HEX";
-            this.HEXCheck.UseVisualStyleBackColor = true;
+            this.HEXcheck.AutoSize = true;
+            this.HEXcheck.Location = new System.Drawing.Point(6, 42);
+            this.HEXcheck.Name = "HEXcheck";
+            this.HEXcheck.Size = new System.Drawing.Size(48, 17);
+            this.HEXcheck.TabIndex = 3;
+            this.HEXcheck.Text = "HEX";
+            this.HEXcheck.UseVisualStyleBackColor = true;
+            this.HEXcheck.CheckedChanged += new System.EventHandler(this.formatcheck_CheckedChanged);
             // 
             // ASCIIcheck
             // 
@@ -276,6 +283,7 @@ namespace ComCSForms
             this.ASCIIcheck.TabIndex = 2;
             this.ASCIIcheck.Text = "ASCII";
             this.ASCIIcheck.UseVisualStyleBackColor = true;
+            this.ASCIIcheck.CheckedChanged += new System.EventHandler(this.formatcheck_CheckedChanged);
             // 
             // Circle
             // 
@@ -286,7 +294,7 @@ namespace ComCSForms
             this.Circle.Controls.Add(this.CicleTimeUD);
             this.Circle.Controls.Add(this.SendStopCheck);
             this.Circle.Controls.Add(this.Ciclecheck);
-            this.Circle.Location = new System.Drawing.Point(7, 257);
+            this.Circle.Location = new System.Drawing.Point(7, 284);
             this.Circle.Name = "Circle";
             this.Circle.Size = new System.Drawing.Size(272, 165);
             this.Circle.TabIndex = 13;
@@ -369,7 +377,7 @@ namespace ComCSForms
             // 
             // SetButt
             // 
-            this.SetButt.Location = new System.Drawing.Point(105, 507);
+            this.SetButt.Location = new System.Drawing.Point(105, 534);
             this.SetButt.Name = "SetButt";
             this.SetButt.Size = new System.Drawing.Size(75, 23);
             this.SetButt.TabIndex = 14;
@@ -379,7 +387,7 @@ namespace ComCSForms
             // 
             // textBoxGet
             // 
-            this.textBoxGet.Location = new System.Drawing.Point(7, 429);
+            this.textBoxGet.Location = new System.Drawing.Point(7, 456);
             this.textBoxGet.Name = "textBoxGet";
             this.textBoxGet.Size = new System.Drawing.Size(139, 20);
             this.textBoxGet.TabIndex = 15;
@@ -389,7 +397,7 @@ namespace ComCSForms
             // textBoxSend
             // 
             this.textBoxSend.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.textBoxSend.Location = new System.Drawing.Point(152, 429);
+            this.textBoxSend.Location = new System.Drawing.Point(152, 456);
             this.textBoxSend.Name = "textBoxSend";
             this.textBoxSend.Size = new System.Drawing.Size(139, 20);
             this.textBoxSend.TabIndex = 16;
@@ -399,18 +407,29 @@ namespace ComCSForms
             // ColorscheckBox
             // 
             this.ColorscheckBox.AutoSize = true;
-            this.ColorscheckBox.Location = new System.Drawing.Point(109, 455);
+            this.ColorscheckBox.Location = new System.Drawing.Point(109, 482);
             this.ColorscheckBox.Name = "ColorscheckBox";
             this.ColorscheckBox.Size = new System.Drawing.Size(97, 17);
             this.ColorscheckBox.TabIndex = 17;
             this.ColorscheckBox.Text = "Разные цвета";
             this.ColorscheckBox.UseVisualStyleBackColor = true;
             // 
+            // clearstoplist
+            // 
+            this.clearstoplist.Location = new System.Drawing.Point(197, 113);
+            this.clearstoplist.Name = "clearstoplist";
+            this.clearstoplist.Size = new System.Drawing.Size(80, 22);
+            this.clearstoplist.TabIndex = 18;
+            this.clearstoplist.Text = "Очистить";
+            this.clearstoplist.UseVisualStyleBackColor = true;
+            this.clearstoplist.Click += new System.EventHandler(this.clearstoplist_Click);
+            // 
             // SetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(296, 542);
+            this.ClientSize = new System.Drawing.Size(296, 579);
+            this.Controls.Add(this.clearstoplist);
             this.Controls.Add(this.ColorscheckBox);
             this.Controls.Add(this.textBoxSend);
             this.Controls.Add(this.textBoxGet);
@@ -432,6 +451,7 @@ namespace ComCSForms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "SetForm";
             this.Text = "                                                                  ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SetForm_FormClosing);
             this.Load += new System.EventHandler(this.SetForm_Load);
             this.decods.ResumeLayout(false);
             this.groupBoxsendformat.ResumeLayout(false);
@@ -476,13 +496,14 @@ namespace ComCSForms
         private System.Windows.Forms.RadioButton radioButtonAPH;
         private System.Windows.Forms.RadioButton radioButtonASCII;
         private System.Windows.Forms.GroupBox groupBoxShow;
-        private System.Windows.Forms.CheckBox HEXCheck;
+        private System.Windows.Forms.CheckBox HEXcheck;
         private System.Windows.Forms.CheckBox ASCIIcheck;
-        private System.Windows.Forms.CheckBox BINCheck;
+        private System.Windows.Forms.CheckBox BINcheck;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.TextBox textBoxGet;
         private System.Windows.Forms.TextBox textBoxSend;
         private System.Windows.Forms.CheckBox ColorscheckBox;
         private System.Windows.Forms.ColorDialog colorDialogSend;
+        private System.Windows.Forms.Button clearstoplist;
     }
 }

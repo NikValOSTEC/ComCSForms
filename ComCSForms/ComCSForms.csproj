@@ -66,8 +66,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SendCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SendCombo.Designer.cs">
+      <DependentUpon>SendCombo.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="BigViewForm.resx">
       <DependentUpon>BigViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SendCombo.resx">
+      <DependentUpon>SendCombo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SetForm.resx">
       <DependentUpon>SetForm.cs</DependentUpon>
@@ -83,6 +92,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -96,6 +106,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SetIcon.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -116,9 +116,17 @@ namespace ComCSForms
             }
             ASCIIcheck.Checked = main.showASCII;
             ColorscheckBox.Checked = main.colors;
-            BINCheck.Checked = main.showBIN;
-            HEXCheck.Checked = main.showHEX;
-            StopstrcomboBox.Text = main.stopstr;
+            BINcheck.Checked = main.showBIN;
+            HEXcheck.Checked = main.showHEX;
+            StopstrcomboBox.Items.Clear();
+            var list = Properties.Settings.Default.Stopstrcombo.Cast<string>().ToList().ToArray();
+            for (int i = 0; i < list.Length; i++)
+                if (list[i] != "")
+                    StopstrcomboBox.Items.Add(list[i]);
+            if (main.stopstr == Environment.NewLine)
+                StopstrcomboBox.SelectedItem = "CLLF";
+            else
+                StopstrcomboBox.SelectedItem = main.stopstr;
             Ciclecheck.Checked = main.cicleCheck;
             CicleTimeUD.Value = main.cicle_time;
             CiclNUD.Value = main.cicle_times;
@@ -187,19 +195,35 @@ namespace ComCSForms
                 default:
                     break;
             }
-            main.stopstr = StopstrcomboBox.Text.ToString();
-            main.showASCII = ASCIIcheck.Checked;
-            main.showBIN = BINCheck.Checked;
-            main.showHEX=HEXCheck.Checked;
-            main.colors = ColorscheckBox.Checked;
-            main.SendCl = textBoxSend.ForeColor;
-            main.GetCl = textBoxGet.ForeColor;
-            main.circlestopmsg=Stopmsgtext.Text.ToString();
-            main.cicleCheck=Ciclecheck.Checked;
-            main.cicle_time = Convert.ToInt32(CicleTimeUD.Value);
-            main.stop_on=SendStopCheck.Checked;
-            main.cicle_times = Convert.ToInt32(CiclNUD.Value);
-            var checkedButton = groupBoxsendformat.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Name.ToString().Substring(11);
+
+            try
+            {
+                if ((StopstrcomboBox.SelectedItem.ToString() == "CLLF") || (StopstrcomboBox.Text == "CLLF"))
+                    main.stopstr = "\r\n";
+                else if (StopbitcomboBox.SelectedIndex != -1)
+                    main.stopstr = StopstrcomboBox.Text.ToString();
+                else
+                    main.stopstr = "";
+            }
+            catch (Exception ex)
+            {
+                if (StopbitcomboBox.SelectedIndex != -1)
+                    main.stopstr = StopstrcomboBox.Text.ToString();
+                else
+                    main.stopstr = "";
+            }
+                main.showASCII = ASCIIcheck.Checked;
+                main.showBIN = BINcheck.Checked;
+                main.showHEX = HEXcheck.Checked;
+                main.colors = ColorscheckBox.Checked;
+                main.SendCl = textBoxSend.ForeColor;
+                main.GetCl = textBoxGet.ForeColor;
+                main.circlestopmsg = Stopmsgtext.Text.ToString();
+                main.cicleCheck = Ciclecheck.Checked;
+                main.cicle_time = Convert.ToInt32(CicleTimeUD.Value);
+                main.stop_on = SendStopCheck.Checked;
+                main.cicle_times = Convert.ToInt32(CiclNUD.Value);
+                var checkedButton = groupBoxsendformat.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Name.ToString().Substring(11);
             switch (checkedButton)
             {
                 case "HEX":
@@ -231,5 +255,41 @@ namespace ComCSForms
             (sender as TextBox).ForeColor = colorDialogSend.Color;           
         }
 
+        private void formatcheck_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            if (!cb.Checked)
+                if((!(cb.Parent.Controls.Find("BINcheck", true)[0]as CheckBox).Checked)&& 
+                    (!(cb.Parent.Controls.Find("ASCIIcheck", true)[0] as CheckBox).Checked)&& 
+                    (!(cb.Parent.Controls.Find("HEXcheck", true)[0] as CheckBox).Checked))
+                {
+                    cb.Checked = true;
+                }
+        }
+
+        private void StopstrcomboBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode==Keys.Enter)
+            {
+                StopstrcomboBox.Items.Add(StopstrcomboBox.Text);
+            }
+        }
+
+        private void SetForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.Stopstrcombo.Clear();
+            string str;
+            for (int i = 0; i < StopstrcomboBox.Items.Count; i++)
+            {
+                str = StopstrcomboBox.Items[i].ToString();
+                if(str!="")
+                    Properties.Settings.Default.Stopstrcombo.Add(str);
+            }
+        }
+
+        private void clearstoplist_Click(object sender, EventArgs e)
+        {
+            StopstrcomboBox.Items.Clear();
+        }
     }
 }

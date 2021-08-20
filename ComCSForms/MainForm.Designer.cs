@@ -30,22 +30,23 @@ namespace ComCSForms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PortForm));
             this.PortOpenButton = new System.Windows.Forms.Button();
             this.PortCombobox = new System.Windows.Forms.ComboBox();
-            this.mainSend = new System.Windows.Forms.TextBox();
-            this.SendButton = new System.Windows.Forms.Button();
+            this.MNtb = new System.Windows.Forms.TextBox();
+            this.MNbt = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.FileSend = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.PLbt = new System.Windows.Forms.Button();
+            this.CLbt = new System.Windows.Forms.Button();
+            this.splitbt = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.Setbt = new System.Windows.Forms.Button();
             this.IOLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.TimeLable = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.Panel();
+            this.SLpanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.Setbt = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,23 +72,27 @@ namespace ComCSForms
             this.PortCombobox.DropDown += new System.EventHandler(this.PortCombobox_DropDown);
             this.PortCombobox.Click += new System.EventHandler(this.PortComboBox_Click);
             // 
-            // mainSend
+            // MNtb
             // 
-            this.mainSend.Location = new System.Drawing.Point(12, 402);
-            this.mainSend.Multiline = true;
-            this.mainSend.Name = "mainSend";
-            this.mainSend.Size = new System.Drawing.Size(422, 40);
-            this.mainSend.TabIndex = 4;
+            this.MNtb.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.MNtb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MNtb.Location = new System.Drawing.Point(12, 402);
+            this.MNtb.Multiline = true;
+            this.MNtb.Name = "MNtb";
+            this.MNtb.Size = new System.Drawing.Size(422, 40);
+            this.MNtb.TabIndex = 4;
+            this.MNtb.TextChanged += new System.EventHandler(this.MNtb_TextChanged);
+            this.MNtb.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SndEnt_KeyUp);
             // 
-            // SendButton
+            // MNbt
             // 
-            this.SendButton.Location = new System.Drawing.Point(440, 390);
-            this.SendButton.Name = "SendButton";
-            this.SendButton.Size = new System.Drawing.Size(175, 52);
-            this.SendButton.TabIndex = 5;
-            this.SendButton.Text = "Отправить";
-            this.SendButton.UseVisualStyleBackColor = true;
-            this.SendButton.Click += new System.EventHandler(this.Send_Button_Click);
+            this.MNbt.Location = new System.Drawing.Point(440, 390);
+            this.MNbt.Name = "MNbt";
+            this.MNbt.Size = new System.Drawing.Size(175, 52);
+            this.MNbt.TabIndex = 5;
+            this.MNbt.Text = "Отправить";
+            this.MNbt.UseVisualStyleBackColor = true;
+            this.MNbt.Click += new System.EventHandler(this.Send_Button_Click);
             // 
             // FileSend
             // 
@@ -99,35 +104,35 @@ namespace ComCSForms
             this.FileSend.UseVisualStyleBackColor = true;
             this.FileSend.Click += new System.EventHandler(this.FileSend_Click);
             // 
-            // button1
+            // PLbt
             // 
-            this.button1.Location = new System.Drawing.Point(899, 379);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(64, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "+";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.PLbt.Location = new System.Drawing.Point(899, 379);
+            this.PLbt.Name = "PLbt";
+            this.PLbt.Size = new System.Drawing.Size(64, 23);
+            this.PLbt.TabIndex = 9;
+            this.PLbt.Text = "+";
+            this.PLbt.UseVisualStyleBackColor = true;
+            this.PLbt.Click += new System.EventHandler(this.Plusbt_Click);
             // 
-            // button2
+            // CLbt
             // 
-            this.button2.Location = new System.Drawing.Point(818, 378);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Очистить";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.CLbt.Location = new System.Drawing.Point(818, 378);
+            this.CLbt.Name = "CLbt";
+            this.CLbt.Size = new System.Drawing.Size(75, 23);
+            this.CLbt.TabIndex = 10;
+            this.CLbt.Text = "Очистить";
+            this.CLbt.UseVisualStyleBackColor = true;
+            this.CLbt.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
+            // splitbt
             // 
-            this.button3.Location = new System.Drawing.Point(818, 407);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(145, 24);
-            this.button3.TabIndex = 34;
-            this.button3.Text = "Разделить I/O";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.splitbt.Location = new System.Drawing.Point(818, 407);
+            this.splitbt.Name = "splitbt";
+            this.splitbt.Size = new System.Drawing.Size(145, 24);
+            this.splitbt.TabIndex = 34;
+            this.splitbt.Text = "Разделить I/O";
+            this.splitbt.UseVisualStyleBackColor = true;
+            this.splitbt.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -138,16 +143,6 @@ namespace ComCSForms
             this.button4.Text = "Очистить IO";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // Setbt
-            // 
-            this.Setbt.Location = new System.Drawing.Point(942, 5);
-            this.Setbt.Name = "Setbt";
-            this.Setbt.Size = new System.Drawing.Size(32, 23);
-            this.Setbt.TabIndex = 37;
-            this.Setbt.Text = "Set";
-            this.Setbt.UseVisualStyleBackColor = true;
-            this.Setbt.Click += new System.EventHandler(this.Setbt_Click);
             // 
             // IOLayout
             // 
@@ -178,31 +173,41 @@ namespace ComCSForms
             this.pictureBox1.TabIndex = 40;
             this.pictureBox1.TabStop = false;
             // 
-            // flowLayoutPanel1
+            // SLpanel
             // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(573, 39);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(390, 334);
-            this.flowLayoutPanel1.TabIndex = 41;
+            this.SLpanel.AutoScroll = true;
+            this.SLpanel.Location = new System.Drawing.Point(568, 39);
+            this.SLpanel.Name = "SLpanel";
+            this.SLpanel.Size = new System.Drawing.Size(406, 333);
+            this.SLpanel.TabIndex = 41;
+            // 
+            // Setbt
+            // 
+            this.Setbt.Image = ((System.Drawing.Image)(resources.GetObject("Setbt.Image")));
+            this.Setbt.Location = new System.Drawing.Point(938, 3);
+            this.Setbt.Name = "Setbt";
+            this.Setbt.Size = new System.Drawing.Size(34, 32);
+            this.Setbt.TabIndex = 37;
+            this.Setbt.UseVisualStyleBackColor = true;
+            this.Setbt.Click += new System.EventHandler(this.Setbt_Click);
             // 
             // PortForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(984, 450);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.SLpanel);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.TimeLable);
             this.Controls.Add(this.IOLayout);
             this.Controls.Add(this.Setbt);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.splitbt);
+            this.Controls.Add(this.CLbt);
+            this.Controls.Add(this.PLbt);
             this.Controls.Add(this.FileSend);
-            this.Controls.Add(this.SendButton);
-            this.Controls.Add(this.mainSend);
+            this.Controls.Add(this.MNbt);
+            this.Controls.Add(this.MNtb);
             this.Controls.Add(this.PortCombobox);
             this.Controls.Add(this.PortOpenButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -222,20 +227,20 @@ namespace ComCSForms
 
         private System.Windows.Forms.Button PortOpenButton;
         private System.Windows.Forms.ComboBox PortCombobox;
-        private System.Windows.Forms.TextBox mainSend;
-        private System.Windows.Forms.Button SendButton;
+        private System.Windows.Forms.TextBox MNtb;
+        private System.Windows.Forms.Button MNbt;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Button FileSend;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button PLbt;
+        private System.Windows.Forms.Button CLbt;
+        private System.Windows.Forms.Button splitbt;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button Setbt;
         private System.Windows.Forms.FlowLayoutPanel IOLayout;
         private System.Windows.Forms.Label TimeLable;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Panel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel SLpanel;
+        private System.Windows.Forms.Button Setbt;
     }
 }
 

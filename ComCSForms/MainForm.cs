@@ -62,10 +62,13 @@ namespace ComCSForms
                 I.Name = "IDGV";
                 I.Size = sc.Panel1.Size;
                 I.ReadOnly = true;
+                I.AllowUserToAddRows = false;
                 I.BackColor = Color.White;
                 I.RowHeadersVisible = false;
                 I.GridColor = Color.White;
                 I.BackgroundColor = Color.White;
+                I.CellClick += dataGridView_CellClick;
+                I.AllowUserToResizeRows = false;
                 DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
                 colm.HeaderText = "TIME";
                 colm.Name = "TIME";
@@ -106,6 +109,9 @@ namespace ComCSForms
                 O.RowHeadersVisible = false;
                 O.GridColor = Color.White;
                 O.BackgroundColor = Color.White;
+                O.AllowUserToAddRows = false;
+                O.CellClick += dataGridView_CellClick;
+                O.AllowUserToResizeRows = false;
 
                 colm = new DataGridViewTextBoxColumn();
                 colm.HeaderText = "TIME";
@@ -139,7 +145,7 @@ namespace ComCSForms
                 sc.Panel2.Controls.Add(O);
                 outp = O;
                 this.IOLayout.Controls.Add(sc);
-                this.button3.Text = "Объеденить IO";
+                this.splitbt.Text = "Объеденить IO";
 
             }
             else
@@ -153,6 +159,10 @@ namespace ComCSForms
                 Io.RowHeadersVisible = false;
                 Io.GridColor = Color.White;
                 Io.BackgroundColor = Color.White;
+                Io.AllowUserToAddRows = false;
+                Io.CellClick += dataGridView_CellClick;
+                Io.AllowUserToResizeRows = false;
+
                 DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
                 colm.HeaderText = "TIME";
                 colm.Name = "TIME";
@@ -190,7 +200,7 @@ namespace ComCSForms
                 inp = Io;
                 outp = Io;
                 this.IOLayout.Controls.Add(Io);
-                this.button3.Text = "Разделить IO";
+                this.splitbt.Text = "Разделить IO";
             }
             if(TxColors.Count!=0)
                 TxColors.Clear();
@@ -200,7 +210,6 @@ namespace ComCSForms
         {
             RefreshIO(inp != outp);
         }
-
 
 
         private string GetHex(string msg)
@@ -252,14 +261,20 @@ namespace ComCSForms
         private string deAPH(string str)
         {
             string res = "";
-            int value,i;
+            int value,i,k;
             char charValue;
             List<string> strHL = new List<string>();
             List<string> strAL = new List<string>();
             string[] strH,strA;
-            while((i=str.IndexOf("0x"))!=-1)
+            k = str.IndexOf("0X");
+            i = str.IndexOf("0x");
+            while ((i!=-1)||(k!= -1))
             {
-                if (i == 0)
+                if ((i != -1) && (k != -1))
+                    i = Math.Min(i, k);
+                else if ((i == -1) || (k == -1))
+                    i = Math.Max(i, k);
+                    if (i == 0)
                     strAL.Add("");
                 else
                 {
@@ -267,6 +282,8 @@ namespace ComCSForms
                 }
                 strHL.Add(str.Substring(i + 2, 2));
                 str = str.Substring(i + 4);
+                k = str.IndexOf("0X");
+                i = str.IndexOf("0x");
             }
             if (str.Length > 0)
                 strAL.Add(str);
@@ -324,7 +341,7 @@ namespace ComCSForms
             }
             catch(Exception e)
             {
-                MessageBox.Show("Не могу открыть порт","Открыть",
+                MessageBox.Show(e.Message,"Открыть",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _serialPort = null;
 
@@ -345,19 +362,19 @@ namespace ComCSForms
             if (inp == outp)
                 stlist.Add("Port");
             if (showASCII)
-                stlist.Add(msg);
+                stlist.Add(msg + stopstr);
             if (showHEX)
-                stlist.Add(GetHex(msg));
+                stlist.Add(GetHex(msg + stopstr));
             if (showBIN)
-                stlist.Add(GetBin(msg));
+                stlist.Add(GetBin(msg + stopstr));
             outp.Rows.Add(stlist.ToArray());
             clset.cl = SendCl;
             clset.IO = outp;
-            clset.row = outp.Rows.Count - 2;
+            clset.row = outp.Rows.Count - 1;
             TxColors.Add(clset);
             ChangeColors();
             _serialPort.WriteLine(
-                String.Format(msg));
+                String.Format(msg+stopstr));
         }
 
 
@@ -401,6 +418,8 @@ namespace ComCSForms
                 }
                 else { SimpleSend(msg); }
             }
+            if(outp.RowCount>2)
+                outp.FirstDisplayedScrollingRowIndex = outp.RowCount-1;
             
         }
 
@@ -454,7 +473,7 @@ namespace ComCSForms
 
         private void Send_Button_Click(object sender, EventArgs e)
         {
-            Send(this.mainSend.Text,sender);
+            Send(this.MNtb.Text,sender);
         }
         private void readCOM()
         {
@@ -493,6 +512,8 @@ namespace ComCSForms
                             TxColors.Add(clset);
                             ChangeColors();
                             glmessage = "";
+                            if (outp.RowCount > 2)
+                                inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
                         });
                     }
                 }
@@ -613,6 +634,26 @@ namespace ComCSForms
                 thRead.Join();
                 thRead = null;
             }
+            try
+            {
+                Properties.Settings.Default.ComName = this.PortCombobox.SelectedItem.ToString();
+            }
+            catch(Exception ex) { }
+            string st;
+            Properties.Settings.Default.BaudRate = BaudRatec;
+            Properties.Settings.Default.Data = Datac;
+            Properties.Settings.Default.Flow = Flowc;
+            Properties.Settings.Default.Stopbit = Stopbtc;
+            Properties.Settings.Default.Parity = Parityc;
+            Properties.Settings.Default.stopstr = stopstr;
+            Properties.Settings.Default.Comands.Clear();
+            for(int i=0;i<SLpanel.Controls.Count;i++)
+            {
+                st = SLpanel.Controls[i].Controls["SCtb"].Text;
+                if (st!="")
+                    Properties.Settings.Default.Comands.Add(st);
+            }
+            Properties.Settings.Default.Save();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -630,17 +671,41 @@ namespace ComCSForms
             _serialPort = null;
             thRead = null;
             blportopen = false;
-            BaudRatec = 19200;
-            Datac = 8;
-            Parityc = Parity.None;
-            Flowc = Handshake.None;
-            Stopbtc = StopBits.One;
+
+            try
+            {
+                this.PortCombobox.SelectedItem = Properties.Settings.Default.ComName;
+            }
+            catch (Exception ex) { }
+            BaudRatec = Properties.Settings.Default.BaudRate;
+            Datac = Properties.Settings.Default.Data;
+            Flowc = Properties.Settings.Default.Flow;
+            Stopbtc = Properties.Settings.Default.Stopbit;
+            Parityc = Properties.Settings.Default.Parity;
+            stopstr = Properties.Settings.Default.stopstr;
+            var list = Properties.Settings.Default.Comands.Cast<string>().ToList();
+            for (int i = 0; i < list.Count; i++)
+            {
+                SendCombo sc = new SendCombo();
+                Button bt = (Button)sc.Controls.Find("SCbt", false)[0];
+                Button btmin = (Button)sc.Controls.Find("SCbm", false)[0];
+                TextBox tb = (TextBox)sc.Controls.Find("SCtb", false)[0];
+                sc.Name = "SC" + this.SLpanel.Controls.Count;
+                bt.Click += Bt_Click;
+                btmin.Click += Btmin_Click;
+                tb.KeyUp += SndEnt_KeyUp;
+                this.SLpanel.Controls.Add(sc);
+                tb.Text = list[i];
+            }
+
+
+        
             GetCl = Color.Blue;
             SendCl = Color.Red;
-            stopstr = "\r\n";
-            for (int i = 0; i < 5; i++)
+          
+            for (int i = 0; i < 3; i++)
             {
-                button1_Click(button1, new EventArgs());
+                Plusbt_Click(PLbt, new EventArgs());
             }
             this.timer1.Start();
             RefreshIO(false);
@@ -652,52 +717,82 @@ namespace ComCSForms
             FD.Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*";
             FD.ShowDialog();
             string path = FD.FileName;
-            this.mainSend.Text=System.IO.File.ReadAllText(path);
+            try
+            {
+                this.MNtb.Text = System.IO.File.ReadAllText(path);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Plusbt_Click(object sender, EventArgs e)
         {
-            Button bt = new Button();
-            Button btmin = new Button();
-            TextBox tb = new TextBox();
-            bt.Name = "SLbt" + this.flowLayoutPanel1.Controls.Count / 3;
-            bt.Text = "Отправить";
+            SendCombo sc = new SendCombo();
+            Button bt = (Button)sc.Controls.Find("SCbt", false)[0];
+            Button btmin = (Button)sc.Controls.Find("SCbm", false)[0];            
+            TextBox tb = (TextBox)sc.Controls.Find("SCtb", false)[0];
+            sc.Name = "SC" + this.SLpanel.Controls.Count;
             bt.Click += Bt_Click;
-            bt.Size = new Size(75, 25);
-            bt.Location = new Point(this.flowLayoutPanel1.Size.Width - 115, 10 * this.flowLayoutPanel1.Controls.Count);
-            tb.Size = new Size(this.flowLayoutPanel1.Size.Width - 120, 25);
-            tb.Location = new Point(0, 10 * this.flowLayoutPanel1.Controls.Count+5);
-            btmin.Text = "-";
             btmin.Click += Btmin_Click;
-            btmin.Size = new Size(25, 25);
-            btmin.Location = new Point(this.flowLayoutPanel1.Size.Width - 35, 10 * this.flowLayoutPanel1.Controls.Count);
-            btmin.Name = "SLbm" + this.flowLayoutPanel1.Controls.Count / 3;
-            tb.Name = "SLtb" + this.flowLayoutPanel1.Controls.Count / 3;
-            this.flowLayoutPanel1.Controls.Add(tb);
-            this.flowLayoutPanel1.Controls.Add(bt);
-            this.flowLayoutPanel1.Controls.Add(btmin);
+            tb.KeyUp += SndEnt_KeyUp;
+            this.SLpanel.Controls.Add(sc);
         }
 
         private void Btmin_Click(object sender, EventArgs e)
         {
             Button btmn = sender as Button;
-            Console.WriteLine(btmn.Name.Substring(3));
-            this.flowLayoutPanel1.Controls.Remove(this.flowLayoutPanel1.Controls.Find("SLtb" + btmn.Name.Substring(4), true)[0]);
-            this.flowLayoutPanel1.Controls.Remove(this.flowLayoutPanel1.Controls.Find("SLbt" + btmn.Name.Substring(4), true)[0]);
-            this.flowLayoutPanel1.Controls.Remove(btmn);
+            btmn.Parent.Parent.Controls.Remove(btmn.Parent);
         }
 
         private void Bt_Click(object sender, EventArgs e)
         {
             Button btcl = sender as Button;
-            Send(this.flowLayoutPanel1.Controls.Find("SLtb" + btcl.Name.Substring(4), true)[0].Text,sender);
+            Send(btcl.Parent.Controls.Find("SCtb", true)[0].Text,sender);
 
         }
 
         private void Setbt_Click(object sender, EventArgs e)
         {
             SetForm stfm = new SetForm(this);
-            stfm.Show();
+            stfm.ShowDialog();
+        }
+
+        private void SndEnt_KeyUp(object sender, KeyEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.Send(tb.Text, tb.Name.Substring(0, 2) + "bt");
+            }
+        }
+
+        private void MNtb_TextChanged(object sender, EventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            try
+            {
+                if ((tb.Text.Substring(tb.Text.Length - 2)) == "\r\n")
+                    tb.Text = tb.Text.Substring(0, tb.Text.Length - 2);
+                tb.SelectionStart = tb.Text.Length;
+            }
+            catch(Exception ex)
+            { }
+        }
+
+        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                DataGridView DG = sender as DataGridView;
+                BigViewForm bvf = new BigViewForm(DG.Rows[e.RowIndex].Cells);
+                bvf.Show();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -711,7 +806,7 @@ namespace ComCSForms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            flowLayoutPanel1.Controls.Clear();
+            SLpanel.Controls.Clear();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
