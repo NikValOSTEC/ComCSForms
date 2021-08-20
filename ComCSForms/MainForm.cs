@@ -360,7 +360,7 @@ namespace ComCSForms
             List<string> stlist = new List<string>();
             stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
             if (inp == outp)
-                stlist.Add("Port");
+                stlist.Add("You");
             if (showASCII)
                 stlist.Add(msg + stopstr);
             if (showHEX)
@@ -508,7 +508,7 @@ namespace ComCSForms
                             TxtClors clset;
                             clset.cl = GetCl;
                             clset.IO = inp;
-                            clset.row = inp.Rows.Count - 2;
+                            clset.row = inp.Rows.Count - 1;
                             TxColors.Add(clset);
                             ChangeColors();
                             glmessage = "";
