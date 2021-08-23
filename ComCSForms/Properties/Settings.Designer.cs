@@ -112,12 +112,12 @@ namespace ComCSForms.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string stopstr {
+        public string stopstrgt {
             get {
-                return ((string)(this["stopstr"]));
+                return ((string)(this["stopstrgt"]));
             }
             set {
-                this["stopstr"] = value;
+                this["stopstrgt"] = value;
             }
         }
         
@@ -132,6 +132,18 @@ namespace ComCSForms.Properties {
             }
             set {
                 this["Stopstrcombo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string stopstrsd {
+            get {
+                return ((string)(this["stopstrsd"]));
+            }
+            set {
+                this["stopstrsd"] = value;
             }
         }
     }

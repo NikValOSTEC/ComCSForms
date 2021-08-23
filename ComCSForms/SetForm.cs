@@ -19,6 +19,51 @@ namespace ComCSForms
             InitializeComponent();
         }
 
+        private string deAPH(string str)
+        {
+            string res = "";
+            int value, i, k;
+            char charValue;
+            List<string> strHL = new List<string>();
+            List<string> strAL = new List<string>();
+            string[] strH, strA;
+            k = str.IndexOf("0x");
+            i = str.IndexOf(" 0x");
+            while ((i != -1) || (k != -1))
+            {
+                if ((i != -1) && (k != -1))
+                    i = Math.Min(i, k);
+                else if ((i == -1) || (k == -1))
+                    i = Math.Max(i, k);
+                if (i == 0)
+                    strAL.Add("");
+                else
+                {
+                    strAL.Add(str.Substring(0, i));
+                }
+                strHL.Add(str.Substring(i + 2 + Convert.ToInt32(i < k), 2));
+                str = str.Substring(i + 4 + Convert.ToInt32(i < k));
+                k = str.IndexOf("0x");
+                i = str.IndexOf(" 0x");
+            }
+            if (str.Length > 0)
+                strAL.Add(str);
+            else
+                strAL.Add("");
+            strA = strAL.ToArray();
+            strH = strHL.ToArray();
+
+            for (i = 0; i < strH.Length; i++)
+            {
+                value = Convert.ToInt32(strH[i], 16);
+                charValue = (char)value;
+                res += strA[i] + charValue;
+            }
+            res += strA[strA.Length - 1];
+
+            return res;
+        }
+
         private void SetForm_Load(object sender, EventArgs e)
         {
             BaudCombobox.Items.Add(110);
@@ -118,15 +163,24 @@ namespace ComCSForms
             ColorscheckBox.Checked = main.colors;
             BINcheck.Checked = main.showBIN;
             HEXcheck.Checked = main.showHEX;
-            StopstrcomboBox.Items.Clear();
+            StopstrcomboBoxgt.Items.Clear();
             var list = Properties.Settings.Default.Stopstrcombo.Cast<string>().ToList().ToArray();
             for (int i = 0; i < list.Length; i++)
                 if (list[i] != "")
-                    StopstrcomboBox.Items.Add(list[i]);
-            if (main.stopstr == Environment.NewLine)
-                StopstrcomboBox.SelectedItem = "CLLF";
+                    StopstrcomboBoxgt.Items.Add(list[i]);
+            if (main.stopstrgt == Environment.NewLine)
+                StopstrcomboBoxgt.Text= "CRLF";
             else
-                StopstrcomboBox.SelectedItem = main.stopstr;
+                StopstrcomboBoxgt.Text = main.stopstrgt;
+
+            StopstrcomboBoxsd.Items.Clear();
+            for (int i = 0; i < list.Length; i++)
+                if (list[i] != "")
+                    StopstrcomboBoxsd.Items.Add(list[i]);
+            if (main.stopstrsd == Environment.NewLine)
+                StopstrcomboBoxsd.Text = "CRLF";
+            else
+                StopstrcomboBoxsd.Text = main.stopstrsd;
             Ciclecheck.Checked = main.cicleCheck;
             CicleTimeUD.Value = main.cicle_time;
             CiclNUD.Value = main.cicle_times;
@@ -198,21 +252,37 @@ namespace ComCSForms
 
             try
             {
-                if ((StopstrcomboBox.SelectedItem.ToString() == "CLLF") || (StopstrcomboBox.Text == "CLLF"))
-                    main.stopstr = "\r\n";
-                else if (StopbitcomboBox.SelectedIndex != -1)
-                    main.stopstr = StopstrcomboBox.Text.ToString();
+                if ((StopstrcomboBoxgt.SelectedText.ToString() == "CRLF") || (StopstrcomboBoxgt.Text == "CRLF"))
+                    main.stopstrgt = Environment.NewLine;
+                else if (StopstrcomboBoxgt.SelectedIndex != -1)
+                    main.stopstrgt = deAPH(StopstrcomboBoxgt.Text.ToString());
                 else
-                    main.stopstr = "";
+                    main.stopstrgt = "";
             }
             catch (Exception ex)
             {
                 if (StopbitcomboBox.SelectedIndex != -1)
-                    main.stopstr = StopstrcomboBox.Text.ToString();
+                    main.stopstrgt = StopstrcomboBoxgt.Text.ToString();
                 else
-                    main.stopstr = "";
+                    main.stopstrgt = "";
             }
-                main.showASCII = ASCIIcheck.Checked;
+            try
+            {
+                if ((StopstrcomboBoxsd.SelectedText.ToString() == "CRLF") || (StopstrcomboBoxsd.Text == "CRLF"))
+                    main.stopstrsd = Environment.NewLine;
+                else if (StopstrcomboBoxsd.SelectedIndex != -1)
+                    main.stopstrsd = deAPH(StopstrcomboBoxsd.Text.ToString());
+                else
+                    main.stopstrsd = "";
+            }
+            catch (Exception ex)
+            {
+                if (StopbitcomboBox.SelectedIndex != -1)
+                    main.stopstrsd = StopstrcomboBoxsd.Text.ToString();
+                else
+                    main.stopstrgt = "";
+            }
+            main.showASCII = ASCIIcheck.Checked;
                 main.showBIN = BINcheck.Checked;
                 main.showHEX = HEXcheck.Checked;
                 main.colors = ColorscheckBox.Checked;
@@ -269,7 +339,8 @@ namespace ComCSForms
 
         private void StopstrcomboBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode==Keys.Enter)
+            ComboBox StopstrcomboBox = sender as ComboBox;
+            if (e.KeyCode==Keys.Enter)
             {
                 StopstrcomboBox.Items.Add(StopstrcomboBox.Text);
             }
@@ -279,17 +350,33 @@ namespace ComCSForms
         {
             Properties.Settings.Default.Stopstrcombo.Clear();
             string str;
-            for (int i = 0; i < StopstrcomboBox.Items.Count; i++)
+            for (int i = 0; i < StopstrcomboBoxgt.Items.Count; i++)
             {
-                str = StopstrcomboBox.Items[i].ToString();
-                if(str!="")
-                    Properties.Settings.Default.Stopstrcombo.Add(str);
+                str = StopstrcomboBoxgt.Items[i].ToString();
+                if (str != "")
+                {
+                    if (!Properties.Settings.Default.Stopstrcombo.Contains(str))
+                        Properties.Settings.Default.Stopstrcombo.Add(str);
+                }
+            }
+            for (int i = 0; i < StopstrcomboBoxsd.Items.Count; i++)
+            {
+                str = StopstrcomboBoxgt.Items[i].ToString();
+                if (str != "")
+                {
+                    if (!Properties.Settings.Default.Stopstrcombo.Contains(str))
+                        Properties.Settings.Default.Stopstrcombo.Add(str);
+                }
             }
         }
 
         private void clearstoplist_Click(object sender, EventArgs e)
         {
-            StopstrcomboBox.Items.Clear();
+            Button bt = sender as Button;
+            ComboBox cb;
+            cb=bt.Parent.Controls.Find("StopstrcomboBox"+bt.Name.ToString().Substring(bt.Name.Length - 2),true)[0] as ComboBox;
+            cb.Items.Clear();
         }
+
     }
 }

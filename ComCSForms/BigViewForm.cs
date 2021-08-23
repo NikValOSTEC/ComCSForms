@@ -49,12 +49,21 @@ namespace ComCSForms
         {
             string[] sta = st.Split(' ');
             List<string> SL = new List<string>();
-            for (int i = 0; i < sta.Length; i++)
+            for (int i = 0; i < sta.Length-1; i++)
             {
                 SL.Add(System.Convert.ToChar(System.Convert.ToUInt32(sta[i], 16)).ToString());
-                Console.WriteLine(SL.ToArray().ToString());
             }
-            Console.WriteLine(SL.ToArray().ToString());
+            return SL.ToArray();
+        }
+
+        private string[] GetAsciiB(string st)
+        {
+            string[] sta = st.Split(' ');
+            List<string> SL = new List<string>();
+            for (int i = 0; i < sta.Length - 1; i++)
+            {
+                SL.Add(System.Convert.ToChar(System.Convert.ToUInt32(sta[i], 2)).ToString());
+            }
             return SL.ToArray();
         }
 
@@ -78,7 +87,6 @@ namespace ComCSForms
                 if (sc.Contains(sc["ASCII"]))
                 {
                     ascii = GetAscii(sc["ascii"].Value.ToString().ToCharArray());
-                    Console.WriteLine(sc["ascii"].Value.ToString());
                     hex = GetHex(sc["ascii"].Value.ToString());
                     bin = GetBin(sc["ascii"].Value.ToString());
                 }
@@ -98,11 +106,11 @@ namespace ComCSForms
                 {
                     try
                     {
-                        if (sc.Contains(sc["ASCII"]))
+                        if (sc.Contains(sc["BIN"]))
                         {
-                            ascii = GetAscii(sc["ascii"].Value.ToString().ToCharArray());
-                            hex = GetHex(sc["ascii"].Value.ToString());
-                            bin = GetBin(sc["ascii"].Value.ToString());
+                            ascii = GetAsciiB(sc["BIN"].Value.ToString());
+                            hex = GetHex(ascii.ToString());
+                            bin = GetBin(ascii.ToString());
                         }
                     }
                     catch (Exception exxx) { }

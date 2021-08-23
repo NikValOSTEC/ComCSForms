@@ -29,14 +29,15 @@ namespace ComCSForms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetForm));
             this.BaudCombobox = new System.Windows.Forms.ComboBox();
             this.Baudlable = new System.Windows.Forms.Label();
             this.DataLable = new System.Windows.Forms.Label();
             this.DatacomboBox = new System.Windows.Forms.ComboBox();
             this.Flowlabel = new System.Windows.Forms.Label();
             this.FlowcomboBox = new System.Windows.Forms.ComboBox();
-            this.Stopstrlabel = new System.Windows.Forms.Label();
-            this.StopstrcomboBox = new System.Windows.Forms.ComboBox();
+            this.Stopstrlabelgt = new System.Windows.Forms.Label();
+            this.StopstrcomboBoxgt = new System.Windows.Forms.ComboBox();
             this.Paritylabel = new System.Windows.Forms.Label();
             this.ParitycomboBox = new System.Windows.Forms.ComboBox();
             this.Stopbitlabel = new System.Windows.Forms.Label();
@@ -59,18 +60,22 @@ namespace ComCSForms
             this.SendStopCheck = new System.Windows.Forms.CheckBox();
             this.Ciclecheck = new System.Windows.Forms.CheckBox();
             this.SetButt = new System.Windows.Forms.Button();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.textBoxGet = new System.Windows.Forms.TextBox();
             this.textBoxSend = new System.Windows.Forms.TextBox();
             this.ColorscheckBox = new System.Windows.Forms.CheckBox();
             this.colorDialogSend = new System.Windows.Forms.ColorDialog();
-            this.clearstoplist = new System.Windows.Forms.Button();
+            this.clearstoplistgt = new System.Windows.Forms.Button();
+            this.groupBoxstopstr = new System.Windows.Forms.GroupBox();
+            this.Stopstrlabelsd = new System.Windows.Forms.Label();
+            this.clearstoplistsd = new System.Windows.Forms.Button();
+            this.StopstrcomboBoxsd = new System.Windows.Forms.ComboBox();
             this.decods.SuspendLayout();
             this.groupBoxsendformat.SuspendLayout();
             this.groupBoxShow.SuspendLayout();
             this.Circle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CiclNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CicleTimeUD)).BeginInit();
+            this.groupBoxstopstr.SuspendLayout();
             this.SuspendLayout();
             // 
             // BaudCombobox
@@ -127,26 +132,26 @@ namespace ComCSForms
             this.FlowcomboBox.Size = new System.Drawing.Size(84, 21);
             this.FlowcomboBox.TabIndex = 4;
             // 
-            // Stopstrlabel
+            // Stopstrlabelgt
             // 
-            this.Stopstrlabel.AutoSize = true;
-            this.Stopstrlabel.Location = new System.Drawing.Point(194, 65);
-            this.Stopstrlabel.Name = "Stopstrlabel";
-            this.Stopstrlabel.Size = new System.Drawing.Size(66, 13);
-            this.Stopstrlabel.TabIndex = 11;
-            this.Stopstrlabel.Text = "Стопстрока";
+            this.Stopstrlabelgt.AutoSize = true;
+            this.Stopstrlabelgt.Location = new System.Drawing.Point(26, 35);
+            this.Stopstrlabelgt.Name = "Stopstrlabelgt";
+            this.Stopstrlabelgt.Size = new System.Drawing.Size(41, 13);
+            this.Stopstrlabelgt.TabIndex = 11;
+            this.Stopstrlabelgt.Text = "Прием";
             // 
-            // StopstrcomboBox
+            // StopstrcomboBoxgt
             // 
-            this.StopstrcomboBox.DropDownHeight = 80;
-            this.StopstrcomboBox.DropDownWidth = 50;
-            this.StopstrcomboBox.FormattingEnabled = true;
-            this.StopstrcomboBox.IntegralHeight = false;
-            this.StopstrcomboBox.Location = new System.Drawing.Point(195, 86);
-            this.StopstrcomboBox.Name = "StopstrcomboBox";
-            this.StopstrcomboBox.Size = new System.Drawing.Size(84, 21);
-            this.StopstrcomboBox.TabIndex = 10;
-            this.StopstrcomboBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.StopstrcomboBox_KeyUp);
+            this.StopstrcomboBoxgt.DropDownHeight = 80;
+            this.StopstrcomboBoxgt.DropDownWidth = 50;
+            this.StopstrcomboBoxgt.FormattingEnabled = true;
+            this.StopstrcomboBoxgt.IntegralHeight = false;
+            this.StopstrcomboBoxgt.Location = new System.Drawing.Point(27, 56);
+            this.StopstrcomboBoxgt.Name = "StopstrcomboBoxgt";
+            this.StopstrcomboBoxgt.Size = new System.Drawing.Size(84, 21);
+            this.StopstrcomboBoxgt.TabIndex = 10;
+            this.StopstrcomboBoxgt.KeyUp += new System.Windows.Forms.KeyEventHandler(this.StopstrcomboBox_KeyUp);
             // 
             // Paritylabel
             // 
@@ -188,7 +193,7 @@ namespace ComCSForms
             // 
             this.decods.Controls.Add(this.groupBoxsendformat);
             this.decods.Controls.Add(this.groupBoxShow);
-            this.decods.Location = new System.Drawing.Point(7, 155);
+            this.decods.Location = new System.Drawing.Point(296, 180);
             this.decods.Name = "decods";
             this.decods.Size = new System.Drawing.Size(272, 123);
             this.decods.TabIndex = 12;
@@ -294,7 +299,7 @@ namespace ComCSForms
             this.Circle.Controls.Add(this.CicleTimeUD);
             this.Circle.Controls.Add(this.SendStopCheck);
             this.Circle.Controls.Add(this.Ciclecheck);
-            this.Circle.Location = new System.Drawing.Point(7, 284);
+            this.Circle.Location = new System.Drawing.Point(5, 130);
             this.Circle.Name = "Circle";
             this.Circle.Size = new System.Drawing.Size(272, 165);
             this.Circle.TabIndex = 13;
@@ -377,9 +382,10 @@ namespace ComCSForms
             // 
             // SetButt
             // 
-            this.SetButt.Location = new System.Drawing.Point(105, 534);
+            this.SetButt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.SetButt.Location = new System.Drawing.Point(408, 309);
             this.SetButt.Name = "SetButt";
-            this.SetButt.Size = new System.Drawing.Size(75, 23);
+            this.SetButt.Size = new System.Drawing.Size(103, 35);
             this.SetButt.TabIndex = 14;
             this.SetButt.Text = "Применить";
             this.SetButt.UseVisualStyleBackColor = true;
@@ -387,7 +393,7 @@ namespace ComCSForms
             // 
             // textBoxGet
             // 
-            this.textBoxGet.Location = new System.Drawing.Point(7, 456);
+            this.textBoxGet.Location = new System.Drawing.Point(6, 301);
             this.textBoxGet.Name = "textBoxGet";
             this.textBoxGet.Size = new System.Drawing.Size(139, 20);
             this.textBoxGet.TabIndex = 15;
@@ -397,7 +403,7 @@ namespace ComCSForms
             // textBoxSend
             // 
             this.textBoxSend.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.textBoxSend.Location = new System.Drawing.Point(152, 456);
+            this.textBoxSend.Location = new System.Drawing.Point(151, 301);
             this.textBoxSend.Name = "textBoxSend";
             this.textBoxSend.Size = new System.Drawing.Size(139, 20);
             this.textBoxSend.TabIndex = 16;
@@ -407,37 +413,80 @@ namespace ComCSForms
             // ColorscheckBox
             // 
             this.ColorscheckBox.AutoSize = true;
-            this.ColorscheckBox.Location = new System.Drawing.Point(109, 482);
+            this.ColorscheckBox.Location = new System.Drawing.Point(108, 327);
             this.ColorscheckBox.Name = "ColorscheckBox";
             this.ColorscheckBox.Size = new System.Drawing.Size(97, 17);
             this.ColorscheckBox.TabIndex = 17;
             this.ColorscheckBox.Text = "Разные цвета";
             this.ColorscheckBox.UseVisualStyleBackColor = true;
             // 
-            // clearstoplist
+            // clearstoplistgt
             // 
-            this.clearstoplist.Location = new System.Drawing.Point(197, 113);
-            this.clearstoplist.Name = "clearstoplist";
-            this.clearstoplist.Size = new System.Drawing.Size(80, 22);
-            this.clearstoplist.TabIndex = 18;
-            this.clearstoplist.Text = "Очистить";
-            this.clearstoplist.UseVisualStyleBackColor = true;
-            this.clearstoplist.Click += new System.EventHandler(this.clearstoplist_Click);
+            this.clearstoplistgt.Location = new System.Drawing.Point(29, 83);
+            this.clearstoplistgt.Name = "clearstoplistgt";
+            this.clearstoplistgt.Size = new System.Drawing.Size(80, 22);
+            this.clearstoplistgt.TabIndex = 18;
+            this.clearstoplistgt.Text = "Очистить";
+            this.clearstoplistgt.UseVisualStyleBackColor = true;
+            this.clearstoplistgt.Click += new System.EventHandler(this.clearstoplist_Click);
+            // 
+            // groupBoxstopstr
+            // 
+            this.groupBoxstopstr.Controls.Add(this.Stopstrlabelsd);
+            this.groupBoxstopstr.Controls.Add(this.clearstoplistsd);
+            this.groupBoxstopstr.Controls.Add(this.StopstrcomboBoxsd);
+            this.groupBoxstopstr.Controls.Add(this.Stopstrlabelgt);
+            this.groupBoxstopstr.Controls.Add(this.clearstoplistgt);
+            this.groupBoxstopstr.Controls.Add(this.StopstrcomboBoxgt);
+            this.groupBoxstopstr.Location = new System.Drawing.Point(296, 30);
+            this.groupBoxstopstr.Name = "groupBoxstopstr";
+            this.groupBoxstopstr.Size = new System.Drawing.Size(266, 134);
+            this.groupBoxstopstr.TabIndex = 19;
+            this.groupBoxstopstr.TabStop = false;
+            this.groupBoxstopstr.Text = "Стоп Строка";
+            // 
+            // Stopstrlabelsd
+            // 
+            this.Stopstrlabelsd.AutoSize = true;
+            this.Stopstrlabelsd.Location = new System.Drawing.Point(149, 35);
+            this.Stopstrlabelsd.Name = "Stopstrlabelsd";
+            this.Stopstrlabelsd.Size = new System.Drawing.Size(56, 13);
+            this.Stopstrlabelsd.TabIndex = 20;
+            this.Stopstrlabelsd.Text = "Отправка";
+            // 
+            // clearstoplistsd
+            // 
+            this.clearstoplistsd.Location = new System.Drawing.Point(152, 83);
+            this.clearstoplistsd.Name = "clearstoplistsd";
+            this.clearstoplistsd.Size = new System.Drawing.Size(80, 22);
+            this.clearstoplistsd.TabIndex = 21;
+            this.clearstoplistsd.Text = "Очистить";
+            this.clearstoplistsd.UseVisualStyleBackColor = true;
+            this.clearstoplistsd.Click += new System.EventHandler(this.clearstoplist_Click);
+            // 
+            // StopstrcomboBoxsd
+            // 
+            this.StopstrcomboBoxsd.DropDownHeight = 80;
+            this.StopstrcomboBoxsd.DropDownWidth = 50;
+            this.StopstrcomboBoxsd.FormattingEnabled = true;
+            this.StopstrcomboBoxsd.IntegralHeight = false;
+            this.StopstrcomboBoxsd.Location = new System.Drawing.Point(150, 56);
+            this.StopstrcomboBoxsd.Name = "StopstrcomboBoxsd";
+            this.StopstrcomboBoxsd.Size = new System.Drawing.Size(84, 21);
+            this.StopstrcomboBoxsd.TabIndex = 19;
             // 
             // SetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(296, 579);
-            this.Controls.Add(this.clearstoplist);
+            this.ClientSize = new System.Drawing.Size(577, 392);
+            this.Controls.Add(this.groupBoxstopstr);
             this.Controls.Add(this.ColorscheckBox);
             this.Controls.Add(this.textBoxSend);
             this.Controls.Add(this.textBoxGet);
             this.Controls.Add(this.SetButt);
             this.Controls.Add(this.Circle);
             this.Controls.Add(this.decods);
-            this.Controls.Add(this.Stopstrlabel);
-            this.Controls.Add(this.StopstrcomboBox);
             this.Controls.Add(this.Paritylabel);
             this.Controls.Add(this.ParitycomboBox);
             this.Controls.Add(this.Stopbitlabel);
@@ -449,6 +498,7 @@ namespace ComCSForms
             this.Controls.Add(this.Baudlable);
             this.Controls.Add(this.BaudCombobox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SetForm";
             this.Text = "                                                                  ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SetForm_FormClosing);
@@ -462,6 +512,8 @@ namespace ComCSForms
             this.Circle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CiclNUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CicleTimeUD)).EndInit();
+            this.groupBoxstopstr.ResumeLayout(false);
+            this.groupBoxstopstr.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -475,8 +527,8 @@ namespace ComCSForms
         private System.Windows.Forms.ComboBox DatacomboBox;
         private System.Windows.Forms.Label Flowlabel;
         private System.Windows.Forms.ComboBox FlowcomboBox;
-        private System.Windows.Forms.Label Stopstrlabel;
-        private System.Windows.Forms.ComboBox StopstrcomboBox;
+        private System.Windows.Forms.Label Stopstrlabelgt;
+        private System.Windows.Forms.ComboBox StopstrcomboBoxgt;
         private System.Windows.Forms.Label Paritylabel;
         private System.Windows.Forms.ComboBox ParitycomboBox;
         private System.Windows.Forms.Label Stopbitlabel;
@@ -499,11 +551,14 @@ namespace ComCSForms
         private System.Windows.Forms.CheckBox HEXcheck;
         private System.Windows.Forms.CheckBox ASCIIcheck;
         private System.Windows.Forms.CheckBox BINcheck;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.TextBox textBoxGet;
         private System.Windows.Forms.TextBox textBoxSend;
         private System.Windows.Forms.CheckBox ColorscheckBox;
         private System.Windows.Forms.ColorDialog colorDialogSend;
-        private System.Windows.Forms.Button clearstoplist;
+        private System.Windows.Forms.Button clearstoplistgt;
+        private System.Windows.Forms.GroupBox groupBoxstopstr;
+        private System.Windows.Forms.Label Stopstrlabelsd;
+        private System.Windows.Forms.Button clearstoplistsd;
+        private System.Windows.Forms.ComboBox StopstrcomboBoxsd;
     }
 }

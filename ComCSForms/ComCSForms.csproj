@@ -72,6 +72,7 @@
     <Compile Include="SendCombo.Designer.cs">
       <DependentUpon>SendCombo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <EmbeddedResource Include="BigViewForm.resx">
       <DependentUpon>BigViewForm.cs</DependentUpon>
     </EmbeddedResource>

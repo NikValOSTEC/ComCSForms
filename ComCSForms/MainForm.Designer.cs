@@ -106,7 +106,7 @@ namespace ComCSForms
             // 
             // PLbt
             // 
-            this.PLbt.Location = new System.Drawing.Point(899, 379);
+            this.PLbt.Location = new System.Drawing.Point(908, 390);
             this.PLbt.Name = "PLbt";
             this.PLbt.Size = new System.Drawing.Size(64, 23);
             this.PLbt.TabIndex = 9;
@@ -116,9 +116,9 @@ namespace ComCSForms
             // 
             // CLbt
             // 
-            this.CLbt.Location = new System.Drawing.Point(818, 378);
+            this.CLbt.Location = new System.Drawing.Point(829, 389);
             this.CLbt.Name = "CLbt";
-            this.CLbt.Size = new System.Drawing.Size(75, 23);
+            this.CLbt.Size = new System.Drawing.Size(73, 23);
             this.CLbt.TabIndex = 10;
             this.CLbt.Text = "Очистить";
             this.CLbt.UseVisualStyleBackColor = true;
@@ -126,7 +126,7 @@ namespace ComCSForms
             // 
             // splitbt
             // 
-            this.splitbt.Location = new System.Drawing.Point(818, 407);
+            this.splitbt.Location = new System.Drawing.Point(829, 418);
             this.splitbt.Name = "splitbt";
             this.splitbt.Size = new System.Drawing.Size(145, 24);
             this.splitbt.TabIndex = 34;
@@ -138,9 +138,9 @@ namespace ComCSForms
             // 
             this.button4.Location = new System.Drawing.Point(709, 390);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(64, 52);
+            this.button4.Size = new System.Drawing.Size(103, 52);
             this.button4.TabIndex = 35;
-            this.button4.Text = "Очистить IO";
+            this.button4.Text = "Очистить Прием/Отправка";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -211,10 +211,11 @@ namespace ComCSForms
             this.Controls.Add(this.PortCombobox);
             this.Controls.Add(this.PortOpenButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PortForm";
-            this.Text = "ComPortToolkit";
+            this.Text = " Ostec ComPort";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
