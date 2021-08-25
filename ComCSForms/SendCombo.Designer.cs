@@ -37,24 +37,31 @@ namespace ComCSForms
             // 
             // SCtb
             // 
+            this.SCtb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.SCtb.Location = new System.Drawing.Point(3, 10);
             this.SCtb.Name = "SCtb";
-            this.SCtb.Size = new System.Drawing.Size(247, 20);
+            this.SCtb.Size = new System.Drawing.Size(275, 20);
             this.SCtb.TabIndex = 0;
+            this.SCtb.SizeChanged += new System.EventHandler(this.SCtb_SizeChanged);
             // 
             // SCbt
             // 
-            this.SCbt.Location = new System.Drawing.Point(256, 1);
+            this.SCbt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SCbt.Image = ((System.Drawing.Image)(resources.GetObject("SCbt.Image")));
+            this.SCbt.Location = new System.Drawing.Point(327, 1);
             this.SCbt.Name = "SCbt";
-            this.SCbt.Size = new System.Drawing.Size(75, 36);
+            this.SCbt.Size = new System.Drawing.Size(36, 36);
             this.SCbt.TabIndex = 1;
-            this.SCbt.Text = "Отправить";
             this.SCbt.UseVisualStyleBackColor = true;
             // 
             // SCbm
             // 
+            this.SCbm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.SCbm.Image = ((System.Drawing.Image)(resources.GetObject("SCbm.Image")));
-            this.SCbm.Location = new System.Drawing.Point(337, 1);
+            this.SCbm.Location = new System.Drawing.Point(369, 0);
             this.SCbm.Name = "SCbm";
             this.SCbm.Size = new System.Drawing.Size(28, 36);
             this.SCbm.TabIndex = 2;
@@ -70,7 +77,9 @@ namespace ComCSForms
             this.Controls.Add(this.SCbt);
             this.Controls.Add(this.SCtb);
             this.Name = "SendCombo";
-            this.Size = new System.Drawing.Size(368, 40);
+            this.Size = new System.Drawing.Size(400, 40);
+            this.Load += new System.EventHandler(this.SendCombo_Load);
+            this.SizeChanged += new System.EventHandler(this.SCtb_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -42,8 +42,9 @@ namespace ComCSForms
         static List<TxtClors> TxColors;
         static SerialPort _serialPort;
         static Thread thRead,thSend;
-        static DataGridView inp, outp;
-        public bool showHEX, showASCII, showBIN;
+        static DataGridView IO, outp,inp;
+        static SplitContainer IOSplit;
+        public bool showHEX, showASCII, showBIN,IO1_2;
         public bool blportopen;
         public PortForm()
         {
@@ -62,236 +63,163 @@ namespace ComCSForms
 
 
 
-        void RefreshIO(bool one_tow)
+        void CreateIO()
         {
-            DataGridViewRow savedt;
-            List<DataGridViewRow> CCLI = new List<DataGridViewRow>();
-            List<DataGridViewRow> CCLO = new List<DataGridViewRow>();
-            try
-            {
-                if (inp == outp)
-                {
-                    for (int i = 0; i < inp.Rows.Count; i++)
-                    {
-                        savedt = inp.Rows[i];
-                        if (savedt.Cells["From"].Value == "Отправка")
-                        {
-                            CCLO.Add(CloneRowWithValues(savedt));
-                        }
-                        else
-                        {
-                            CCLI.Add(CloneRowWithValues(savedt));
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < inp.Rows.Count; i++)
-                    {
-                        savedt = inp.Rows[i];
-                        CCLI.Add(CloneRowWithValues(savedt));
-                    }
-                    for (int i = 0; i < outp.Rows.Count; i++)
-                    {
-                        savedt = outp.Rows[i];
-                        CCLO.Add(CloneRowWithValues(savedt));
-                    }
-                }
-            }
-            catch(Exception exc)
-            {
-
-            }
-
-            if (one_tow)
-            {
-                this.IOLayout.Controls.Clear();
-                SplitContainer sc = new SplitContainer();
-                sc.Size = this.IOLayout.Size;
-                sc.SplitterDistance = sc.Width / 2;
-                sc.IsSplitterFixed = true;
-                DataGridView I = new DataGridView();
-                I.Name = "IDGV";
-                I.Size = sc.Panel1.Size;
-                I.ReadOnly = true;
-                I.AllowUserToAddRows = false;
-                I.BackColor = Color.White;
-                I.RowHeadersVisible = false;
-                I.GridColor = Color.White;
-                I.BackgroundColor = Color.White;
-                I.CellDoubleClick += dataGridView_CellClick;
-                I.AllowUserToResizeRows = false;
-                DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
-                colm.HeaderText = "Время";
-                colm.Name = "TIME";
-                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                I.Columns.Add(colm);
-                if (showASCII)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "ASCII";
-                    colm.Name = "ASCII";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    I.Columns.Add(colm);
-                }
-                if (showHEX)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "HEX";
-                    colm.Name = "HEX";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    I.Columns.Add(colm);
-                }
-                if(showBIN)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "BIN";
-                    colm.Name = "BIN";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    I.Columns.Add(colm);
-                }
-                sc.Panel1.Controls.Add(I);
-                inp = I;
-                DataGridView O = new DataGridView();
-                O.Name = "ODGV";
-                O.Size = sc.Panel2.Size;
-                O.ReadOnly = true;
-                O.BackColor = Color.White;
-                O.RowHeadersVisible = false;
-                O.GridColor = Color.White;
-                O.BackgroundColor = Color.White;
-                O.AllowUserToAddRows = false;
-                O.CellDoubleClick += dataGridView_CellClick;
-                O.AllowUserToResizeRows = false;
-
-                colm = new DataGridViewTextBoxColumn();
-                colm.HeaderText = "Время";
-                colm.Name = "TIME";
-                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                O.Columns.Add(colm);
-                if (showASCII)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "ASCII";
-                    colm.Name = "ASCII";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    O.Columns.Add(colm);
-                }
-                if (showHEX)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "HEX";
-                    colm.Name = "HEX";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    O.Columns.Add(colm);
-                }
-                if (showBIN)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "BIN";
-                    colm.Name = "BIN";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    O.Columns.Add(colm);
-                }
-                sc.Panel2.Controls.Add(O);
-                outp = O;
-                this.IOLayout.Controls.Add(sc);
-                this.splitbt.Text = "Объеденить IO";
-                for (int i = 0; i < CCLI.Count; i++)
-                {
-                    CCLI[i].Cells.Remove(CCLI[i].Cells[1]);
-                }
-                inp.Rows.AddRange(CCLI.ToArray());
-                for (int i = 0; i < CCLO.Count; i++)
-                {
-                    CCLO[i].Cells.Remove(CCLO[i].Cells[1]);
-                }
-                outp.Rows.AddRange(CCLO.ToArray());
-            }
-            else
-            {
-                this.IOLayout.Controls.Clear();
-                DataGridView Io = new DataGridView();
-                Io.Name = "IODGV";
-                Io.Size = IOLayout.Size;
-                Io.ReadOnly = true;
-                Io.BackColor = Color.White;
-                Io.RowHeadersVisible = false;
-                Io.GridColor = Color.White;
-                Io.BackgroundColor = Color.White;
-                Io.AllowUserToAddRows = false;
-                Io.CellDoubleClick += dataGridView_CellClick;
-                Io.AllowUserToResizeRows = false;
-
-                DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
-                colm.HeaderText = "Время";
-                colm.Name = "TIME";
-                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                Io.Columns.Add(colm);
-                colm = new DataGridViewTextBoxColumn();
-                colm.HeaderText = "Команда";
-                colm.Name = "From";
-                colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                Io.Columns.Add(colm);
-                if (showASCII)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "ASCII";
-                    colm.Name = "ASCII";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    Io.Columns.Add(colm);
-                }
-                if (showHEX)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "HEX";
-                    colm.Name = "HEX";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    Io.Columns.Add(colm);
-                }
-                if (showBIN)
-                {
-                    colm = new DataGridViewTextBoxColumn();
-                    colm.HeaderText = "BIN";
-                    colm.Name = "BIN";
-                    colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    Io.Columns.Add(colm);
-                }
-                inp = Io;
-                outp = Io;
-                DataGridViewTextBoxCell cell;
-                for (int i = 0; i < CCLI.Count; i++)
-                {
-                    cell = new DataGridViewTextBoxCell();
-                    cell.Value = "Прием";
-                    CCLI[i].Cells.Insert(1,cell);
-                }
-                inp.Rows.AddRange(CCLI.ToArray());
-                for (int i = 0; i < CCLO.Count; i++)
-                {
-                    cell = new DataGridViewTextBoxCell();
-                    cell.Value = "Отправка";
-                    CCLO[i].Cells.Insert(1, cell);
-                }
-                outp.Rows.AddRange(CCLO.ToArray());
-                this.IOLayout.Controls.Add(Io);
-                this.splitbt.Text = "Разделить IO";
-                //
-                //
-                //
-                // Сортировку добавь!!!!
-                //
-                //
-                'klpklklk'
-                     ; ;lock;lock;l
-            }
-            if (TxColors.Count != 0)
-                TxColors.Clear();
+            IO = new DataGridView();
+            IO.Name = "IODGV";
+            IO.ReadOnly = true;
+            IO.AllowUserToAddRows = false;
+            IO.BackColor = Color.White;
+            IO.RowHeadersVisible = false;
+            IO.GridColor = Color.White;
+            IO.BackgroundColor = Color.White;
+            IO.CellDoubleClick += dataGridView_CellClick;
+            IO.AllowUserToResizeRows = false;
+            DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "Время";
+            colm.Name = "TIME";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            IO.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "Команда";
+            colm.Name = "FROM";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            IO.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "ASCII";
+            colm.Name = "ASCII";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            IO.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "HEX";
+            colm.Name = "HEX";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            IO.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "BIN";
+            colm.Name = "BIN";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            IO.Columns.Add(colm);
+            //
+            //
+            //
+            outp = new DataGridView();
+            outp.Name = "OutDGV";
+            outp.ReadOnly = true;
+            outp.AllowUserToAddRows = false;
+            outp.BackColor = Color.White;
+            outp.RowHeadersVisible = false;
+            outp.GridColor = Color.White;
+            outp.BackgroundColor = Color.White;
+            outp.CellDoubleClick += dataGridView_CellClick;
+            outp.AllowUserToResizeRows = false;
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "Время";
+            colm.Name = "TIME";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            outp.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "Команда";
+            colm.Name = "FROM";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            colm.Visible = false;
+            outp.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "ASCII";
+            colm.Name = "ASCII";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            outp.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "HEX";
+            colm.Name = "HEX";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            outp.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "BIN";
+            colm.Name = "BIN";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            outp.Columns.Add(colm);
+            //
+            //
+            //
+            inp = new DataGridView();
+            inp.Name = "InDGV";
+            inp.ReadOnly = true;
+            inp.AllowUserToAddRows = false;
+            inp.BackColor = Color.White;
+            inp.RowHeadersVisible = false;
+            inp.GridColor = Color.White;
+            inp.BackgroundColor = Color.White;
+            inp.CellDoubleClick += dataGridView_CellClick;
+            inp.AllowUserToResizeRows = false;
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "Время";
+            colm.Name = "TIME";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            inp.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "Команда";
+            colm.Name = "FROM";
+            colm.Visible = false;
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            colm.Visible = false;
+            inp.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "ASCII";
+            colm.Name = "ASCII";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            inp.Columns.Add(colm);
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "HEX";
+            colm.Name = "HEX";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            inp.Columns.Add(colm);
+            inp.Dock = DockStyle.Fill;
+            outp.Dock = DockStyle.Fill;
+            colm = new DataGridViewTextBoxColumn();
+            colm.HeaderText = "BIN";
+            colm.Name = "BIN";
+            colm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colm.MinimumWidth = 50;
+            inp.Columns.Add(colm);
+            IOSplit = new SplitContainer();
+            IOSplit.Size = this.IOLayout.Size;
+            IO.Size = this.IOLayout.Size;
+            IOSplit.SplitterDistance = IOSplit.Width/2;
+            outp.Size = new Size(IOSplit.Panel1.Width, IOSplit.Height);
+            inp.Size = new Size(IOSplit.Panel2.Width, IOSplit.Height);
+            IOSplit.Panel1.Controls.Add(outp);
+            IOSplit.Panel2.Controls.Add(inp);
+            this.IOLayout.Controls.Add(IOSplit);
+            this.IOLayout.Controls.Add(IO);
+            IOSplit.AutoSize = true;
+            IOSplit.IsSplitterFixed = false;
+            IOSplit.Dock = DockStyle.Fill;
+            IOSplit.Panel1.AutoScroll = true;
+            IOSplit.Panel2.AutoScroll = true;
         }
 
         public void RefreshIO()
         {
-            RefreshIO(inp != outp);
+            IO.Columns["ASCII"].Visible = showASCII;
+            inp.Columns["ASCII"].Visible = showASCII;
+            outp.Columns["ASCII"].Visible = showASCII;
+            IO.Columns["HEX"].Visible = showHEX;
+            inp.Columns["HEX"].Visible = showHEX;
+            outp.Columns["HEX"].Visible = showHEX;
+            IO.Columns["BIN"].Visible = showBIN;
+            inp.Columns["BIN"].Visible = showBIN;
+            outp.Columns["BIN"].Visible = showBIN;
+            IO.Visible = !IO1_2;
+            IOSplit.Visible = IO1_2;
         }
 
 
@@ -395,7 +323,7 @@ namespace ComCSForms
             thRead = null;
             if (_serialPort != null)
                 _serialPort.Close();
-            this.PortOpenButton.Text = "Открыть";
+            this.PortOpenButton.Image = Image.FromFile("C:/Users/valyayev.n/Desktop/COM img/Open.png");
             this.PortCombobox.Enabled = true;
             _serialPort = null;
             circle = false;
@@ -419,7 +347,9 @@ namespace ComCSForms
                 blportopen = true;
                 thRead = new Thread(readCOM);
                 thRead.Start();
-                this.PortOpenButton.Text = "Закрыть";
+                this.PortOpenButton.Text = "";
+                this.PortOpenButton.Image = Image.FromFile("C:/Users/valyayev.n/Desktop/COM img/Stop_img.png");
+                this.PortOpenButton.Refresh();
                 PortCombobox.Enabled=false;
             }
             catch(Exception e)
@@ -442,19 +372,27 @@ namespace ComCSForms
             TxtClors clset;
             List<string> stlist = new List<string>();
             stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
-            if (inp == outp)
-                stlist.Add("Отправка");
-            if (showASCII)
-                stlist.Add(msg + stopstrsd);
-            if (showHEX)
-                stlist.Add(GetHex(msg + stopstrsd));
-            if (showBIN)
-                stlist.Add(GetBin(msg + stopstrsd));
+            stlist.Add("Отправка");
+            stlist.Add(msg + stopstrsd);
+            stlist.Add(GetHex(msg + stopstrsd));
+            stlist.Add(GetBin(msg + stopstrsd));
             outp.Rows.Add(stlist.ToArray());
+            clset = new TxtClors();
             clset.cl = SendCl;
             clset.IO = outp;
             clset.row = outp.Rows.Count - 1;
             TxColors.Add(clset);
+            IO.Rows.Add(stlist.ToArray());
+            clset = new TxtClors();
+            clset.cl = SendCl;
+            clset.IO = IO;
+            clset.row = IO.Rows.Count - 1;
+            TxColors.Add(clset);
+            if (inp.RowCount > 2)
+                inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
+            if (IO.RowCount > 2)
+                IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
+
             ChangeColors();
             _serialPort.WriteLine(
                 String.Format(msg+stopstrsd));
@@ -486,7 +424,7 @@ namespace ComCSForms
                     Button btsendr = sender as Button;
                     Button bt = new Button();
                     bt.Size = btsendr.Size;
-                    bt.Text = "Стоп";
+                    bt.Image = Image.FromFile("C:/Users/valyayev.n/Desktop/COM img/Stop_img.png");
                     bt.Location = btsendr.Location;
                     bt.Name = btsendr.Name + "_2_";
                     bt.Click += btstop;
@@ -501,9 +439,11 @@ namespace ComCSForms
                 }
                 else { SimpleSend(msg); }
             }
-            if(outp.RowCount>2)
-                outp.FirstDisplayedScrollingRowIndex = outp.RowCount-1;
-            
+            if (outp.RowCount > 2)
+                outp.FirstDisplayedScrollingRowIndex = outp.RowCount - 1;
+            if (IO.RowCount > 2)
+                IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
+
         }
 
         private void ChangeColors()
@@ -530,6 +470,7 @@ namespace ComCSForms
         private void PortComboBox_Click(object sender, EventArgs e)
         {
             string[] PortnamesNOW = SerialPort.GetPortNames();
+            PortCombobox.Items.Clear();
             if (this.PortCombobox.Items.Count == 0)
             {
                 this.PortCombobox.Items.Clear();
@@ -578,28 +519,33 @@ namespace ComCSForms
                                         () => { MessageBox.Show("Получен ответ остановки", "Стоп", MessageBoxButtons.OK, MessageBoxIcon.Warning); });
                                     thread.Start();
                                 }
-                                inp.Invoke((MethodInvoker)delegate
+                                IO.Invoke((MethodInvoker)delegate
                                 {
+                                    TxtClors clset;
                                     List<string> stlist = new List<string>();
                                     stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
-                                    if (inp == outp)
-                                        stlist.Add("Прием");
-                                    if (showASCII)
-                                        stlist.Add(glmessage);
-                                    if (showHEX)
-                                        stlist.Add(GetHex(glmessage));
-                                    if (showBIN)
-                                        stlist.Add(GetBin(glmessage));
+                                    stlist.Add("Прием");
+                                    stlist.Add(glmessage);
+                                    stlist.Add(GetHex(glmessage));
+                                    stlist.Add(GetBin(glmessage));
+                                    IO.Rows.Add(stlist.ToArray());
+                                    clset = new TxtClors();
+                                    clset.cl = GetCl;
+                                    clset.IO = IO;
+                                    clset.row = IO.Rows.Count - 1;
+                                    TxColors.Add(clset);
                                     inp.Rows.Add(stlist.ToArray());
-                                    TxtClors clset;
+                                    clset = new TxtClors();
                                     clset.cl = GetCl;
                                     clset.IO = inp;
                                     clset.row = inp.Rows.Count - 1;
                                     TxColors.Add(clset);
                                     ChangeColors();
                                     glmessage = "";
-                                    if (outp.RowCount > 2)
+                                    if (inp.RowCount > 2)
                                         inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
+                                    if (IO.RowCount > 2)
+                                        IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
                                 });
                             }
                         }
@@ -609,28 +555,32 @@ namespace ComCSForms
                         string msg = _serialPort.ReadExisting();
                         if (msg != "")
                         {
-                            inp.Invoke((MethodInvoker)delegate
+                            IO.Invoke((MethodInvoker)delegate
                             {
                                 List<string> stlist = new List<string>();
                                 stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
-                                if (inp == outp)
-                                    stlist.Add("Прием");
-                                if (showASCII)
-                                    stlist.Add(msg);
-                                if (showHEX)
-                                    stlist.Add(GetHex(msg));
-                                if (showBIN)
-                                    stlist.Add(GetBin(msg));
-                                inp.Rows.Add(stlist.ToArray());
+                                stlist.Add("Прием");
+                                stlist.Add(msg);
+                                stlist.Add(GetHex(msg));
+                                stlist.Add(GetBin(msg));
+                                IO.Rows.Add(stlist.ToArray());
                                 TxtClors clset;
+                                clset.cl = GetCl;
+                                clset.IO = IO;
+                                clset.row = IO.Rows.Count - 1;
+                                TxColors.Add(clset);
+                                inp.Rows.Add(stlist.ToArray());
+                                clset = new TxtClors();
                                 clset.cl = GetCl;
                                 clset.IO = inp;
                                 clset.row = inp.Rows.Count - 1;
                                 TxColors.Add(clset);
                                 ChangeColors();
                                 glmessage = "";
-                                if (outp.RowCount > 2)
+                                if (inp.RowCount > 2)
                                     inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
+                                if (IO.RowCount > 2)
+                                    IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
                             });
                         }
                     }
@@ -647,6 +597,7 @@ namespace ComCSForms
             string msg = mmsg as string;
             Button btold = ooldbt as Button;
             Button btnow = bbtnow as Button;
+            TxtClors clset;
 
             if (cicleCheck)
             {
@@ -663,21 +614,27 @@ namespace ComCSForms
                             {
                                 List<string> stlist = new List<string>();
                                 stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
-                                if (inp == outp)
-                                    stlist.Add("Отправка");
-                                if (showASCII)
-                                    stlist.Add(msg);
-                                if (showHEX)
-                                    stlist.Add(GetHex(msg));
-                                if (showBIN)
-                                    stlist.Add(GetBin(msg));
+                                stlist.Add("Отправка");
+                                stlist.Add(msg);
+                                stlist.Add(GetHex(msg));
+                                stlist.Add(GetBin(msg));
                                 outp.Rows.Add(stlist.ToArray());
-                                TxtClors clset;
-                                clset.cl = GetCl;
+                                clset = new TxtClors();
+                                clset.cl = SendCl;
                                 clset.IO = outp;
                                 clset.row = outp.Rows.Count - 2;
                                 TxColors.Add(clset);
+                                IO.Rows.Add(stlist.ToArray());
+                                clset = new TxtClors();
+                                clset.cl = SendCl;
+                                clset.IO = IO;
+                                clset.row = IO.Rows.Count - 1;
+                                TxColors.Add(clset);
                                 ChangeColors();
+                                if (outp.RowCount > 2)
+                                    outp.FirstDisplayedScrollingRowIndex = outp.RowCount - 1;
+                                if (IO.RowCount > 2)
+                                    IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
                             });
                             if(csleep)
                             {
@@ -706,21 +663,27 @@ namespace ComCSForms
                             {
                                 List<string> stlist = new List<string>();
                                 stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
-                                if (inp == outp)
-                                    stlist.Add("Отправка");
-                                if (showASCII)
-                                    stlist.Add(msg);
-                                if (showHEX)
-                                    stlist.Add(GetHex(msg));
-                                if (showBIN)
-                                    stlist.Add(GetBin(msg));
+                                stlist.Add("Отправка");
+                                stlist.Add(msg);
+                                stlist.Add(GetHex(msg));
+                                stlist.Add(GetBin(msg));
                                 outp.Rows.Add(stlist.ToArray());
-                                TxtClors clset;
-                                clset.cl = GetCl;
+                                clset = new TxtClors();
+                                clset.cl = SendCl;
                                 clset.IO = outp;
-                                clset.row = outp.Rows.Count - 2;
+                                clset.row = outp.Rows.Count - 1;
+                                TxColors.Add(clset);
+                                IO.Rows.Add(stlist.ToArray());
+                                clset = new TxtClors();
+                                clset.cl = SendCl;
+                                clset.IO = IO;
+                                clset.row = IO.Rows.Count - 1;
                                 TxColors.Add(clset);
                                 ChangeColors();
+                                if (outp.RowCount > 2)
+                                    outp.FirstDisplayedScrollingRowIndex = outp.RowCount - 1;
+                                if (IO.RowCount > 2)
+                                    IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
                             });
                             if (csleep)
                             {
@@ -826,7 +789,7 @@ namespace ComCSForms
             var list = Properties.Settings.Default.Comands.Cast<string>().ToList();
             for (int i = 0; i < list.Count; i++)
             {
-                SendCombo sc = new SendCombo();
+                SendCombo sc = new SendCombo(SLpanel.Size);
                 Button bt = (Button)sc.Controls.Find("SCbt", false)[0];
                 Button btmin = (Button)sc.Controls.Find("SCbm", false)[0];
                 TextBox tb = (TextBox)sc.Controls.Find("SCtb", false)[0];
@@ -848,7 +811,10 @@ namespace ComCSForms
                 Plusbt_Click(PLbt, new EventArgs());
             }
             this.timer1.Start();
-            RefreshIO(false);
+            CreateIO();
+            IO1_2 = false;
+            RefreshIO();
+            this.PortForm_ResizeEnd(this, new EventArgs());
         }
 
         private void FileSend_Click(object sender, EventArgs e)
@@ -869,7 +835,7 @@ namespace ComCSForms
 
         private void Plusbt_Click(object sender, EventArgs e)
         {
-            SendCombo sc = new SendCombo();
+            SendCombo sc = new SendCombo(SLpanel.Size);
             Button bt = (Button)sc.Controls.Find("SCbt", false)[0];
             Button btmin = (Button)sc.Controls.Find("SCbm", false)[0];            
             TextBox tb = (TextBox)sc.Controls.Find("SCtb", false)[0];
@@ -908,6 +874,28 @@ namespace ComCSForms
             }
         }
 
+        private void PortForm_ResizeEnd(object sender, EventArgs e)
+        {
+            SLpanel.Size = new Size(((this.Width*6)/13),this.Height - this.MNbt.Size.Height - 100);
+            IOLayout.Size= new Size(((this.Width*7)/13), this.Height - this.MNbt.Size.Height - 100);
+            SLpanel.Location = new Point(this.Width - SLpanel.Width-20, 40);
+            MNtb.Size = new Size((this.Width -700), MNtb.Size.Height);
+            IOSplit.Size = this.IOLayout.Size;
+            IO.Size = this.IOLayout.Size;
+            IOSplit.SplitterDistance = IOSplit.Width / 2;
+            for(int i=0;i<SLpanel.Controls.Count;i++)
+            {
+                (SLpanel.Controls[i]as SendCombo).Size = new Size(SLpanel.Size.Width-50, SLpanel.Controls[i].Size.Height);
+            }
+            outp.Size = new Size(IOSplit.Panel1.Width, IOSplit.Height);
+            inp.Size = new Size(IOSplit.Panel2.Width, IOSplit.Height);
+            IOLayout.Refresh();
+        }
+        private void SLpanel_Scroll(object sender, ScrollEventArgs e)
+        {
+            
+        }
+
         private void MNtb_TextChanged(object sender, EventArgs e)
         {
             TextBox tb = sender as TextBox;
@@ -937,9 +925,9 @@ namespace ComCSForms
 
         private void button4_Click(object sender, EventArgs e)
         {
-            inp.Rows.Clear();
+            IO.Rows.Clear();
             outp.Rows.Clear();
-            inp.Refresh();
+            IO.Refresh();
             outp.Refresh();
             TxColors.Clear();
         }
@@ -957,10 +945,14 @@ namespace ComCSForms
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (inp == outp)
-                RefreshIO(true);
+            IO1_2 = !IO1_2;
+            if (IO1_2)
+            {
+                splitbt.Text = "Объединить прием/отправку";
+            }
             else
-                RefreshIO(false);
+                splitbt.Text = "Разъеденить прием/отправку";
+            RefreshIO();
         }
     }
 }
