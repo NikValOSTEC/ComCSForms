@@ -186,6 +186,7 @@ namespace ComCSForms
             CiclNUD.Value = main.cicle_times;
             Stopmsgtext.Text = main.circlestopmsg;
             SendStopCheck.Checked = main.stop_on;
+            SpaceCheckBox.Checked = main.spacecheck;
             textBoxSend.ForeColor = main.SendCl;
             textBoxGet.ForeColor = main.GetCl;
             (groupBoxsendformat.Controls.Find("radiobutton" + main.sndformat.ToString(), false)[0] as RadioButton).Checked=true;
@@ -292,6 +293,7 @@ namespace ComCSForms
                 main.cicleCheck = Ciclecheck.Checked;
                 main.cicle_time = Convert.ToInt32(CicleTimeUD.Value);
                 main.stop_on = SendStopCheck.Checked;
+                main.spacecheck = SpaceCheckBox.Checked;
                 main.cicle_times = Convert.ToInt32(CiclNUD.Value);
                 var checkedButton = groupBoxsendformat.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Name.ToString().Substring(11);
             switch (checkedButton)

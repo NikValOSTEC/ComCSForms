@@ -15,7 +15,7 @@ namespace ComCSForms
         public SendCombo(Size lys)
         {
             InitializeComponent();
-            this.Size= new Size(lys.Width - 50, this.Size.Height);
+            this.Size= new Size(lys.Width - 50, 40);
         }
 
         private void SCtb_SizeChanged(object sender, EventArgs e)

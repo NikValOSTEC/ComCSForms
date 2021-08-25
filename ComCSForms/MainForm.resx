@@ -190,29 +190,6 @@
         0LPiI1/UFElfsj1Bc85Cnc7wf1fn5h5khOf9BW3A8eil8a9wAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="PortOpenButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAABAVJREFUWEelV1lPE1EUnhgw0bjEqNFXF/RZE/+LW+KCDyqKS6Immoi88WDhAY1x
-        gQdxi5JaJSi2LkV9UFDQdqqphVJtinadQoEiLRzPN07rUC/ToT3Jl0yn597zzb3nnPtdyaw1NDQsd7lc
-        u4aHh2/EYrGPiUQinlSUbDKZzCqKEuPfveFw+LrX690BX21Y+fbUZtscCoVax8fHJzLZaXo3EKPm5z46
-        fqef9lx/rwLPl/gd/oMPfIPBYGtnZ+cmbZr5W11d3eJAwN80OTmZGQinqPZWH60++oikvfcNAZ9jt/tp
-        kMek0+mM3++3YC5tWnPmYOa8rJ6RiSk6yoErqh8IgxmhsrpdJTLKc/D2yHZ7R5U2vbF1d3dvHRsbi/YF
-        ErT+VKdw8hzwtauKrMrG00/o8w+FMCfm1sKIzel0VsHx1dcwLTloFU6oxzXnoArRf3osO/SQXnsjKgm7
-        3S5eCexTMqnI+HIzwbfVP6fs9LSKbfUOoY8eIIGViMfjHmFOBAKBxuT4b1pXZNmBBfse0PvBGM3MzKhA
-        9uOdyFePqjNPaDQ9RZyYjVrYv+ZwODYh22tufhQOLER1a28+eA7VLb1C30Kc4JJFdcwqUdT5t5+jVLG/
-        +FesqLFReCT9HwG8W3HYJhyjx8ID7TQUGSP0CTU4uhYaR02bua9HwykMnkOzwyccU4iTdz+pzYpzYZkk
-        y/LOqcw0rTxijv25djedt8r08ks4HxjPeHe23aX6iMbqsfbYYzV53W73dgm9/e23qNDRCBdscp5A3UNZ
-        6GOED0Nx4tjXJD5YPjQ98wqdjFAugSsvB4hj90jcJmNH2vqETkbQE7hQAoFT9z6jRUdAILv76juhkxHK
-        JYBS5vMmIylMAEeqyMkI9TZPWQT23uj5SwBbgPNc5GSEWQR4NUQ+RkBDUrcASWi2fvUolwD6SRxJiDJE
-        Lxc5GaFcAj2DWhmiEUFGmVE7epSTA2tqH1GWY35BI8q1YkgukfNcqC+jCrD/+VYMw8EA3Vc5D+lVahku
-        ZKnmj6SID8AWNTjMxsoXRyT0n2iQCKUSwNfz0T/V0VGgEX0+XxNEaDEdmEMpBHSCxKKF/WeQSdFo1NP/
-        XaGlJiSZnoCZs2A5SzJXMMm1H5MtFssiLexsw7KkUqmok0VpMRLzIYDgb/jEZVEa6erq2qiFExsr4y1w
-        7P+eoA2n594OswSw7K6gKssjmFsLY2yvmCX3aXfuYoJLRuHExQhAmCDhUrzn3HLl/5KumGGfWClfRMai
-        REFE36zmIrCm9rF6V0SpYWxJVzO9gTlqFo1Dfzl1eH7lCeD58gsf9fjjqtSCbygUbLFaraVfTgsNHRNt
-        e5jJ4HrOF4w4tASAZ7wDUfiYv55L0h/zh2oi7CJBmQAAAABJRU5ErkJggg==
-</value>
-  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>96</value>
   </metadata>

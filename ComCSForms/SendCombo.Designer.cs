@@ -49,6 +49,8 @@ namespace ComCSForms
             // 
             this.SCbt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.SCbt.FlatAppearance.BorderSize = 0;
+            this.SCbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SCbt.Image = ((System.Drawing.Image)(resources.GetObject("SCbt.Image")));
             this.SCbt.Location = new System.Drawing.Point(327, 1);
             this.SCbt.Name = "SCbt";
@@ -60,6 +62,8 @@ namespace ComCSForms
             // 
             this.SCbm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.SCbm.FlatAppearance.BorderSize = 0;
+            this.SCbm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SCbm.Image = ((System.Drawing.Image)(resources.GetObject("SCbm.Image")));
             this.SCbm.Location = new System.Drawing.Point(369, 0);
             this.SCbm.Name = "SCbm";
@@ -87,8 +91,8 @@ namespace ComCSForms
 
         #endregion
 
-        private System.Windows.Forms.TextBox SCtb;
-        private System.Windows.Forms.Button SCbt;
-        private System.Windows.Forms.Button SCbm;
+        public System.Windows.Forms.TextBox SCtb;
+        public System.Windows.Forms.Button SCbt;
+        public System.Windows.Forms.Button SCbm;
     }
 }

@@ -46,6 +46,7 @@ namespace ComCSForms
         static SplitContainer IOSplit;
         public bool showHEX, showASCII, showBIN,IO1_2;
         public bool blportopen;
+        public bool spacecheck;
         public PortForm()
         {
             InitializeComponent();
@@ -323,7 +324,8 @@ namespace ComCSForms
             thRead = null;
             if (_serialPort != null)
                 _serialPort.Close();
-            this.PortOpenButton.Image = Image.FromFile("C:/Users/valyayev.n/Desktop/COM img/Open.png");
+            this.PortOpenButton.Text = "Открыть";
+            this.pictureBoxPortState.Image = Image.FromFile("Stop_img.png");
             this.PortCombobox.Enabled = true;
             _serialPort = null;
             circle = false;
@@ -347,8 +349,8 @@ namespace ComCSForms
                 blportopen = true;
                 thRead = new Thread(readCOM);
                 thRead.Start();
-                this.PortOpenButton.Text = "";
-                this.PortOpenButton.Image = Image.FromFile("C:/Users/valyayev.n/Desktop/COM img/Stop_img.png");
+                this.PortOpenButton.Text = "Закрыть";
+                this.pictureBoxPortState.Image = Image.FromFile("Open_img.png");
                 this.PortOpenButton.Refresh();
                 PortCombobox.Enabled=false;
             }
@@ -416,22 +418,39 @@ namespace ComCSForms
                 msg = deAPH(mmsg);
             else
                 msg = mmsg;
+            if(spacecheck)
+            {
+                if (msg.Contains(' ')) 
+                {
+                    DialogResult dialogResult = MessageBox.Show("Отправить сообщение вырезав пробелы?", "Обнаружены пробелы в сообщении", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        string[] msgNS;
+                        msgNS = msg.Split(' ');
+                        msg = "";
+                        foreach (var item in msgNS)
+                        {
+                            msg += item;
+                        }
+                    }
+                }
+            }
             if (_serialPort != null)
             {
                 if (cicleCheck)
                 {
-                    circle = true;
                     Button btsendr = sender as Button;
                     Button bt = new Button();
+                    circle = true;
                     bt.Size = btsendr.Size;
-                    bt.Image = Image.FromFile("C:/Users/valyayev.n/Desktop/COM img/Stop_img.png");
+                    bt.Image = Image.FromFile("Stop_img.png");
                     bt.Location = btsendr.Location;
                     bt.Name = btsendr.Name + "_2_";
                     bt.Click += btstop;
                     (btsendr.Parent).Controls.Add(bt);
                     btsendr.Visible = false;
                     btsendr.Enabled = false;
-                    Thread.Sleep(100);
+                    Thread.Sleep(20);
                     ThreadStart starter = delegate { CirSend(msg, btsendr, bt); };
                     thSend = new Thread(starter);
                     thSend.Start();
@@ -497,6 +516,11 @@ namespace ComCSForms
 
         private void Send_Button_Click(object sender, EventArgs e)
         {
+            if (thSend != null)
+            {
+                circle = false;
+                return;
+            }
             Send(this.MNtb.Text,sender);
         }
         private void readCOM()
@@ -601,7 +625,8 @@ namespace ComCSForms
 
             if (cicleCheck)
             {
-                bool csleep = (cicle_time > 1500);
+                circle = true;
+                bool csleep = (cicle_time > 100);
                 DateTime sendt;
                 if (cicle_times > 0)
                     for (int i = 0; i < cicle_times; i++)
@@ -706,7 +731,12 @@ namespace ComCSForms
                 btold.Enabled = true;
                 btold.Visible = true;
             });
-            btnow.Invoke((MethodInvoker)delegate { btnow.Parent.Controls.Remove(btnow); });
+            btnow.Invoke((MethodInvoker)delegate 
+            { 
+                btnow.Parent.Controls.Remove(btnow);
+                thSend = null;
+            });
+            return;
             
         }
 
@@ -750,13 +780,16 @@ namespace ComCSForms
             cicle_time = 0;
             cicle_times = 0;
             circle = false;
+            spacecheck = false;
             colors=true;
             sndformat = SendFormat.ASCII;
             TxColors = new List<TxtClors>();
             _serialPort = null;
             thRead = null;
+            thSend = null;
             blportopen = false;
             PortComboBox_Click(PortCombobox, new EventArgs());
+            this.SLpanel.MouseWheel += SLpanel_Scroll;
 
             try
             {
@@ -854,6 +887,11 @@ namespace ComCSForms
 
         private void Bt_Click(object sender, EventArgs e)
         {
+            if (thSend != null)
+            {
+                circle = false;
+                return;
+            }
             Button btcl = sender as Button;
             Send(btcl.Parent.Controls.Find("SCtb", true)[0].Text,sender);
 
@@ -893,7 +931,13 @@ namespace ComCSForms
         }
         private void SLpanel_Scroll(object sender, ScrollEventArgs e)
         {
+            SLpanel.Focus();
             
+        }
+        private void SLpanel_Scroll(object sender, MouseEventArgs e)
+        {
+            SLpanel.Focus();
+
         }
 
         private void MNtb_TextChanged(object sender, EventArgs e)

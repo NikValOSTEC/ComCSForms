@@ -69,6 +69,7 @@ namespace ComCSForms
             this.Stopstrlabelsd = new System.Windows.Forms.Label();
             this.clearstoplistsd = new System.Windows.Forms.Button();
             this.StopstrcomboBoxsd = new System.Windows.Forms.ComboBox();
+            this.SpaceCheckBox = new System.Windows.Forms.CheckBox();
             this.decods.SuspendLayout();
             this.groupBoxsendformat.SuspendLayout();
             this.groupBoxShow.SuspendLayout();
@@ -382,8 +383,10 @@ namespace ComCSForms
             // 
             // SetButt
             // 
+            this.SetButt.FlatAppearance.BorderSize = 2;
+            this.SetButt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SetButt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.SetButt.Location = new System.Drawing.Point(408, 309);
+            this.SetButt.Location = new System.Drawing.Point(248, 385);
             this.SetButt.Name = "SetButt";
             this.SetButt.Size = new System.Drawing.Size(103, 35);
             this.SetButt.TabIndex = 14;
@@ -422,9 +425,11 @@ namespace ComCSForms
             // 
             // clearstoplistgt
             // 
+            this.clearstoplistgt.FlatAppearance.BorderSize = 2;
+            this.clearstoplistgt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.clearstoplistgt.Location = new System.Drawing.Point(29, 83);
             this.clearstoplistgt.Name = "clearstoplistgt";
-            this.clearstoplistgt.Size = new System.Drawing.Size(80, 22);
+            this.clearstoplistgt.Size = new System.Drawing.Size(80, 32);
             this.clearstoplistgt.TabIndex = 18;
             this.clearstoplistgt.Text = "Очистить";
             this.clearstoplistgt.UseVisualStyleBackColor = true;
@@ -456,9 +461,11 @@ namespace ComCSForms
             // 
             // clearstoplistsd
             // 
+            this.clearstoplistsd.FlatAppearance.BorderSize = 2;
+            this.clearstoplistsd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.clearstoplistsd.Location = new System.Drawing.Point(152, 83);
             this.clearstoplistsd.Name = "clearstoplistsd";
-            this.clearstoplistsd.Size = new System.Drawing.Size(80, 22);
+            this.clearstoplistsd.Size = new System.Drawing.Size(80, 32);
             this.clearstoplistsd.TabIndex = 21;
             this.clearstoplistsd.Text = "Очистить";
             this.clearstoplistsd.UseVisualStyleBackColor = true;
@@ -475,11 +482,22 @@ namespace ComCSForms
             this.StopstrcomboBoxsd.Size = new System.Drawing.Size(84, 21);
             this.StopstrcomboBoxsd.TabIndex = 19;
             // 
+            // SpaceCheckBox
+            // 
+            this.SpaceCheckBox.AutoSize = true;
+            this.SpaceCheckBox.Location = new System.Drawing.Point(307, 310);
+            this.SpaceCheckBox.Name = "SpaceCheckBox";
+            this.SpaceCheckBox.Size = new System.Drawing.Size(128, 17);
+            this.SpaceCheckBox.TabIndex = 20;
+            this.SpaceCheckBox.Text = "Проверять пробелы";
+            this.SpaceCheckBox.UseVisualStyleBackColor = true;
+            // 
             // SetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(577, 392);
+            this.ClientSize = new System.Drawing.Size(577, 432);
+            this.Controls.Add(this.SpaceCheckBox);
             this.Controls.Add(this.groupBoxstopstr);
             this.Controls.Add(this.ColorscheckBox);
             this.Controls.Add(this.textBoxSend);
@@ -560,5 +578,6 @@ namespace ComCSForms
         private System.Windows.Forms.Label Stopstrlabelsd;
         private System.Windows.Forms.Button clearstoplistsd;
         private System.Windows.Forms.ComboBox StopstrcomboBoxsd;
+        private System.Windows.Forms.CheckBox SpaceCheckBox;
     }
 }

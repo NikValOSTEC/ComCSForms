@@ -46,6 +46,8 @@ namespace ComCSForms
             this.SLpanel = new System.Windows.Forms.FlowLayoutPanel();
             this.Setbt = new System.Windows.Forms.Button();
             this.PortOpenButton = new System.Windows.Forms.Button();
+            this.pictureBoxPortState = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPortState)).BeginInit();
             this.SuspendLayout();
             // 
             // PortCombobox
@@ -53,7 +55,7 @@ namespace ComCSForms
             this.PortCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PortCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PortCombobox.FormattingEnabled = true;
-            this.PortCombobox.Location = new System.Drawing.Point(964, 7);
+            this.PortCombobox.Location = new System.Drawing.Point(970, 9);
             this.PortCombobox.Name = "PortCombobox";
             this.PortCombobox.Size = new System.Drawing.Size(121, 21);
             this.PortCombobox.TabIndex = 1;
@@ -76,10 +78,12 @@ namespace ComCSForms
             // MNbt
             // 
             this.MNbt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.MNbt.FlatAppearance.BorderSize = 0;
+            this.MNbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MNbt.Image = ((System.Drawing.Image)(resources.GetObject("MNbt.Image")));
             this.MNbt.Location = new System.Drawing.Point(624, 617);
             this.MNbt.Name = "MNbt";
-            this.MNbt.Size = new System.Drawing.Size(64, 64);
+            this.MNbt.Size = new System.Drawing.Size(64, 56);
             this.MNbt.TabIndex = 5;
             this.MNbt.UseVisualStyleBackColor = true;
             this.MNbt.Click += new System.EventHandler(this.Send_Button_Click);
@@ -87,8 +91,10 @@ namespace ComCSForms
             // FileSend
             // 
             this.FileSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.FileSend.FlatAppearance.BorderSize = 0;
+            this.FileSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FileSend.Image = ((System.Drawing.Image)(resources.GetObject("FileSend.Image")));
-            this.FileSend.Location = new System.Drawing.Point(694, 617);
+            this.FileSend.Location = new System.Drawing.Point(864, 639);
             this.FileSend.Name = "FileSend";
             this.FileSend.Size = new System.Drawing.Size(32, 36);
             this.FileSend.TabIndex = 7;
@@ -99,6 +105,8 @@ namespace ComCSForms
             // 
             this.PLbt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.PLbt.BackColor = System.Drawing.Color.Transparent;
+            this.PLbt.FlatAppearance.BorderSize = 0;
+            this.PLbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PLbt.Image = ((System.Drawing.Image)(resources.GetObject("PLbt.Image")));
             this.PLbt.Location = new System.Drawing.Point(1188, 622);
             this.PLbt.Name = "PLbt";
@@ -121,9 +129,11 @@ namespace ComCSForms
             // splitbt
             // 
             this.splitbt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitbt.Location = new System.Drawing.Point(732, 650);
+            this.splitbt.FlatAppearance.BorderSize = 2;
+            this.splitbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.splitbt.Location = new System.Drawing.Point(694, 646);
             this.splitbt.Name = "splitbt";
-            this.splitbt.Size = new System.Drawing.Size(164, 31);
+            this.splitbt.Size = new System.Drawing.Size(164, 23);
             this.splitbt.TabIndex = 34;
             this.splitbt.Text = "Разделить Прием/Отправка";
             this.splitbt.UseVisualStyleBackColor = true;
@@ -132,9 +142,11 @@ namespace ComCSForms
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(732, 617);
+            this.button4.FlatAppearance.BorderSize = 2;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Location = new System.Drawing.Point(694, 622);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(163, 31);
+            this.button4.Size = new System.Drawing.Size(164, 26);
             this.button4.TabIndex = 35;
             this.button4.Text = "Очистить Прием/Отправка";
             this.button4.UseVisualStyleBackColor = true;
@@ -151,9 +163,10 @@ namespace ComCSForms
             // TimeLable
             // 
             this.TimeLable.AutoSize = true;
-            this.TimeLable.Location = new System.Drawing.Point(437, 10);
+            this.TimeLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.TimeLable.Location = new System.Drawing.Point(9, 7);
             this.TimeLable.Name = "TimeLable";
-            this.TimeLable.Size = new System.Drawing.Size(35, 13);
+            this.TimeLable.Size = new System.Drawing.Size(51, 20);
             this.TimeLable.TabIndex = 39;
             this.TimeLable.Text = "label1";
             // 
@@ -178,6 +191,8 @@ namespace ComCSForms
             // Setbt
             // 
             this.Setbt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Setbt.FlatAppearance.BorderSize = 0;
+            this.Setbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Setbt.Image = ((System.Drawing.Image)(resources.GetObject("Setbt.Image")));
             this.Setbt.Location = new System.Drawing.Point(1240, 2);
             this.Setbt.Name = "Setbt";
@@ -189,13 +204,22 @@ namespace ComCSForms
             // PortOpenButton
             // 
             this.PortOpenButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.PortOpenButton.Image = ((System.Drawing.Image)(resources.GetObject("PortOpenButton.Image")));
-            this.PortOpenButton.Location = new System.Drawing.Point(919, 0);
+            this.PortOpenButton.FlatAppearance.BorderSize = 0;
+            this.PortOpenButton.Location = new System.Drawing.Point(886, 2);
             this.PortOpenButton.Name = "PortOpenButton";
-            this.PortOpenButton.Size = new System.Drawing.Size(39, 36);
+            this.PortOpenButton.Size = new System.Drawing.Size(78, 34);
             this.PortOpenButton.TabIndex = 42;
+            this.PortOpenButton.Text = "Открыть";
             this.PortOpenButton.UseVisualStyleBackColor = true;
             this.PortOpenButton.Click += new System.EventHandler(this.PortOpenButton_Click);
+            // 
+            // pictureBoxPortState
+            // 
+            this.pictureBoxPortState.Location = new System.Drawing.Point(829, 0);
+            this.pictureBoxPortState.Name = "pictureBoxPortState";
+            this.pictureBoxPortState.Size = new System.Drawing.Size(39, 36);
+            this.pictureBoxPortState.TabIndex = 43;
+            this.pictureBoxPortState.TabStop = false;
             // 
             // PortForm
             // 
@@ -203,6 +227,7 @@ namespace ComCSForms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Menu;
             this.ClientSize = new System.Drawing.Size(1284, 681);
+            this.Controls.Add(this.pictureBoxPortState);
             this.Controls.Add(this.PortOpenButton);
             this.Controls.Add(this.FileSend);
             this.Controls.Add(this.SLpanel);
@@ -224,6 +249,7 @@ namespace ComCSForms
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResizeEnd += new System.EventHandler(this.PortForm_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.PortForm_ResizeEnd);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPortState)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -245,6 +271,7 @@ namespace ComCSForms
         private System.Windows.Forms.FlowLayoutPanel SLpanel;
         private System.Windows.Forms.Button Setbt;
         private System.Windows.Forms.Button PortOpenButton;
+        private System.Windows.Forms.PictureBox pictureBoxPortState;
     }
 }
 
