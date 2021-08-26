@@ -74,7 +74,8 @@ namespace ComCSForms
             IO.RowHeadersVisible = false;
             IO.GridColor = Color.White;
             IO.BackgroundColor = Color.White;
-            IO.CellDoubleClick += dataGridView_CellClick;
+            IO.CellDoubleClick += dataGridView_CellDoubleClick;
+            IO.MouseClick += dataGrid_MouseClick;
             IO.AllowUserToResizeRows = false;
             DataGridViewTextBoxColumn colm = new DataGridViewTextBoxColumn();
             colm.HeaderText = "Время";
@@ -115,7 +116,8 @@ namespace ComCSForms
             outp.RowHeadersVisible = false;
             outp.GridColor = Color.White;
             outp.BackgroundColor = Color.White;
-            outp.CellDoubleClick += dataGridView_CellClick;
+            outp.CellDoubleClick += dataGridView_CellDoubleClick;
+            outp.MouseClick += dataGrid_MouseClick;
             outp.AllowUserToResizeRows = false;
             colm = new DataGridViewTextBoxColumn();
             colm.HeaderText = "Время";
@@ -157,7 +159,8 @@ namespace ComCSForms
             inp.RowHeadersVisible = false;
             inp.GridColor = Color.White;
             inp.BackgroundColor = Color.White;
-            inp.CellDoubleClick += dataGridView_CellClick;
+            inp.CellDoubleClick += dataGridView_CellDoubleClick;
+            inp.MouseClick += dataGrid_MouseClick;
             inp.AllowUserToResizeRows = false;
             colm = new DataGridViewTextBoxColumn();
             colm.HeaderText = "Время";
@@ -325,7 +328,8 @@ namespace ComCSForms
             if (_serialPort != null)
                 _serialPort.Close();
             this.PortOpenButton.Text = "Открыть";
-            this.pictureBoxPortState.Image = Image.FromFile("Stop_img.png");
+            this.pictureBoxPortStateStop.Visible = true;
+            this.pictureBoxPortStateOpen.Visible = false;
             this.PortCombobox.Enabled = true;
             _serialPort = null;
             circle = false;
@@ -350,7 +354,8 @@ namespace ComCSForms
                 thRead = new Thread(readCOM);
                 thRead.Start();
                 this.PortOpenButton.Text = "Закрыть";
-                this.pictureBoxPortState.Image = Image.FromFile("Open_img.png");
+                this.pictureBoxPortStateStop.Visible = false;
+                this.pictureBoxPortStateOpen.Visible = true;
                 this.PortOpenButton.Refresh();
                 PortCombobox.Enabled=false;
             }
@@ -404,6 +409,15 @@ namespace ComCSForms
         private void btstop(object sender,EventArgs e)
         {
             circle = false;
+            Button btsendr, bt;
+            btsendr = sender as Button;
+            bt = btsendr.Parent.Controls.Find(btsendr.Name.Substring(0, btsendr.Name.Length - 1), false)[0] as Button;
+            btsendr.Visible = false;
+            btsendr.Enabled = false;
+            bt.Visible = true;
+            bt.Enabled = true;
+
+
         }
 
 
@@ -440,16 +454,15 @@ namespace ComCSForms
                 if (cicleCheck)
                 {
                     Button btsendr = sender as Button;
-                    Button bt = new Button();
+                    Button bt;
                     circle = true;
-                    bt.Size = btsendr.Size;
-                    bt.Image = Image.FromFile("Stop_img.png");
-                    bt.Location = btsendr.Location;
-                    bt.Name = btsendr.Name + "_2_";
+                    bt = btsendr.Parent.Controls.Find(btsendr.Name+"S",false)[0] as Button;
+                    bt.Click -= btstop;
                     bt.Click += btstop;
-                    (btsendr.Parent).Controls.Add(bt);
                     btsendr.Visible = false;
                     btsendr.Enabled = false;
+                    bt.Visible = true;
+                    bt.Enabled = true;
                     Thread.Sleep(20);
                     ThreadStart starter = delegate { CirSend(msg, btsendr, bt); };
                     thSend = new Thread(starter);
@@ -732,8 +745,9 @@ namespace ComCSForms
                 btold.Visible = true;
             });
             btnow.Invoke((MethodInvoker)delegate 
-            { 
-                btnow.Parent.Controls.Remove(btnow);
+            {
+                btnow.Visible = false;
+                btnow.Enabled = false;
                 thSend = null;
             });
             return;
@@ -914,8 +928,8 @@ namespace ComCSForms
 
         private void PortForm_ResizeEnd(object sender, EventArgs e)
         {
-            SLpanel.Size = new Size(((this.Width*6)/13),this.Height - this.MNbt.Size.Height - 100);
-            IOLayout.Size= new Size(((this.Width*7)/13), this.Height - this.MNbt.Size.Height - 100);
+            SLpanel.Size = new Size(((this.Width*6)/13),this.Height - this.PLbt.Size.Height - 80);
+            IOLayout.Size= new Size(((this.Width*7)/13), this.Height - this.PLbt.Size.Height - 80);
             SLpanel.Location = new Point(this.Width - SLpanel.Width-20, 40);
             MNtb.Size = new Size((this.Width -700), MNtb.Size.Height);
             IOSplit.Size = this.IOLayout.Size;
@@ -953,7 +967,7 @@ namespace ComCSForms
             { }
         }
 
-        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
@@ -966,7 +980,46 @@ namespace ComCSForms
                 MessageBox.Show(ex.Message);
             }
         }
+        private void menuItemCopy_Click(object sender, System.EventArgs e)
+        {
+            DataGridView dg = ((sender as MenuItem).Parent as ContextMenu).SourceControl as DataGridView;
+            Clipboard.SetText(dg.SelectedCells[0].Value.ToString());
+        }
 
+        private void menuItemPaint_Click(object sender, System.EventArgs e)
+        {
+            DataGridView dg = ((sender as MenuItem).Parent as ContextMenu).SourceControl as DataGridView;
+            if (dg.SelectedCells[0].Style.BackColor == Color.Yellow)
+            {
+                dg.SelectedCells[0].Style.BackColor = dg.Columns[dg.SelectedCells[0].ColumnIndex].DefaultCellStyle.BackColor;
+            }
+            else
+                dg.SelectedCells[0].Style.BackColor = Color.Yellow;
+        }
+
+        private void dataGrid_MouseClick(object sender, MouseEventArgs e)
+        {
+            DataGridView dataGrid = sender as DataGridView;
+            if (e.Button == MouseButtons.Right)
+            {
+                var hti = dataGrid.HitTest(e.X, e.Y);
+                dataGrid.ClearSelection();
+                if (hti.RowIndex >= 0 && hti.ColumnIndex >= 0)
+                {
+                    dataGrid.Rows[hti.RowIndex].Cells[hti.ColumnIndex].Selected = true;
+                    MenuItem mi;
+                    ContextMenu m = new ContextMenu();
+                    mi = new MenuItem("Выделить");
+                    mi.Click += menuItemPaint_Click;
+                    m.MenuItems.Add(mi);
+                    mi = new MenuItem("Копировать");
+                    mi.Click += menuItemCopy_Click;
+                    m.MenuItems.Add(mi);
+                    m.Show(dataGrid, new Point(e.X, e.Y));
+                }
+
+            }
+        }
         private void button4_Click(object sender, EventArgs e)
         {
             IO.Rows.Clear();

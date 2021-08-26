@@ -54,8 +54,10 @@ namespace ComCSForms
             this.dataGrid.Location = new System.Drawing.Point(0, 0);
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.RowHeadersVisible = false;
+            this.dataGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGrid.Size = new System.Drawing.Size(879, 108);
             this.dataGrid.TabIndex = 1;
+            this.dataGrid.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGrid_MouseClick);
             // 
             // BigViewForm
             // 

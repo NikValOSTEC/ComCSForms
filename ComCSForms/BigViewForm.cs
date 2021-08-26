@@ -75,6 +75,64 @@ namespace ComCSForms
             sc = isc;
             InitializeComponent();
         }
+
+        private void menuItemCopy_Click(object sender, System.EventArgs e)
+        {
+            DataGridView dg=((sender as MenuItem).Parent as ContextMenu).SourceControl as DataGridView;
+            string cb="";
+            dg.Rows[dg.SelectedCells[0].RowIndex].Selected = true;
+            if(dg.SelectedRows[0].HeaderCell.Value.ToString() =="ASCII")
+            {
+                for(int i=0;i<dg.SelectedRows[0].Cells.Count;i++)
+                {
+                    cb += dg.SelectedRows[0].Cells[i].Value.ToString();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < dg.SelectedRows[0].Cells.Count; i++)
+                {
+                    cb += dg.SelectedRows[0].Cells[i].Value.ToString()+" ";
+                }
+                cb = cb.Substring(0, cb.Length);
+            }
+            Clipboard.SetText(cb);
+        }
+
+        private void menuItemPaint_Click(object sender, System.EventArgs e)
+        {
+            DataGridView dg = ((sender as MenuItem).Parent as ContextMenu).SourceControl as DataGridView;
+            if(dg.SelectedCells[0].Style.BackColor==Color.Yellow)
+            {
+                dg.SelectedCells[0].Style.BackColor = dg.Columns[dg.SelectedCells[0].ColumnIndex].DefaultCellStyle.BackColor;
+            }
+            else
+                dg.SelectedCells[0].Style.BackColor = Color.Yellow;
+        }
+
+        private void dataGrid_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var hti = dataGrid.HitTest(e.X, e.Y);
+                dataGrid.ClearSelection();
+                if (hti.RowIndex >= 0 && hti.ColumnIndex >= 0)
+                {
+                    dataGrid.Rows[hti.RowIndex].Cells[hti.ColumnIndex].Selected = true;
+                    MenuItem mi;
+                    ContextMenu m = new ContextMenu();
+                    mi = new MenuItem("Выделить");
+                    mi.Click += menuItemPaint_Click;
+                    m.MenuItems.Add(mi);
+                    mi = new MenuItem("Копировать");
+                    mi.Click += menuItemCopy_Click;
+                    m.MenuItems.Add(mi);
+                    m.Show(dataGrid, new Point(e.X, e.Y));
+                }
+
+            }
+        }
+
         private void BigViewForm_Load(object sender, EventArgs e)
         {
             dataGrid.ReadOnly = true;

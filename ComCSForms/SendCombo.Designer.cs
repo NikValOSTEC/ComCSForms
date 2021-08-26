@@ -33,6 +33,7 @@ namespace ComCSForms
             this.SCtb = new System.Windows.Forms.TextBox();
             this.SCbt = new System.Windows.Forms.Button();
             this.SCbm = new System.Windows.Forms.Button();
+            this.SCbtS = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SCtb
@@ -52,9 +53,9 @@ namespace ComCSForms
             this.SCbt.FlatAppearance.BorderSize = 0;
             this.SCbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SCbt.Image = ((System.Drawing.Image)(resources.GetObject("SCbt.Image")));
-            this.SCbt.Location = new System.Drawing.Point(327, 1);
+            this.SCbt.Location = new System.Drawing.Point(375, 1);
             this.SCbt.Name = "SCbt";
-            this.SCbt.Size = new System.Drawing.Size(36, 36);
+            this.SCbt.Size = new System.Drawing.Size(36, 40);
             this.SCbt.TabIndex = 1;
             this.SCbt.UseVisualStyleBackColor = true;
             // 
@@ -65,23 +66,37 @@ namespace ComCSForms
             this.SCbm.FlatAppearance.BorderSize = 0;
             this.SCbm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SCbm.Image = ((System.Drawing.Image)(resources.GetObject("SCbm.Image")));
-            this.SCbm.Location = new System.Drawing.Point(369, 0);
+            this.SCbm.Location = new System.Drawing.Point(417, 0);
             this.SCbm.Name = "SCbm";
-            this.SCbm.Size = new System.Drawing.Size(28, 36);
+            this.SCbm.Size = new System.Drawing.Size(28, 40);
             this.SCbm.TabIndex = 2;
             this.SCbm.Text = "-";
             this.SCbm.UseVisualStyleBackColor = true;
+            // 
+            // SCbtS
+            // 
+            this.SCbtS.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SCbtS.FlatAppearance.BorderSize = 0;
+            this.SCbtS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SCbtS.Image = ((System.Drawing.Image)(resources.GetObject("SCbtS.Image")));
+            this.SCbtS.Location = new System.Drawing.Point(375, 0);
+            this.SCbtS.Name = "SCbtS";
+            this.SCbtS.Size = new System.Drawing.Size(36, 38);
+            this.SCbtS.TabIndex = 3;
+            this.SCbtS.UseVisualStyleBackColor = true;
             // 
             // SendCombo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Controls.Add(this.SCtb);
             this.Controls.Add(this.SCbm);
             this.Controls.Add(this.SCbt);
-            this.Controls.Add(this.SCtb);
+            this.Controls.Add(this.SCbtS);
             this.Name = "SendCombo";
-            this.Size = new System.Drawing.Size(400, 40);
+            this.Size = new System.Drawing.Size(448, 44);
             this.Load += new System.EventHandler(this.SendCombo_Load);
             this.SizeChanged += new System.EventHandler(this.SCtb_SizeChanged);
             this.ResumeLayout(false);
@@ -94,5 +109,6 @@ namespace ComCSForms
         public System.Windows.Forms.TextBox SCtb;
         public System.Windows.Forms.Button SCbt;
         public System.Windows.Forms.Button SCbm;
+        private System.Windows.Forms.Button SCbtS;
     }
 }
