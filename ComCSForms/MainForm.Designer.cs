@@ -234,6 +234,7 @@ namespace ComCSForms
             this.MNbt.Size = new System.Drawing.Size(36, 36);
             this.MNbt.TabIndex = 45;
             this.MNbt.UseVisualStyleBackColor = true;
+            this.MNbt.Click += new System.EventHandler(this.Send_Button_Click);
             // 
             // PortForm
             // 

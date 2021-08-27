@@ -32,6 +32,7 @@ namespace ComCSForms
         bool circle;
         public int cicle_time;
         public int cicle_times;
+        static DateTime lastread;
 
         public Color SendCl;
         public Color GetCl;
@@ -347,7 +348,7 @@ namespace ComCSForms
                 _serialPort.Handshake = Flowc;
 
                 // Set the read/write timeouts
-                _serialPort.ReadTimeout = 600;
+                _serialPort.ReadTimeout = 500;
                 _serialPort.WriteTimeout = 500;
                 _serialPort.Open();
                 blportopen = true;
@@ -542,9 +543,42 @@ namespace ComCSForms
             {
                 try
                 {
+                    if((Math.Abs(DateTime.Now.Second - lastread.Second)>=3)&&glmessage!="")
+                    {
+                        IO.Invoke((MethodInvoker)delegate {
+                            TxtClors clset;
+                            List<string> stlist = new List<string>();
+                            stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
+                            stlist.Add("Прием");
+                            stlist.Add(glmessage);
+                            stlist.Add(GetHex(glmessage));
+                            stlist.Add(GetBin(glmessage));
+                            IO.Rows.Add(stlist.ToArray());
+                            clset = new TxtClors();
+                            clset.cl = GetCl;
+                            clset.IO = IO;
+                            clset.row = IO.Rows.Count - 1;
+                            TxColors.Add(clset);
+                            inp.Rows.Add(stlist.ToArray());
+                            clset = new TxtClors();
+                            clset.cl = GetCl;
+                            clset.IO = inp;
+                            clset.row = inp.Rows.Count - 1;
+                            TxColors.Add(clset);
+                            ChangeColors();
+                            glmessage = "";
+                            if (inp.RowCount > 2)
+                                inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
+                            if (IO.RowCount > 2)
+                                IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
+                        });
+                        glmessage = "";
+                    }
+
                     if (stopstrgt != "")
                     {
                         glmessage += Convert.ToChar(_serialPort.ReadChar());
+                        lastread = DateTime.Now;
                         if (glmessage.Length > stopstrgt.Length)
                         {
                             if (glmessage.Substring(glmessage.Length - stopstrgt.Length) == stopstrgt)
@@ -556,8 +590,7 @@ namespace ComCSForms
                                         () => { MessageBox.Show("Получен ответ остановки", "Стоп", MessageBoxButtons.OK, MessageBoxIcon.Warning); });
                                     thread.Start();
                                 }
-                                IO.Invoke((MethodInvoker)delegate
-                                {
+                                IO.Invoke((MethodInvoker)delegate {
                                     TxtClors clset;
                                     List<string> stlist = new List<string>();
                                     stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
@@ -590,10 +623,11 @@ namespace ComCSForms
                     else
                     {
                         string msg = _serialPort.ReadExisting();
+                        Thread.Sleep(300);
+                        msg += _serialPort.ReadExisting();
                         if (msg != "")
                         {
-                            IO.Invoke((MethodInvoker)delegate
-                            {
+                            IO.Invoke((MethodInvoker)delegate {
                                 List<string> stlist = new List<string>();
                                 stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
                                 stlist.Add("Прием");
@@ -622,7 +656,7 @@ namespace ComCSForms
                         }
                     }
                 }
-                catch (TimeoutException)
+                catch (TimeoutException ex)
                 {
 
                 }
@@ -928,20 +962,27 @@ namespace ComCSForms
 
         private void PortForm_ResizeEnd(object sender, EventArgs e)
         {
-            SLpanel.Size = new Size(((this.Width*6)/13),this.Height - this.PLbt.Size.Height - 80);
-            IOLayout.Size= new Size(((this.Width*7)/13), this.Height - this.PLbt.Size.Height - 80);
-            SLpanel.Location = new Point(this.Width - SLpanel.Width-20, 40);
-            MNtb.Size = new Size((this.Width -700), MNtb.Size.Height);
-            IOSplit.Size = this.IOLayout.Size;
-            IO.Size = this.IOLayout.Size;
-            IOSplit.SplitterDistance = IOSplit.Width / 2;
-            for(int i=0;i<SLpanel.Controls.Count;i++)
+            try
             {
-                (SLpanel.Controls[i]as SendCombo).Size = new Size(SLpanel.Size.Width-50, SLpanel.Controls[i].Size.Height);
+                SLpanel.Size = new Size(((this.Width * 6) / 13), this.Height - this.PLbt.Size.Height - 80);
+                IOLayout.Size = new Size(((this.Width * 7) / 13), this.Height - this.PLbt.Size.Height - 80);
+                SLpanel.Location = new Point(this.Width - SLpanel.Width - 20, 40);
+                MNtb.Size = new Size((this.Width - 700), MNtb.Size.Height);
+                IOSplit.Size = this.IOLayout.Size;
+                IO.Size = this.IOLayout.Size;
+                IOSplit.SplitterDistance = IOSplit.Width / 2;
+                for (int i = 0; i < SLpanel.Controls.Count; i++)
+                {
+                    (SLpanel.Controls[i] as SendCombo).Size = new Size(SLpanel.Size.Width - 50, SLpanel.Controls[i].Size.Height);
+                }
+                outp.Size = new Size(IOSplit.Panel1.Width, IOSplit.Height);
+                inp.Size = new Size(IOSplit.Panel2.Width, IOSplit.Height);
+                IOLayout.Refresh();
             }
-            outp.Size = new Size(IOSplit.Panel1.Width, IOSplit.Height);
-            inp.Size = new Size(IOSplit.Panel2.Width, IOSplit.Height);
-            IOLayout.Refresh();
+            catch(Exception ex)
+            {
+
+            }
         }
         private void SLpanel_Scroll(object sender, ScrollEventArgs e)
         {
@@ -1024,8 +1065,10 @@ namespace ComCSForms
         {
             IO.Rows.Clear();
             outp.Rows.Clear();
+            inp.Rows.Clear();
             IO.Refresh();
             outp.Refresh();
+            inp.Refresh();
             TxColors.Clear();
         }
 

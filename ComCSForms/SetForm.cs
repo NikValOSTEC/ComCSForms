@@ -19,6 +19,22 @@ namespace ComCSForms
             InitializeComponent();
         }
 
+
+        private string GetHex(string msg)
+        {
+            string message = "";
+            byte[] arr = Encoding.ASCII.GetBytes(msg);
+            string s;
+            foreach (var i in arr)
+            {
+                s = Convert.ToString(i, 16).ToUpper();
+                if (s.Length == 1)
+                    s = "0x0" + s;
+                message += "0x"+s + " ";
+            }
+            return message;
+        }
+
         private string deAPH(string str)
         {
             string res = "";
@@ -169,9 +185,9 @@ namespace ComCSForms
                 if (list[i] != "")
                     StopstrcomboBoxgt.Items.Add(list[i]);
             if (main.stopstrgt == Environment.NewLine)
-                StopstrcomboBoxgt.Text= "CRLF";
+                StopstrcomboBoxgt.Text = "CRLF";
             else
-                StopstrcomboBoxgt.Text = main.stopstrgt;
+                StopstrcomboBoxgt.Text = GetHex(main.stopstrgt);
 
             StopstrcomboBoxsd.Items.Clear();
             for (int i = 0; i < list.Length; i++)
@@ -180,7 +196,7 @@ namespace ComCSForms
             if (main.stopstrsd == Environment.NewLine)
                 StopstrcomboBoxsd.Text = "CRLF";
             else
-                StopstrcomboBoxsd.Text = main.stopstrsd;
+                StopstrcomboBoxsd.Text = GetHex(main.stopstrsd);
             Ciclecheck.Checked = main.cicleCheck;
             CicleTimeUD.Value = main.cicle_time;
             CiclNUD.Value = main.cicle_times;
@@ -255,7 +271,7 @@ namespace ComCSForms
             {
                 if ((StopstrcomboBoxgt.SelectedText.ToString() == "CRLF") || (StopstrcomboBoxgt.Text == "CRLF"))
                     main.stopstrgt = Environment.NewLine;
-                else if (StopstrcomboBoxgt.SelectedIndex != -1)
+                else if ((StopstrcomboBoxgt.Text!="")||(StopstrcomboBoxgt.SelectedIndex != -1))
                     main.stopstrgt = deAPH(StopstrcomboBoxgt.Text.ToString());
                 else
                     main.stopstrgt = "";
@@ -271,7 +287,7 @@ namespace ComCSForms
             {
                 if ((StopstrcomboBoxsd.SelectedText.ToString() == "CRLF") || (StopstrcomboBoxsd.Text == "CRLF"))
                     main.stopstrsd = Environment.NewLine;
-                else if (StopstrcomboBoxsd.SelectedIndex != -1)
+                else if ((StopstrcomboBoxsd.Text != "") || (StopstrcomboBoxsd.SelectedIndex != -1))
                     main.stopstrsd = deAPH(StopstrcomboBoxsd.Text.ToString());
                 else
                     main.stopstrsd = "";
