@@ -48,21 +48,29 @@ namespace ComCSForms
         private string[] GetAsciiH(string st)
         {
             string[] sta = st.Split(' ');
+            char ch;
             List<string> SL = new List<string>();
             for (int i = 0; i < sta.Length-1; i++)
             {
-                SL.Add(System.Convert.ToChar(System.Convert.ToUInt32(sta[i], 16)).ToString());
+                ch = System.Convert.ToChar(System.Convert.ToUInt32(sta[i], 16));
+                if ((int)ch < 40)
+                    ch = (char)46;
+                SL.Add(ch.ToString());
             }
             return SL.ToArray();
         }
 
         private string[] GetAsciiB(string st)
         {
+            char ch;
             string[] sta = st.Split(' ');
             List<string> SL = new List<string>();
             for (int i = 0; i < sta.Length - 1; i++)
             {
-                SL.Add(System.Convert.ToChar(System.Convert.ToUInt32(sta[i], 2)).ToString());
+                ch = System.Convert.ToChar(System.Convert.ToUInt32(sta[i], 2));
+                if ((int)ch < 40)
+                    ch = (char)46;
+                SL.Add(ch.ToString());
             }
             return SL.ToArray();
         }

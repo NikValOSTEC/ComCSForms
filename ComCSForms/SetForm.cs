@@ -29,7 +29,7 @@ namespace ComCSForms
             {
                 s = Convert.ToString(i, 16).ToUpper();
                 if (s.Length == 1)
-                    s = "0x0" + s;
+                    s = "0" + s;
                 message += "0x"+s + " ";
             }
             return message;

@@ -36,7 +36,7 @@ namespace ComCSForms
 
         public Color SendCl;
         public Color GetCl;
-        static string glmessage;
+        static string glmessage,glmessagedots;
         public string stopstrgt;
         public string stopstrsd;
         public string circlestopmsg;
@@ -74,6 +74,7 @@ namespace ComCSForms
             IO.BackColor = Color.White;
             IO.RowHeadersVisible = false;
             IO.GridColor = Color.White;
+            IO.Dock = DockStyle.Fill;
             IO.BackgroundColor = Color.White;
             IO.CellDoubleClick += dataGridView_CellDoubleClick;
             IO.MouseClick += dataGrid_MouseClick;
@@ -196,15 +197,16 @@ namespace ComCSForms
             colm.MinimumWidth = 50;
             inp.Columns.Add(colm);
             IOSplit = new SplitContainer();
-            IOSplit.Size = this.IOLayout.Size;
-            IO.Size = this.IOLayout.Size;
+            IOSplit.Size = this.IOGroup.Size;
+            IO.Size = this.IOGroup.Size;
             IOSplit.SplitterDistance = IOSplit.Width/2;
             outp.Size = new Size(IOSplit.Panel1.Width, IOSplit.Height);
             inp.Size = new Size(IOSplit.Panel2.Width, IOSplit.Height);
             IOSplit.Panel1.Controls.Add(outp);
             IOSplit.Panel2.Controls.Add(inp);
-            this.IOLayout.Controls.Add(IOSplit);
-            this.IOLayout.Controls.Add(IO);
+            this.IOGroup.Controls.Add(IOSplit);
+            this.IOGroup.Controls.Add(IO);
+            IOSplit.Dock = DockStyle.Fill;
             IOSplit.AutoSize = true;
             IOSplit.IsSplitterFixed = false;
             IOSplit.Dock = DockStyle.Fill;
@@ -371,17 +373,19 @@ namespace ComCSForms
 
         private void SimpleSend(string msg)
         {
-            if (_serialPort == null)
-            {
-                MessageBox.Show("Порт не открыт", "Порт", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             TxtClors clset;
+            string mgstr = msg + stopstrsd;
+            StringBuilder sb = new StringBuilder(mgstr);
+            for (int i = 0; i < mgstr.Length; i++)
+            {
+                if ((int)sb[i] < 40)
+                    sb[i] = (char)46;
+            }
+            mgstr = sb.ToString();
             List<string> stlist = new List<string>();
             stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
             stlist.Add("Отправка");
-            stlist.Add(msg + stopstrsd);
+            stlist.Add(mgstr);
             stlist.Add(GetHex(msg + stopstrsd));
             stlist.Add(GetBin(msg + stopstrsd));
             outp.Rows.Add(stlist.ToArray());
@@ -402,7 +406,8 @@ namespace ComCSForms
                 IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
 
             ChangeColors();
-            _serialPort.WriteLine(
+            if(_serialPort!=null)
+                _serialPort.Write(
                 String.Format(msg+stopstrsd));
         }
 
@@ -426,6 +431,8 @@ namespace ComCSForms
 
         private void Send(string mmsg,object sender)
         {
+            if(_serialPort==null)
+                MessageBox.Show("Сначала откройте порт", "Порт Закрыт", MessageBoxButtons.OK);
             string msg;
             if (sndformat == SendFormat.HEX)
                 msg = deHex(mmsg);
@@ -433,7 +440,7 @@ namespace ComCSForms
                 msg = deAPH(mmsg);
             else
                 msg = mmsg;
-            if(spacecheck)
+            if(spacecheck&&_serialPort!=null)
             {
                 if (msg.Contains(' ')) 
                 {
@@ -502,17 +509,33 @@ namespace ComCSForms
 
         private void PortComboBox_Click(object sender, EventArgs e)
         {
+            bool save = false;
             string[] PortnamesNOW = SerialPort.GetPortNames();
-            PortCombobox.Items.Clear();
-            if (this.PortCombobox.Items.Count == 0)
+            for(int i=0;i<PortnamesNOW.Length;i++)
             {
-                this.PortCombobox.Items.Clear();
-                this.PortCombobox.Items.AddRange(PortnamesNOW);
+                if(!PortCombobox.Items.Contains(PortnamesNOW[i]))
+                {
+                    PortCombobox.Items.Add(PortnamesNOW[i]);
+                }
+            }
+            for (int i = 0; i < PortCombobox.Items.Count; i++)
+            {
+                foreach(string x in PortnamesNOW)
+                {
+                    if (Equals(x, PortCombobox.Items[i].ToString()))
+                        save = true;
+                }
+                if(!save)
+                {
+                    PortCombobox.Items.RemoveAt(i);
+                }
+                save = false;
+                    
             }
         }
 
         private void PortCombobox_DropDown(object sender, EventArgs e)
-        {
+        {/*
             string[] PortnamesNOW = SerialPort.GetPortNames();
             if (PortnamesNOW.Contains(this.PortCombobox.SelectedText))
             {
@@ -525,7 +548,7 @@ namespace ComCSForms
             {
                 this.PortCombobox.Items.Clear();
                 this.PortCombobox.Items.AddRange(PortnamesNOW);
-            }
+            }*/
         }
 
         private void Send_Button_Click(object sender, EventArgs e)
@@ -543,14 +566,14 @@ namespace ComCSForms
             {
                 try
                 {
-                    if((Math.Abs(DateTime.Now.Second - lastread.Second)>=3)&&glmessage!="")
+                    if((Math.Abs(DateTime.Now.Second - lastread.Second)>=1.5)&&((glmessage!="")&&(glmessage!= null)))
                     {
                         IO.Invoke((MethodInvoker)delegate {
                             TxtClors clset;
                             List<string> stlist = new List<string>();
                             stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
                             stlist.Add("Прием");
-                            stlist.Add(glmessage);
+                            stlist.Add(glmessagedots);
                             stlist.Add(GetHex(glmessage));
                             stlist.Add(GetBin(glmessage));
                             IO.Rows.Add(stlist.ToArray());
@@ -567,17 +590,24 @@ namespace ComCSForms
                             TxColors.Add(clset);
                             ChangeColors();
                             glmessage = "";
+                            glmessagedots = "";
                             if (inp.RowCount > 2)
                                 inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
                             if (IO.RowCount > 2)
                                 IO.FirstDisplayedScrollingRowIndex = IO.RowCount - 1;
                         });
                         glmessage = "";
+                        glmessagedots = "";
                     }
 
                     if (stopstrgt != "")
                     {
-                        glmessage += Convert.ToChar(_serialPort.ReadChar());
+                        char ch;
+                        ch = Convert.ToChar(_serialPort.ReadChar());
+                        glmessage +=ch;
+                        if ((int)ch < 40)
+                            ch = (char)46;
+                        glmessagedots += ch;
                         lastread = DateTime.Now;
                         if (glmessage.Length > stopstrgt.Length)
                         {
@@ -595,7 +625,7 @@ namespace ComCSForms
                                     List<string> stlist = new List<string>();
                                     stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
                                     stlist.Add("Прием");
-                                    stlist.Add(glmessage);
+                                    stlist.Add(glmessagedots);
                                     stlist.Add(GetHex(glmessage));
                                     stlist.Add(GetBin(glmessage));
                                     IO.Rows.Add(stlist.ToArray());
@@ -612,6 +642,7 @@ namespace ComCSForms
                                     TxColors.Add(clset);
                                     ChangeColors();
                                     glmessage = "";
+                                    glmessagedots = "";
                                     if (inp.RowCount > 2)
                                         inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
                                     if (IO.RowCount > 2)
@@ -625,13 +656,21 @@ namespace ComCSForms
                         string msg = _serialPort.ReadExisting();
                         Thread.Sleep(300);
                         msg += _serialPort.ReadExisting();
+                        string msgdots = msg;
+                        StringBuilder sb = new StringBuilder(msgdots);
+                        for (int i = 0; i < msgdots.Length; i++)
+                        {
+                            if ((int)sb[i] < 40)
+                                sb[i] = (char)46;
+                        }
+                        msgdots = sb.ToString();
                         if (msg != "")
                         {
                             IO.Invoke((MethodInvoker)delegate {
                                 List<string> stlist = new List<string>();
                                 stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
                                 stlist.Add("Прием");
-                                stlist.Add(msg);
+                                stlist.Add(msgdots);
                                 stlist.Add(GetHex(msg));
                                 stlist.Add(GetBin(msg));
                                 IO.Rows.Add(stlist.ToArray());
@@ -648,6 +687,7 @@ namespace ComCSForms
                                 TxColors.Add(clset);
                                 ChangeColors();
                                 glmessage = "";
+                                glmessagedots = "";
                                 if (inp.RowCount > 2)
                                     inp.FirstDisplayedScrollingRowIndex = inp.RowCount - 1;
                                 if (IO.RowCount > 2)
@@ -669,6 +709,14 @@ namespace ComCSForms
             Button btold = ooldbt as Button;
             Button btnow = bbtnow as Button;
             TxtClors clset;
+            string msgdots = msg;
+            StringBuilder sb = new StringBuilder(msgdots);
+            for (int i = 0; i < msgdots.Length; i++)
+            {
+                if ((int)sb[i] < 40)
+                    sb[i] = (char)46;
+            }
+            msgdots = sb.ToString();
 
             if (cicleCheck)
             {
@@ -680,14 +728,14 @@ namespace ComCSForms
                     {
                         if (_serialPort != null&&circle)
                         {
-                            _serialPort.Write(msg);
+                            _serialPort.Write(msg+stopstrsd);
                             sendt = DateTime.Now.AddMilliseconds(cicle_time);
                             outp.Invoke((MethodInvoker)delegate
                             {
                                 List<string> stlist = new List<string>();
                                 stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
                                 stlist.Add("Отправка");
-                                stlist.Add(msg);
+                                stlist.Add(msgdots);
                                 stlist.Add(GetHex(msg));
                                 stlist.Add(GetBin(msg));
                                 outp.Rows.Add(stlist.ToArray());
@@ -729,14 +777,14 @@ namespace ComCSForms
                     {
                         if ((_serialPort != null)&&circle)
                         {
-                            _serialPort.Write(msg);
+                            _serialPort.Write(msg+stopstrsd);
                             sendt = DateTime.Now.AddMilliseconds(cicle_time);
                             outp.Invoke((MethodInvoker)delegate
                             {
                                 List<string> stlist = new List<string>();
                                 stlist.Add(DateTime.Now.TimeOfDay.ToString().Substring(0, 8));
                                 stlist.Add("Отправка");
-                                stlist.Add(msg);
+                                stlist.Add(msgdots);
                                 stlist.Add(GetHex(msg));
                                 stlist.Add(GetBin(msg));
                                 outp.Rows.Add(stlist.ToArray());
@@ -810,9 +858,9 @@ namespace ComCSForms
             Properties.Settings.Default.stopstrgt = stopstrgt;
             Properties.Settings.Default.stopstrsd = stopstrsd;
             Properties.Settings.Default.Comands.Clear();
-            for(int i=0;i<SLpanel.Controls.Count;i++)
+            for(int i=0;i<FlowLP.Controls.Count;i++)
             {
-                st = SLpanel.Controls[i].Controls["SCtb"].Text;
+                st = FlowLP.Controls[i].Controls["SCtb"].Text;
                 if (st!="")
                     Properties.Settings.Default.Comands.Add(st);
             }
@@ -837,7 +885,7 @@ namespace ComCSForms
             thSend = null;
             blportopen = false;
             PortComboBox_Click(PortCombobox, new EventArgs());
-            this.SLpanel.MouseWheel += SLpanel_Scroll;
+            this.FlowLP.MouseWheel += SLpanel_Scroll;
 
             try
             {
@@ -870,15 +918,15 @@ namespace ComCSForms
             var list = Properties.Settings.Default.Comands.Cast<string>().ToList();
             for (int i = 0; i < list.Count; i++)
             {
-                SendCombo sc = new SendCombo(SLpanel.Size);
+                SendCombo sc = new SendCombo(FlowLP.Size);
                 Button bt = (Button)sc.Controls.Find("SCbt", false)[0];
                 Button btmin = (Button)sc.Controls.Find("SCbm", false)[0];
                 TextBox tb = (TextBox)sc.Controls.Find("SCtb", false)[0];
-                sc.Name = "SC" + this.SLpanel.Controls.Count;
+                sc.Name = "SC" + this.FlowLP.Controls.Count;
                 bt.Click += Bt_Click;
                 btmin.Click += Btmin_Click;
                 tb.KeyUp += SndEnt_KeyUp;
-                this.SLpanel.Controls.Add(sc);
+                this.FlowLP.Controls.Add(sc);
                 tb.Text = list[i];
             }
 
@@ -916,15 +964,15 @@ namespace ComCSForms
 
         private void Plusbt_Click(object sender, EventArgs e)
         {
-            SendCombo sc = new SendCombo(SLpanel.Size);
+            SendCombo sc = new SendCombo(FlowLP.Size);
             Button bt = (Button)sc.Controls.Find("SCbt", false)[0];
             Button btmin = (Button)sc.Controls.Find("SCbm", false)[0];            
             TextBox tb = (TextBox)sc.Controls.Find("SCtb", false)[0];
-            sc.Name = "SC" + this.SLpanel.Controls.Count;
+            sc.Name = "SC" + this.FlowLP.Controls.Count;
             bt.Click += Bt_Click;
             btmin.Click += Btmin_Click;
             tb.KeyUp += SndEnt_KeyUp;
-            this.SLpanel.Controls.Add(sc);
+            this.FlowLP.Controls.Add(sc);
         }
 
         private void Btmin_Click(object sender, EventArgs e)
@@ -962,36 +1010,16 @@ namespace ComCSForms
 
         private void PortForm_ResizeEnd(object sender, EventArgs e)
         {
-            try
-            {
-                SLpanel.Size = new Size(((this.Width * 6) / 13), this.Height - this.PLbt.Size.Height - 80);
-                IOLayout.Size = new Size(((this.Width * 7) / 13), this.Height - this.PLbt.Size.Height - 80);
-                SLpanel.Location = new Point(this.Width - SLpanel.Width - 20, 40);
-                MNtb.Size = new Size((this.Width - 700), MNtb.Size.Height);
-                IOSplit.Size = this.IOLayout.Size;
-                IO.Size = this.IOLayout.Size;
-                IOSplit.SplitterDistance = IOSplit.Width / 2;
-                for (int i = 0; i < SLpanel.Controls.Count; i++)
-                {
-                    (SLpanel.Controls[i] as SendCombo).Size = new Size(SLpanel.Size.Width - 50, SLpanel.Controls[i].Size.Height);
-                }
-                outp.Size = new Size(IOSplit.Panel1.Width, IOSplit.Height);
-                inp.Size = new Size(IOSplit.Panel2.Width, IOSplit.Height);
-                IOLayout.Refresh();
-            }
-            catch(Exception ex)
-            {
 
-            }
         }
         private void SLpanel_Scroll(object sender, ScrollEventArgs e)
         {
-            SLpanel.Focus();
+            FlowLP.Focus();
             
         }
         private void SLpanel_Scroll(object sender, MouseEventArgs e)
         {
-            SLpanel.Focus();
+            FlowLP.Focus();
 
         }
 
@@ -1021,6 +1049,12 @@ namespace ComCSForms
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void PortCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void menuItemCopy_Click(object sender, System.EventArgs e)
         {
             DataGridView dg = ((sender as MenuItem).Parent as ContextMenu).SourceControl as DataGridView;
@@ -1074,7 +1108,7 @@ namespace ComCSForms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SLpanel.Controls.Clear();
+            FlowLP.Controls.Clear();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -1088,10 +1122,10 @@ namespace ComCSForms
             IO1_2 = !IO1_2;
             if (IO1_2)
             {
-                splitbt.Text = "Объединить прием/отправку";
+                splitbt.Text = "Объединить I/O";
             }
             else
-                splitbt.Text = "Разъеденить прием/отправку";
+                splitbt.Text = "Разъеденить I/O";
             RefreshIO();
         }
     }

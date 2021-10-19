@@ -53,9 +53,9 @@ namespace ComCSForms
             this.SCbt.FlatAppearance.BorderSize = 0;
             this.SCbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SCbt.Image = ((System.Drawing.Image)(resources.GetObject("SCbt.Image")));
-            this.SCbt.Location = new System.Drawing.Point(375, 1);
+            this.SCbt.Location = new System.Drawing.Point(364, 1);
             this.SCbt.Name = "SCbt";
-            this.SCbt.Size = new System.Drawing.Size(36, 40);
+            this.SCbt.Size = new System.Drawing.Size(47, 146);
             this.SCbt.TabIndex = 1;
             this.SCbt.UseVisualStyleBackColor = true;
             // 
@@ -68,7 +68,7 @@ namespace ComCSForms
             this.SCbm.Image = ((System.Drawing.Image)(resources.GetObject("SCbm.Image")));
             this.SCbm.Location = new System.Drawing.Point(417, 0);
             this.SCbm.Name = "SCbm";
-            this.SCbm.Size = new System.Drawing.Size(28, 40);
+            this.SCbm.Size = new System.Drawing.Size(28, 146);
             this.SCbm.TabIndex = 2;
             this.SCbm.Text = "-";
             this.SCbm.UseVisualStyleBackColor = true;
@@ -82,7 +82,7 @@ namespace ComCSForms
             this.SCbtS.Image = ((System.Drawing.Image)(resources.GetObject("SCbtS.Image")));
             this.SCbtS.Location = new System.Drawing.Point(375, 0);
             this.SCbtS.Name = "SCbtS";
-            this.SCbtS.Size = new System.Drawing.Size(36, 38);
+            this.SCbtS.Size = new System.Drawing.Size(36, 144);
             this.SCbtS.TabIndex = 3;
             this.SCbtS.UseVisualStyleBackColor = true;
             // 
@@ -96,7 +96,7 @@ namespace ComCSForms
             this.Controls.Add(this.SCbt);
             this.Controls.Add(this.SCbtS);
             this.Name = "SendCombo";
-            this.Size = new System.Drawing.Size(448, 44);
+            this.Size = new System.Drawing.Size(448, 150);
             this.Load += new System.EventHandler(this.SendCombo_Load);
             this.SizeChanged += new System.EventHandler(this.SCtb_SizeChanged);
             this.ResumeLayout(false);
