@@ -118,7 +118,7 @@ namespace ComCSForms
             // Flowlabel
             // 
             this.Flowlabel.AutoSize = true;
-            this.Flowlabel.Location = new System.Drawing.Point(192, 9);
+            this.Flowlabel.Location = new System.Drawing.Point(149, 65);
             this.Flowlabel.Name = "Flowlabel";
             this.Flowlabel.Size = new System.Drawing.Size(38, 13);
             this.Flowlabel.TabIndex = 5;
@@ -128,9 +128,9 @@ namespace ComCSForms
             // 
             this.FlowcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FlowcomboBox.FormattingEnabled = true;
-            this.FlowcomboBox.Location = new System.Drawing.Point(193, 30);
+            this.FlowcomboBox.Location = new System.Drawing.Point(105, 86);
             this.FlowcomboBox.Name = "FlowcomboBox";
-            this.FlowcomboBox.Size = new System.Drawing.Size(84, 21);
+            this.FlowcomboBox.Size = new System.Drawing.Size(172, 21);
             this.FlowcomboBox.TabIndex = 4;
             // 
             // Stopstrlabelgt
@@ -157,7 +157,7 @@ namespace ComCSForms
             // Paritylabel
             // 
             this.Paritylabel.AutoSize = true;
-            this.Paritylabel.Location = new System.Drawing.Point(104, 65);
+            this.Paritylabel.Location = new System.Drawing.Point(206, 9);
             this.Paritylabel.Name = "Paritylabel";
             this.Paritylabel.Size = new System.Drawing.Size(49, 13);
             this.Paritylabel.TabIndex = 9;
@@ -167,7 +167,7 @@ namespace ComCSForms
             // 
             this.ParitycomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ParitycomboBox.FormattingEnabled = true;
-            this.ParitycomboBox.Location = new System.Drawing.Point(105, 86);
+            this.ParitycomboBox.Location = new System.Drawing.Point(193, 30);
             this.ParitycomboBox.Name = "ParitycomboBox";
             this.ParitycomboBox.Size = new System.Drawing.Size(84, 21);
             this.ParitycomboBox.TabIndex = 8;

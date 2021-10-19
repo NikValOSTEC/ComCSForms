@@ -742,7 +742,7 @@ namespace ComCSForms
                                 clset = new TxtClors();
                                 clset.cl = SendCl;
                                 clset.IO = outp;
-                                clset.row = outp.Rows.Count - 2;
+                                clset.row = outp.Rows.Count - 1;
                                 TxColors.Add(clset);
                                 IO.Rows.Add(stlist.ToArray());
                                 clset = new TxtClors();
