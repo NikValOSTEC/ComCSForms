@@ -56,7 +56,7 @@ namespace ComCSForms
         public DataGridViewRow CloneRowWithValues(DataGridViewRow row)
         {
             DataGridViewRow clonedRow = (DataGridViewRow)row.Clone();
-            for (Int32 index = 0; index < row.Cells.Count; index++)
+            for (int index = 0; index < row.Cells.Count; index++)
             {
                 clonedRow.Cells[index].Value = row.Cells[index].Value;
             }
@@ -605,7 +605,7 @@ namespace ComCSForms
                         char ch;
                         ch = Convert.ToChar(_serialPort.ReadChar());
                         glmessage +=ch;
-                        if ((int)ch < 40)
+                        if ((int)ch < 32)
                             ch = (char)46;
                         glmessagedots += ch;
                         lastread = DateTime.Now;
@@ -660,7 +660,7 @@ namespace ComCSForms
                         StringBuilder sb = new StringBuilder(msgdots);
                         for (int i = 0; i < msgdots.Length; i++)
                         {
-                            if ((int)sb[i] < 40)
+                            if ((int)sb[i] < 32)
                                 sb[i] = (char)46;
                         }
                         msgdots = sb.ToString();
@@ -713,7 +713,7 @@ namespace ComCSForms
             StringBuilder sb = new StringBuilder(msgdots);
             for (int i = 0; i < msgdots.Length; i++)
             {
-                if ((int)sb[i] < 40)
+                if ((int)sb[i] < 32)
                     sb[i] = (char)46;
             }
             msgdots = sb.ToString();
@@ -943,7 +943,6 @@ namespace ComCSForms
             CreateIO();
             IO1_2 = false;
             RefreshIO();
-            this.PortForm_ResizeEnd(this, new EventArgs());
         }
 
         private void FileSend_Click(object sender, EventArgs e)
@@ -995,8 +994,12 @@ namespace ComCSForms
 
         private void Setbt_Click(object sender, EventArgs e)
         {
+            bool fi = _serialPort.IsOpen;
+            this.ClosePort();
             SetForm stfm = new SetForm(this);
             stfm.ShowDialog();
+            if(fi)
+                this.OpenPort();
         }
 
         private void SndEnt_KeyUp(object sender, KeyEventArgs e)
@@ -1008,10 +1011,7 @@ namespace ComCSForms
             }
         }
 
-        private void PortForm_ResizeEnd(object sender, EventArgs e)
-        {
 
-        }
         private void SLpanel_Scroll(object sender, ScrollEventArgs e)
         {
             FlowLP.Focus();

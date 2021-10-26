@@ -57,6 +57,7 @@ namespace ComCSForms
             // 
             this.PortCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PortCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.PortCombobox.ForeColor = System.Drawing.SystemColors.WindowText;
             this.PortCombobox.FormattingEnabled = true;
             this.PortCombobox.Location = new System.Drawing.Point(900, 7);
             this.PortCombobox.Name = "PortCombobox";
@@ -111,7 +112,8 @@ namespace ComCSForms
             this.CLbt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CLbt.FlatAppearance.BorderSize = 2;
             this.CLbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CLbt.Location = new System.Drawing.Point(1087, 645);
+            this.CLbt.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.CLbt.Location = new System.Drawing.Point(1087, 643);
             this.CLbt.Name = "CLbt";
             this.CLbt.Size = new System.Drawing.Size(119, 26);
             this.CLbt.TabIndex = 10;
@@ -277,7 +279,7 @@ namespace ComCSForms
             this.Controls.Add(this.pictureBoxPortStateStop);
             this.Controls.Add(this.pictureBoxPortStateOpen);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1055, 489);
+            this.MinimumSize = new System.Drawing.Size(960, 489);
             this.Name = "PortForm";
             this.Text = " Ostec ComPort";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
