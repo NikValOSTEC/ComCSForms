@@ -562,7 +562,7 @@ namespace ComCSForms
         }
         private void readCOM()
         {
-            while (blportopen)
+            while (_serialPort.IsOpen)
             {
                 try
                 {
@@ -653,9 +653,14 @@ namespace ComCSForms
                     }
                     else
                     {
-                        string msg = _serialPort.ReadExisting();
-                        Thread.Sleep(300);
-                        msg += _serialPort.ReadExisting();
+                        string msg="";
+                        if ((_serialPort != null) && (_serialPort.IsOpen))
+                        {
+                            msg = _serialPort.ReadExisting();
+                            Thread.Sleep(300);
+                            if ((_serialPort != null) && (_serialPort.IsOpen))
+                                msg += _serialPort.ReadExisting();
+                        }
                         string msgdots = msg;
                         StringBuilder sb = new StringBuilder(msgdots);
                         for (int i = 0; i < msgdots.Length; i++)
@@ -698,7 +703,7 @@ namespace ComCSForms
                 }
                 catch (TimeoutException ex)
                 {
-
+                    
                 }
             }
         }
